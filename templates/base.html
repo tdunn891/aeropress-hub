@@ -10,13 +10,30 @@
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
    <!-- Material Icons -->
    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-   <link rel="stylesheet" href="static/css/style.css">
+   <!-- style.css -->
+   <link rel="stylesheet" href="{{url_for('static', filename='css/base.css')}}" type="text/css" />
 
 
    <title>AeroPress Brews</title>
 </head>
 
 <body>
+   <!-- Nav bar -->
+   <nav>
+      <div class="nav-wrapper">
+         <a href="{{url_for('get_brews')}}" class="brand-logo">
+            <i class="material-icons">cloud</i>
+            AeroPress Brews
+         </a>
+         <ul class="right hide-on-med-and-down">
+            <li><a href="#"><i class="material-icons">search</i></a></li>
+            <li><a href="#"><i class="material-icons">view_module</i></a></li>
+            <li><a href="{{url_for('insert_brew')}}"><i class="material-icons">add_circle</i></a></li>
+            <!-- <li><a href="collapsible.html"><i class="material-icons">refresh</i></a></li> -->
+            <!-- <li><a href="mobile.html"><i class="material-icons">more_vert</i></a></li> -->
+         </ul>
+      </div>
+   </nav>
    <!-- <h1>Base.html</h1> -->
    {% block content %}
 
@@ -29,10 +46,8 @@
    <script>$(document).ready(function () {
          $('select').formSelect();
          $('input#input_text, textarea#textarea2').characterCounter();
+         $('.sidenav').sidenav();
       });
-   </script>
-   <script>
-      //$('#coffee_weight_slider').next().children().text();
    </script>
 </body>
 
