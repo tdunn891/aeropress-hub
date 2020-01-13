@@ -8,22 +8,32 @@
 
    <!-- Compiled and minified CSS -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+   <!-- Material Icons -->
+   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
    <link rel="stylesheet" href="static/css/style.css">
 
 
-   <title>AP</title>
+   <title>AeroPress Brews</title>
 </head>
 
 <body>
    <!-- <h1>Base.html</h1> -->
    {% block content %}
-   
+
    {% endblock %}
    <!-- jQuery -->
    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
       integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
    <!-- Compiled and minified JavaScript -->
    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+   <script>$(document).ready(function () {
+         $('select').formSelect();
+         $('input#input_text, textarea#textarea2').characterCounter();
+      });
+   </script>
+   <script>
+      //$('#coffee_weight_slider').next().children().text();
+   </script>
 </body>
 
 </html>

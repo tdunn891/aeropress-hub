@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Add a Brew</h2>
+
+<!-- Form Input -->
+<div class="row">
+   <form class="col s12">
+      <div class="row">
+         <div class="input-field col s12 m6">
+            <i class="material-icons prefix">local_cafe</i>
+            <input id="icon_prefix" type="text" class="validate">
+            <label for="icon_prefix">Brew Name</label>
+         </div>
+      </div>
+      <div class="row">
+         <div class="input-field col s12 m6">
+            <!-- <i class="material-icons prefix">phone</i> -->
+            <i class="material-icons prefix">account_circle</i>
+            <input id="icon_telephone" type="text" class="validate">
+            <label for="icon_telephone">Barista Name</label>
+         </div>
+      </div>
+      <!-- </div> -->
+      <div class="row">
+         <h4>Details</h4>
+         <div class="input-field col s12 m6">
+            <select class="icons">
+               <option value="" disabled selected>Upright / Inverted</option>
+               <option value="" data-icon="static/images/aeropress.svg" class="left">Upright</option>
+               <option value="" data-icon="static/images/aeropress_inverted.svg" class="left">Inverted</option>
+            </select>
+            <label>Brewer Orientation</label>
+         </div>
+      </div>
+      <div class="row">
+         <p class="range-field col s6">
+            <input type="range" id="coffee_weight_slider" min="10" max="40" name="coffee_weight" />
+            <label for="coffee_weight_slider">Coffee Weight (g)</label>
+            <!-- var weight = $('input[name=coffee_weight]').val(); -->
+         </p>
+      </div>
+      <div class="row">
+         <p class="range-field col s6">
+            <input type="range" id="grind_size_slider" min="1" max="10" name="grind_size"/>
+            <label for="grind_size_slider">Grind Size (1: Very Fine, 10: Very Coarse)</label>
+         </p>
+      </div>
+      <div class="row">
+         <p class="range-field col s6">
+            <input type="range" id="Water Temp" min="70" max="100" name="water_temp"/>
+            <label for="grind_size_slider">Water Temp (°C)</label>
+         </p>
+      </div>
+      <div class="row">
+         <div class="input-field col s12 m6">
+            <!-- <i class="material-icons prefix">phone</i> -->
+            <input id="filter" type="text" class="validate">
+            <label for="filter">Filter</label>
+         </div>
+      </div>
+      <div class="row">
+         <h4>Procedure</h4>
+         <div class="input-field col s12 m6">
+            <!-- <i class="material-icons prefix">phone</i> -->
+            <input id="step_1" type="text" class="validate">
+            <label for="step_1">Step 1</label>
+            <a class="btn-floating btn-small waves-effect waves-light blue">
+               <i class="material-icons">add</i></a>
+         </div>
+      </div>
+      <!-- Notes -->
+      <div class="row">
+         <form class="col s12">
+            <div class="row">
+               <div class="input-field col s12">
+                  <textarea id="notes_textarea" class="materialize-textarea"></textarea>
+                  <label for="notes_textare">Notes</label>
+               </div>
+            </div>
+         </form>
+      </div>
+      <!-- Reset Button -->
+      <a class="waves-effect waves-light btn">Reset</a>
+      <!-- Submit Button -->
+      <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+         <i class="material-icons right">send</i>
+      </button>
+   </form>
+</div>
+
+
+{% endblock %}

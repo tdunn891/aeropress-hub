@@ -17,12 +17,22 @@ app.config["MONGO_URI"] = MONGO_URI
 mongo = PyMongo(app)
 # print(mongo)
 
+
 @app.route('/')
-@app.route('/brews')
+@app.route('/get_brews')
 def get_brews():
     # print(mongo.db.brews.find())
     return render_template("get_brews.html",
                            brews=mongo.db.brews.find())
+
+
+@app.route('/insert_brew', methods=['POST', 'GET'])
+def insert_brew():
+    # brews = mongo.db.brews
+    # brews.insert_one(request.form.to_dict())
+    return render_template("insert_brew.html")
+    # return redirect(url_for('get_brews'))
+    # TODO: correct
 
 
 if __name__ == '__main__':
