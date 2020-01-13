@@ -22,7 +22,7 @@
    <nav>
       <div class="nav-wrapper">
          <a href="{{url_for('get_brews')}}" class="brand-logo">
-            <i class="material-icons">cloud</i>
+            <i class="material-icons prefix">local_cafe</i>
             AeroPress Brews
          </a>
          <ul class="right hide-on-med-and-down">
@@ -43,12 +43,16 @@
       integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
    <!-- Compiled and minified JavaScript -->
    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+   <!-- some of the below is only relevant for certain pages -->
+   <script src="{{url_for('static', filename='js/main.js')}}"></script>
    <script>$(document).ready(function () {
          $('select').formSelect();
          $('input#input_text, textarea#textarea2').characterCounter();
          $('.sidenav').sidenav();
       });
    </script>
+   {% block additional_scripts %}
+   {% endblock %}
 </body>
 
 </html>
