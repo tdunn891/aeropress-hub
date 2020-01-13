@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Brews</h2>
+<ul>
+   {% for brew in brews %}
+   <li>
+      ID: {{brew.brew_id}} Brew Name: {{brew.brew_name}} Barista: {{brew.barista}}
+   </li>
+   {% endfor %}
+</ul>
+{% endblock %}
