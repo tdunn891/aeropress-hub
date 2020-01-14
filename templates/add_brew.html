@@ -5,61 +5,49 @@
 <div class="row container">
    <h4>Add a Brew</h4>
    <!-- Form Input -->
-   <form class="col s12">
+   <!-- TODO: Form validation -->
+   <form class="col s12" action="{{ url_for('insert_brew') }}" method="POST">
       <div class="row">
          <div class="input-field col s12 m6 l4">
             <i class="material-icons prefix">local_cafe</i>
-            <input id="brew_name" name="brew_name" type="text" class="validate" />
+            <input id="brew_name" name="brew_name" type="text" class="validate" required />
             <label for="brew_name">Brew Name</label>
+            <span class="helper-text" data-error="Required" data-success="Yum!"></span>
          </div>
       </div>
       <div class="row">
          <div class="input-field col s12 m6 l4">
             <!-- <i class="material-icons prefix">phone</i> -->
             <i class="material-icons prefix">account_circle</i>
-            <input id="barista_name" name="barista_name" type="text" class="validate" />
+            <input id="barista_name" name="barista_name" type="text" class="validate" required />
             <label for="barista_name">Barista Name</label>
+            <span class="helper-text" data-error="Required" data-success=""></span>
          </div>
       </div>
-      <!-- </div> -->
       <div class="row">
          <!-- <h5>Details</!-->
          <div class="input-field col s12 m6 l4">
-            <!-- <select id="brewer_position" name="brewer_position" class="icons"> -->
-            <!-- <option value="" disabled selected>Upright / Inverted</option> -->
-            <!-- <option value="" data-icon="static/images/aeropress.svg" class="left">Upright</option> -->
-            <!-- <option value="" data-icon="static/images/aeropress_inverted.svg" class="left">Inverted</option> -->
-            <!-- </select> -->
-            <!-- <label>Brewer Orientation</label> -->
-            <p>Brewer Position:</p>
-            <p>
-               <label>
-                  <input name="brewer" type="radio" id="brewer_upright" class="with-gap" />
-                  <span>Upright</span>
-               </label>
-            </p>
-            <p>
-               <label>
-                  <input name="brewer" type="radio" id="brewer_inverted" class="with-gap" checked />
-                  <span>Inverted</span>
-               </label>
-            </p>
+            <select id="brewer" name="brewer" class="icons">
+               <option value="Inverted" data-icon="static/images/aeropress_inverted.svg" class="left" default>Inverted
+               </option>
+               <option value="Upright" data-icon="static/images/aeropress.svg" class="left">Upright</option>
+            </select>
+            <label for="brewer_position">Brewing Method</label>
          </div>
       </div>
       <div class="row">
-         <p class="range-field col s12 m6 l3">
-            <input type="range" id="coffee_weight_slider" name="coffee_weight" min="10" max="40"
+         <!-- TODO: change sliders to noUiSliders -->
+         <p class="range-field col s12 m6 l4">
+            <input type="range" id="coffee_weight_slider" name="coffee_weight" min="10" max="30" value="16"
                onclick="displaySliderValue('coffee_weight');" />
             <img src="static/images/bean.svg" alt="Coffee Beans" height="32px">
-            <label for="coffee_weight_slider">Coffee Weight (g)</label>
-            <!-- var weight = $('input[name=coffee_weight]').val(); -->
+            <label for="coffee_weight_slider">Coffee Dose (g)</label>
             <div id="coffee_weight_label"><span id="coffee_weight_span"></span> grams</div>
-
          </p>
       </div>
       <div class="row">
-         <p class="range-field col s12 m6 l3">
-            <input type="range" id="grind_size_slider" name="grind_size" min="1" max="10"
+         <p class="range-field col s12 m6 l4">
+            <input type="range" id="grind_size_slider" name="grind_size" min="1" max="10" value="5"
                onclick="displaySliderValue('grind_size');" />
             <img src="static/images/grinder.svg" alt="Coffee Grinder" height="36px">
             <label for="grind_size_slider">Grind Size (1: fine, 10: coarse)</label>
@@ -67,8 +55,8 @@
          </p>
       </div>
       <div class="row">
-         <p class="range-field col s12 m6 l3">
-            <input type="range" id="Water Temp" name="water_temp" min="70" max="100"
+         <p class="range-field col s12 m6 l4">
+            <input type="range" id="Water Temp" name="water_temp" min="70" max="100" value="90"
                onclick="displaySliderValue('water_temp');" />
             <img src="static/images/thermometer.svg" alt="Thermomenter" height="34px">
             <!-- <i class="fas fa-thermometer-three-quarters"></i> -->
@@ -77,27 +65,32 @@
          </p>
       </div>
       <div class="row">
-         <p class="range-field col s12 m6 l3">
-            <input type="range" id="brew_time" name="brew_time" min="30" max="240" step="5"
+         <p class="range-field col s12 m6 l4">
+            <input type="range" id="brew_time" name="brew_time" min="30" max="220" value="120" step="10"
                onclick="displaySliderValue('brew_time');" />
-            <!-- <img src="static/images/thermometer.svg" alt="Thermomenter" height="34px"> -->
+            <i class="material-icons">timer</i>
             <label for="brew_time">Total Brew Time (s)</label>
             <div id="brew_time_label"><span id="brew_time_span"></span> seconds</div>
          </p>
       </div>
       <div class="row">
          <div class="input-field col s12 m6 l4">
-            <!-- <i class="material-icons prefix">phone</i> -->
             <img src="static/images/filter.svg" alt="Coffee filter" height="32px" class="prefix">
-            <input id="filter" name="filter" type="text" class="validate">
-            <label for="filter">Filter</label>
+            <select id="filter" name="filter" required>
+               <option value="Single Paper" selected>Single Paper</option>
+               <option value="Double Paper">Double Paper</option>
+               <option value="Metal">Metal</option>
+               <span class="helper-text" data-error="Required" data-success=""></span>
+            </select>
+            <label for="filter">Filter Type</label>
          </div>
       </div>
       <div class="row">
          <h5>
-            <i class="material-icons">format_list_numbered</i>Steps</h5>
+            <i class="material-icons">format_list_numbered</i>
+            Steps
+         </h5>
          <div class="input-field col s12 m6 l6">
-            <!-- <i class="material-icons prefix">phone</i> -->
             <input id="step_1" name="step_1" type="text" class="validate">
             <label for="step_1">Step 1</label>
             <a class="btn-floating btn-small waves-effect waves-light blue">
@@ -112,6 +105,7 @@
          </div>
       </div>
       <!-- Reset Button -->
+      <!-- TODO: Wire up Reset button -->
       <a class="waves-effect waves-light btn">Reset</a>
       <!-- Submit Button -->
       <button class="btn waves-effect waves-light" type="submit" name="action">Submit
@@ -131,7 +125,5 @@
       displaySliderValue('brew_time');
    })
 
-//   $('#coffee_weight_slider').onclick(displaySliderValue('coffee_weight_slider'));
- //  console.log('test');
 </script>
 {% endblock %}
