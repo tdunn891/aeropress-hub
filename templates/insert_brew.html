@@ -48,29 +48,41 @@
       </div>
       <div class="row">
          <p class="range-field col s12 m6 l3">
-            <input type="range" id="coffee_weight_slider" name="coffee_weight" min="10" max="40" />
+            <input type="range" id="coffee_weight_slider" name="coffee_weight" min="10" max="40"
+               onclick="displaySliderValue('coffee_weight');" />
             <img src="static/images/bean.svg" alt="Coffee Beans" height="32px">
             <label for="coffee_weight_slider">Coffee Weight (g)</label>
             <!-- var weight = $('input[name=coffee_weight]').val(); -->
-            <div id="coffee_weight_label"> grams</div>
+            <div id="coffee_weight_label"><span id="coffee_weight_span"></span> grams</div>
 
          </p>
       </div>
       <div class="row">
          <p class="range-field col s12 m6 l3">
-            <input type="range" id="grind_size_slider" name="grind_size" min="1" max="10" />
+            <input type="range" id="grind_size_slider" name="grind_size" min="1" max="10"
+               onclick="displaySliderValue('grind_size');" />
             <img src="static/images/grinder.svg" alt="Coffee Grinder" height="36px">
             <label for="grind_size_slider">Grind Size (1: fine, 10: coarse)</label>
-            <div id="grind_size_label">/10</div>
+            <div id="grind_size_label"><span id="grind_size_span"></span>/10</div>
          </p>
       </div>
       <div class="row">
          <p class="range-field col s12 m6 l3">
-            <input type="range" id="Water Temp" name="water_temp" min="70" max="100" />
+            <input type="range" id="Water Temp" name="water_temp" min="70" max="100"
+               onclick="displaySliderValue('water_temp');" />
             <img src="static/images/thermometer.svg" alt="Thermomenter" height="34px">
             <!-- <i class="fas fa-thermometer-three-quarters"></i> -->
             <label for="water_temp_slider">Water Temp (°C)</label>
-            <div id="water_temp_label"> °C</div>
+            <div id="water_temp_label"><span id="water_temp_span"></span> °C</div>
+         </p>
+      </div>
+      <div class="row">
+         <p class="range-field col s12 m6 l3">
+            <input type="range" id="brew_time" name="brew_time" min="30" max="240" step="5"
+               onclick="displaySliderValue('brew_time');" />
+            <!-- <img src="static/images/thermometer.svg" alt="Thermomenter" height="34px"> -->
+            <label for="brew_time">Total Brew Time (s)</label>
+            <div id="brew_time_label"><span id="brew_time_span"></span> seconds</div>
          </p>
       </div>
       <div class="row">
@@ -116,6 +128,10 @@
       displaySliderValue('coffee_weight');
       displaySliderValue('grind_size');
       displaySliderValue('water_temp');
+      displaySliderValue('brew_time');
    })
+
+//   $('#coffee_weight_slider').onclick(displaySliderValue('coffee_weight_slider'));
+ //  console.log('test');
 </script>
 {% endblock %}
