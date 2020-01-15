@@ -2,8 +2,8 @@
 {% block content %}
 
 <!-- Collection  -->
-<div class="row">
-   <div class="col s12 m4">
+<div class="row container">
+   <div class="col s12 m6">
       <h4>Brews</h4>
       <ul class="collection">
          {% for brew in brews %}
@@ -13,16 +13,14 @@
             <img style="width: 45px; height: auto" class="circle"
                src="https://static1.squarespace.com/static/57e0ec14579fb32aef30644e/t/5df2e14393135176b0697d6f/1578388120485/?format=1500w" />
             <span class="title">
-               <i class="material-icons prefix">local_cafe</i>
-               <a href="" onclick="javascript:alert('{{brew.steps[0]}}');">{{brew.brew_name}}</a></span>
-            <p><i class="material-icons">account_circle</i>{{brew.barista}}<br>
+               <i class="material-icons prefix">local_cafe</i>{{brew.brew_name}}
+            </span>
+            <p>
+               <i class="material-icons">account_circle</i>{{brew.barista}}<br>
                <!-- TODO: if field is blank, don't br -->
-               <img src="static/images/bean.svg" alt="Coffee Beans" height="22px">
-               {{brew.details.coffee}}<br>
-               <img src="static/images/grinder.svg" alt="Coffee Grinder" height="28px">
-               {{brew.details.grind}}<br>
+               <img src="static/images/bean.svg" alt="Coffee Beans" height="22px">{{brew.details.coffee}}<br>
+               <img src="static/images/grinder.svg" alt="Coffee Grinder" height="28px">{{brew.details.grind}}<br>
                <i class="material-icons">timer</i>{{brew.total_brew_time}}
-               <!-- Second Line -->
             </p>
             <a href="#!" class="secondary-content">
                <!-- <i class="material-icons">grade</i> -->
@@ -44,4 +42,6 @@
    </div>
 </div>
 
+{% endblock %}
+{% block additional_scripts %}
 {% endblock %}
