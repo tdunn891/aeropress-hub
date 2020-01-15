@@ -22,20 +22,30 @@
                <img src="static/images/grinder.svg" alt="Coffee Grinder" height="28px">{{brew.details.grind}}<br>
                <i class="material-icons">timer</i>{{brew.total_brew_time}}
             </p>
-            <a href="#!" class="secondary-content">
+            <div class="secondary-content">
                <!-- <i class="material-icons">grade</i> -->
                <!-- TODO: wire thumb_up to increase likes on db  -->
                <!-- TODO: thumb should initially be unfilled; fill on click -->
                {% if brew.details.brewer == 'Inverted' %}
-               <img src="static/images/aeropress_inverted.svg" alt="Brew Method: Inverted" height="40px">
+               <a href="" class="tooltipped" data-position="bottom" data-tooltip="Inverted">
+                  <img src="static/images/aeropress_inverted.svg" alt="Brew Method: Inverted" height="40px">
+               </a>
                {% endif %}
                {% if brew.details.brewer == 'Upright' %}
-               <img src="static/images/aeropress.svg" alt="Brew Method: Upright" height="40px">
+               <a href="" class="tooltipped" data-position="bottom" data-tooltip="Upright">
+                  <img src="static/images/aeropress.svg" alt="Brew Method: Upright" height="40px">
+               </a>
                {% endif %}
                <span>{{brew.likes}}</span>
+               <a href="#" class="tooltipped" data-position="bottom" data-tooltip="Edit">
+                  <i class="material-icons cyan-text">edit</i>
+               </a>
+               <!-- <a href="" onclick="deleteBrew({{brew.brew_id}})" class="delete-brew"> -->
+               <a href="#" class="tooltipped" onclick="deleteBrew({{brew.brew_id}})" data-position="bottom" data-tooltip="Delete">
+                  <i class="material-icons red-text text-darken-2">delete</i>
+               </a>
                <!-- <i class="material-icons">thumb_up</i> -->
-               <!-- <i class="material-icons">format_list_numbered</i><br> -->
-            </a>
+            </div>
          </li>
          {% endfor %}
       </ul>
