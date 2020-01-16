@@ -1,5 +1,6 @@
 import os
 import json
+import re
 from flask import Flask, render_template, redirect, request, url_for
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
@@ -23,8 +24,19 @@ mongo = PyMongo(app)
 @app.route('/get_brews')
 def get_brews():
     # print(mongo.db.brews.find())
+    print(mongo.db.brews.count())
+    total_records = mongo.db.brews.count()
+    # split out steps
     return render_template("get_brews.html",
-                           brews=mongo.db.brews.find())
+                           brews=mongo.db.brews.find(), total_records=total_records)
+
+
+@app.route('/filter_brews')
+def filter_brews():
+    rgx = re.compile('Winner.', re.IGNORECASE)
+    winners_only = mongo.db.brews.find({"brew_name": rgx})
+    return render_template("get_brews.html",
+                           brews=winners_only)
 
 
 @app.route('/add_brew')
@@ -38,9 +50,9 @@ def insert_brew():
     if request.method == 'POST':
         req = request.form
         # Get in right structure
-        # Prepare payload
+        # Prepare payload (should this be done in js, not here?)
+        # TODO: New brew should be placed at top of list
         payload = {
-            "brew_id": 100,
             "brew_name": req.get("brew_name"),
             "barista": req.get("barista_name"),
             "brew_source": "World AeroPress Champion Finalist",
@@ -58,20 +70,19 @@ def insert_brew():
                 "brewer": req.get("brewer"),
                 "filter": req.get("filter")
             },
-            "notes": req.get("notes"),
             "likes": "",
-            # TODO: deal with img_url, or remove
-            "img_url": ""
         }
         # print(request.json)
     brews.insert_one(payload)
     return redirect(url_for('get_brews'))
 
 # TODO: test delete
+# @app.route('/delete_brew')
 @app.route('/delete_brew/<brew_id>')
-def delete_brew():
-    brews = mongo.db.brews
-    brews.remove()({'id_': ObjectId(brew_id)})
+def delete_brew(brew_id):
+    # def delete_brew():
+    # mongo.db.brews.remove({})
+    mongo.db.brews.remove({'_id': ObjectId(brew_id)})
     return redirect(url_for('get_brews'))
 
 

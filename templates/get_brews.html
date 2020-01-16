@@ -4,9 +4,21 @@
 <!-- Accordian test -->
 <!-- Collection  -->
 <div class="row container">
-   <div class="col s12 m12">
-      <h4>All Brews</h4>
-      <h5>Total: {{ total_records }}</h5>
+   <h4>All Brews</h4>
+   <!-- <h5>Total: {{ total_records }}</h5> -->
+   <div class="col l1">
+      <h5>Filters:</h5>
+      <a href="{{url_for('filter_brews')}}">Show WINNERS</a>
+      <div class="switch">
+         <label>
+            <input type="checkbox" id="winners-toggle">
+            <span class="lever"></span>
+            Winners Only
+         </label>
+      </div>
+   </div>
+   <div class="col s12 m12 l11">
+
       <ul class="collection collapsible popout">
          {% for brew in brews %}
          <li>
@@ -29,53 +41,64 @@
             </div>
             <div class="collapsible-body">
                <div class="row">
-                  <div class="col s12 m3 l3">
+                  <div class="col s12 m3 l4">
                      <ul class=collection>
                         <h5>Details:</h5>
                         {% if brew.details.brewer == 'Inverted' %}
                         <li class="collection-item avatar">
-                           <img src="static/images/aeropress_inverted.svg" alt="Brew Method: Inverted" height="40px" class="circle">
-                           Inverted
+                           <img src="static/images/aeropress_inverted.svg" alt="Brew Method: Inverted" height="40px"
+                              class="circle">
+                           <span class="title">Inverted</span>
                         </li>
                         {% endif %}
                         {% if brew.details.brewer == 'Upright' %}
                         <li class="collection-item avatar">
-                           <img src="static/images/aeropress.svg" alt="Brew Method: Upright" height="40px" class="circle">
-                           Upright
+                           <img src="static/images/aeropress.svg" alt="Brew Method: Upright" height="40px"
+                              class="circle">
+                           <span class="title">Upright</span>
                         </li>
                         {% endif %}
                         {% if brew.details.coffee != null %}
                         <li class="collection-item avatar">
-                           <img src="static/images/bean.svg" id="coffee-beans" alt="Coffee Beans"
-                              height="22px" class="circle"><span class="title">{{brew.details.coffee}}</span>
+                           <img src="static/images/bean.svg" id="coffee-beans" alt="Coffee Beans" height="22px"
+                              class="circle">
+                           <span class="title">
+                              {{brew.details.coffee}}</span>
                         </li>
                         {% endif %}
                         {% if brew.details.grind != null %}
                         <li class="collection-item avatar">
-                           <img src="static/images/grinder.svg" id="grinder" alt="Coffee Grinder"
-                              height="28px" class="circle">{{brew.details.grind}}
+                           <img src="static/images/grinder.svg" id="grinder" alt="Coffee Grinder" height="28px"
+                              class="circle"><span class="title">{{brew.details.grind}}</span>
                         </li>
                         {% endif %}
                         {% if brew.details.water != null %}
                         <li class="collection-item avatar">
                            <img src="static/images/thermometer.svg" alt="Thermomenter" height="28px" class="circle">
-                           {{brew.details.water}}
+                           <span class="title">
+                              {{brew.details.water}}
+                           </span>
                         </li>
                         {% endif %}
                         {% if brew.details.filter != null %}
                         <li class="collection-item avatar">
                            <img src="static/images/filter.svg" alt="Coffee filter" height="28px" class="circle">
-                           {{brew.details.filter}}
+                           <span class="title">
+                              {{brew.details.filter}}
+                           </span>
                         </li>
                         {% endif %}
                         {% if brew.total_brew_time != null %}
                         <li class="collection-item avatar">
-                           <i class="material-icons circle">timer</i>{{brew.total_brew_time}}
+                           <i class="material-icons circle">timer</i>
+                           <span class="title">
+                              {{brew.total_brew_time}}
+                           </span>
                         </li>
                         {% endif %}
                      </ul>
                   </div>
-                  <div class="col s12 m9 l9">
+                  <div class="col s12 m9 l8">
                      <h5>Steps:</h5>
                      <ol>
                         {% for step in brew.steps %}
@@ -87,7 +110,7 @@
                      <a href="#" class="tooltipped" data-position="bottom" data-tooltip="Edit">
                         <i class="material-icons cyan-text">edit</i>
                      </a>
-                     <a href="#delete-brew-modal" class="tooltipped waves-effect modal-trigger" data-position="bottom"
+                     <a href="#delete-brew-modal-{{brew._id}}" class="tooltipped waves-effect modal-trigger" data-position="bottom"
                         data-tooltip="Delete" id="{{brew._id}}">
                         <i class="material-icons red-text text-darken-2">delete</i>
                      </a>
@@ -95,27 +118,33 @@
                </div>
             </div>
          </li>
+         <!-- Modal to delete brew -->
+         <div id="delete-brew-modal-{{brew._id}}" class="modal" style="max-width: 400px;">
+            <div class="modal-content">
+               <h5>Delete '{{brew.brew_name}}'?</h5>
+            </div>
+            <div class="modal-footer">
+               <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+               <a href="{{url_for('delete_brew', brew_id=brew._id)}}" id="delete_test"
+                  class="modal-close waves-effect waves-red btn-flat" type="submit">OK</a>
+            </div>
+         </div>
          {% endfor %}
       </ul>
    </div>
 </div>
 
-<!-- Modal to delete brew -->
-<div id="delete-brew-modal" class="modal" style="max-width: 460px;">
-   <div class="modal-content">
-      <h4>Delete Brew</h4>
-      <!-- <p id="modal_span">placeholder</p> -->
-      <p>Are you sure?</p>
-   </div>
-   <div class="modal-footer">
-      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
-      <a href="#!" id="delete_test" class="modal-close waves-effect waves-red btn-flat" type="submit">Delete</a>
-   </div>
-</div>
+
+
 
 {% endblock %}
 {% block additional_scripts %}
 <script>
+   $('#winners-toggle').on("click", function () {
+      window.location.href = `{{url_for('filter_brews')}}`
+      //TODO: fix switch
+      //$(this).toggleAttribute("checked");
+   })
    //TODO: figure out how to pass _id to modal
    $('.modal-trigger').on("click", function () {
       // pass _id to modal
