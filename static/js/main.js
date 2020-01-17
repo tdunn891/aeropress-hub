@@ -45,7 +45,7 @@ $(".make-changes-btn").on("click", function() {
     .attr("value");
   // toast
   M.toast({
-    html: "Brew Updated.",
+    html: "Updated",
     classes: "rounded",
     displayLength: 4000
   });
@@ -68,10 +68,42 @@ $(".cancel-changes-btn").on("click", function() {
   // Collapse body
   $(this)
     .parents(".collapsible-body")
-    //  .children(".collapsible-body")
     .attr("style", "");
   //  Collapse header
   $(this)
     .parents("li")
     .toggleClass("active");
+  //  hide cancel changes btn and Submit changes btn
+  $(this).addClass("hide");
+  $(this)
+    .siblings(".make-changes-btn")
+    .addClass("hide");
+  // make edit btn shown
+  $(this)
+    .siblings(".edit-btn")
+    .removeClass("hide");
 });
+
+// Add step buton
+$(".add-step-btn").on("click", function() {
+  // Get current step count (number of children)
+  let stepCounter = $(this)
+    .siblings(".steps")
+    .children().length;
+  let nextStep = stepCounter + 1;
+
+  // Add nother step only if previous step not blank
+  if ($(`#step_${stepCounter}`).hasClass("valid")) {
+    $(this).siblings(".steps").append(`
+     <div class="input-field step">
+     <input id="step_${nextStep}" name="step_${nextStep}" type="text" class="validate" required>
+     <label for="step_${nextStep}">Step ${nextStep}</label>
+     </div>`);
+    // put focus on that step
+    $(`#step_${nextStep}`).focus();
+  } else {
+    alert("do first step then add");
+  }
+});
+// remove button
+// $(this).toggleClass('hide');
