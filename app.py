@@ -27,38 +27,51 @@ def get_brews():
     # print(mongo.db.brews.find())
     # print(mongo.db.brews.count())
     total_records = mongo.db.brews.count()
+    # filtered_records = mongo.db.brews.find({})
+    brews = mongo.db.brews.find().sort('barista', 1)
     # split out steps
     return render_template("get_brews.html",
-                           brews=mongo.db.brews.find(),
+                           #    brews=mongo.db.brews.find().so,
+                           brews=brews,
                            total_records=total_records,
                            filtered_records_count=total_records)
 
 # winnder filters
-# @app.route('/filter_brews/winners=<winners>/method=<method>/')
-@app.route('/filter_brews')
-def filter_brews():
-    rgx = re.compile('Winner.', re.IGNORECASE)
-    winners_only = mongo.db.brews.find({"brew_name": rgx})
-    return render_template("get_brews.html",
-                           brews=winners_only)
+# @app.route('/filter_brews')
+# def filter_brews():
+#     rgx = re.compile('Winner.', re.IGNORECASE)
+#     winners_only = mongo.db.brews.find({"brew_name": rgx})
+#     return render_template("get_brews.html",
+#                            brews=winners_only)
 
 # test
 @app.route('/apply_filters')
 def apply_filters():
     # print(request.args.to_dict())
-    query_string = request.query_string
+    # query_string = request.query_string
     brew_source_array = request.args.getlist('brew_source')
     brewer_array = request.args.getlist('brewer')
     filter_array = request.args.getlist('filter')
+    sort_by = request.args['sort-by']
+    print(sort_by)
 
     filtered_records = mongo.db.brews.find({
         "brew_source": {"$in": brew_source_array},
         "details.brewer": {"$in": brewer_array},
         "details.filter": {"$in": filter_array}
     })
-    # print(filtered_records)
+
     filtered_records_count = filtered_records.count()
     total_records = mongo.db.brews.count()
+
+    if sort_by == 'details.coffee' or sort_by == 'likes':
+        sort_direction = -1
+    else:
+        sort_direction = 1
+
+    filtered_records.sort(sort_by, sort_direction)
+
+    # sort attempt
     # TODO: how to maintain checkboxes after refresh
     return render_template("get_brews.html",
                            brews=filtered_records,
@@ -101,9 +114,8 @@ def insert_brew():
         payload = {
             "brew_name": req.get("brew_name"),
             "barista": req.get("barista_name"),
-            "brew_source": "World AeroPress Champion Finalist",
+            "brew_source": "User",
             "steps": stepsArray,
-            # TODO: convert secs to minutes
             "total_brew_time": req.get("brew_time") + "s",
             "total_brew_time": formatted_time,
             "details": {
@@ -113,7 +125,7 @@ def insert_brew():
                 "brewer": req.get("brewer"),
                 "filter": req.get("filter")
             },
-            "likes": "",
+            "likes": 0
         }
         # print(request.json)
     brews.insert_one(payload)
@@ -131,9 +143,6 @@ def update_brew(brew_id):
             {'$set':
              {
                  'details.coffee': request.form.get('coffee_weight')+'g'
-                 # TODO: likes (should this be a separate route?)
-                 #  'likes': request.form.get('')
-
                  # TODO: add other sliders once happy
              }
              }

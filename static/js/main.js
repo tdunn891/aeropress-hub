@@ -1,15 +1,24 @@
+$(document).ready(function() {
+  $("select").formSelect();
+  $("input#input_text, textarea#textarea2").characterCounter();
+  $(".sidenav").sidenav();
+  //TODO: Adjust tool tip delays
+  $(".tooltipped").tooltip();
+  $(".collapsible").collapsible({
+    inDuration: 250,
+    outDuration: 250
+  });
+  $(".modal").modal({ opacity: 0.2 });
+  $(".fixed-action-btn").floatingActionButton();
+});
+
 // shows value of slider
 function displaySliderValue(slider_name) {
   let sliderNameValue = $(`input[name="${slider_name}"]`).val();
   $(`#${slider_name}_span`).text(`${sliderNameValue}`);
 }
 
-$("#winners-toggle").on("click", function() {
-  window.location.href = `{{url_for('filter_brews')}}`;
-  //TODO: fix switch
-  //$(this).toggleAttribute("checked");
-});
-
+// Delete button
 $(".delete-btn").on("click", function() {
   brew_name = $(this).attr("id");
   M.toast({
@@ -122,30 +131,43 @@ $(".thumb-anchor").on("click", function() {
 
 // TODO: use localStorage to persist checkboxes (or use session storage?)
 // source: https://www.sitepoint.com/quick-tip-persist-checkbox-checked-state-after-page-reload/
-// this block is not nec
-$("#filters :checkbox").on("change", function() {
-//   alert("The checkbox with the ID '" + this.id + "' changed");
-});
 
+// get existing values, or set empty (where should this be?)
 var checkboxValues = JSON.parse(localStorage.getItem("checkboxValues")) || {};
 var $checkboxes = $("#filters :checkbox");
 
+// on each change:
 $checkboxes.on("change", function() {
+  // get the value of each box
   $checkboxes.each(function() {
     checkboxValues[this.id] = this.checked;
   });
+  //   convert values to json and store in localstorage
   localStorage.setItem("checkboxValues", JSON.stringify(checkboxValues));
+  //   test
+  $("#filters").submit();
 });
 
+// get checked/notchecked from json, and apply to boxes
 $(document).ready(function() {
   $.each(checkboxValues, function(key, value) {
     $("#" + key).prop("checked", value);
   });
 });
 
-// TODO: Reset btn clears all localStorage, (sets all to on)
-$('#reset-filters').on("click", function() {
-   // $.each(checkboxValues, function(key, value) {
-      // $("#" + key).prop("checked", ");
-   //  });
-})
+// TODO: Reset btn: see link
+// source: https://www.sitepoint.com/quick-tip-persist-checkbox-checked-state-after-page-reload/
+$("#reset-filters").on("click", function() {
+  console.log("Clearing localStorage");
+  localStorage.clear();
+  window.location.href = `{{url_for('filter_brews')}}`;
+});
+
+// SORT BY Test-----------------------------------------------
+$("#sort-by").on("change", function() {
+  //   let newSortBy = $("#sort-by :selected").val();
+  //   alert(newSortBy);
+//   TODO: persist dropdown state. ideally shouldnt have to reload page?
+  $("#filters").submit();
+  //   window.location.href = `{{url_for('apply_filters', sort=${newSortBy})}}`;
+});
