@@ -1,5 +1,4 @@
 // shows value of slider
-// TODO: use let and const instead of var
 function displaySliderValue(slider_name) {
   let sliderNameValue = $(`input[name="${slider_name}"]`).val();
   $(`#${slider_name}_span`).text(`${sliderNameValue}`);
@@ -10,6 +9,7 @@ $("#winners-toggle").on("click", function() {
   //TODO: fix switch
   //$(this).toggleAttribute("checked");
 });
+
 $(".delete-btn").on("click", function() {
   brew_name = $(this).attr("id");
   M.toast({
@@ -65,6 +65,8 @@ $(".coffee-weight-slider").on("click", function() {
 });
 
 $(".cancel-changes-btn").on("click", function() {
+  // exit 'edit mode' (remove sliders etc)
+
   // Collapse body
   $(this)
     .parents(".collapsible-body")
@@ -107,3 +109,43 @@ $(".add-step-btn").on("click", function() {
 });
 // remove button
 // $(this).toggleClass('hide');
+
+$(".thumb-anchor").on("click", function() {
+  // update like count
+  //   window.location.href = `{{url_for('increase_likes', brew_id=brew._id)}}`;
+  M.toast({
+    html: "Liked",
+    classes: "rounded",
+    displayLength: 4000
+  });
+});
+
+// TODO: use localStorage to persist checkboxes (or use session storage?)
+// source: https://www.sitepoint.com/quick-tip-persist-checkbox-checked-state-after-page-reload/
+// this block is not nec
+$("#filters :checkbox").on("change", function() {
+//   alert("The checkbox with the ID '" + this.id + "' changed");
+});
+
+var checkboxValues = JSON.parse(localStorage.getItem("checkboxValues")) || {};
+var $checkboxes = $("#filters :checkbox");
+
+$checkboxes.on("change", function() {
+  $checkboxes.each(function() {
+    checkboxValues[this.id] = this.checked;
+  });
+  localStorage.setItem("checkboxValues", JSON.stringify(checkboxValues));
+});
+
+$(document).ready(function() {
+  $.each(checkboxValues, function(key, value) {
+    $("#" + key).prop("checked", value);
+  });
+});
+
+// TODO: Reset btn clears all localStorage, (sets all to on)
+$('#reset-filters').on("click", function() {
+   // $.each(checkboxValues, function(key, value) {
+      // $("#" + key).prop("checked", ");
+   //  });
+})

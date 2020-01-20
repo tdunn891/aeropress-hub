@@ -1,22 +1,57 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<div class="row container">
-   <h4>All Brews</h4>
-   <!-- <h5>Total: {{ total_records }}</h5> -->
-   <a href="{{url_for('empty_db')}}" class="btn red">Empty Database</a>
-   <div class="col l1">
-      <h5>Filters:</h5>
-      <a href="{{url_for('filter_brews')}}">Show WINNERS</a>
-      <div class="switch">
-         <label>
-            <input type="checkbox" id="winners-toggle">
-            <span class="lever"></span>
-            Winners Only
+<div class="row">
+   <div class="col l2">
+      <!-- <h4>All Brews</h4> -->
+      <a href="{{url_for('empty_db')}}" class="btn btn-small red" method="POST">Empty Database</a>
+      <h5>Filters</h5>
+      <form action="{{ url_for('apply_filters') }}" id="filters">
+         <h6>Brew Source:</h6>
+         <label style="display: block;">
+            <input type="checkbox" id="wac" class="filled-in" checked="checked" name="brew_source"
+               value="World AeroPress Championships Finalist" />
+            <span>WAC</span>
          </label>
-      </div>
+         <label style="display: block;">
+            <input type="checkbox" id="non-wac" class="filled-in" checked="checked" name="brew_source" value="User" />
+            <span>Non-WAC</span>
+         </label>
+         <h6>Brewer:</h6>
+         <label style="display: block;">
+            <input type="checkbox" id="upright" class="filled-in" checked="checked" name="brewer" value="Upright" />
+            <span>Upright</span>
+         </label>
+         <label style="display: block">
+            <input type="checkbox" id="inverted" class="filled-in" checked="checked" name="brewer" value="Inverted" />
+            <span>Inverted</span>
+         </label>
+         <h6>Filter Type:</h6>
+         <label style="display: block;">
+            <input type="checkbox" id="single-paper" class="filled-in" checked="checked" name="filter" value="Paper" />
+            <span>Single Paper</span>
+         </label>
+         <label style="display: block">
+            <input type="checkbox" id="double-paper" class="filled-in" checked="checked" name="filter"
+               value="Double Paper" />
+            <span>Double Paper</span>
+         </label>
+         <label style="display: block">
+            <input type="checkbox" id="metal" class="filled-in" checked="checked" name="filter" value="Metal" />
+            <span>Metal</span>
+         </label>
+         <label style="display: block">
+            <input type="checkbox" id="metal-and-paper" class="filled-in" checked="checked" name="filter"
+               value="Both Metal and Paper" />
+            <span>Both Metal & Paper</span>
+         </label>
+         <button class="btn btn-small" type="submit">FILTER</button>
+         <!-- TODO: fix reset filter button -->
+         <button href="{{url_for('get_brews')}}" class="btn btn-small" id="reset-filters">RESET</button>
+      </form>
    </div>
-   <div class="col s12 m12 l11">
+   <div class="col s12 m12 l10">
+      <h5>Showing {{ filtered_records_count }} of {{ total_records }}</h5>
       <ul class="collection collapsible popout">
          {% for brew in brews %}
          <li id="{{brew._id}}">
@@ -31,12 +66,20 @@
                   <img src="static/images/aeropress.svg" alt="Brew Method: Upright" height="40px">
                </a>
                {% endif %}
+               <!-- TODO: remove brs -->
                {{brew.brew_name}}<br>
                {{brew.barista}}<br>
+               <span class="likes-count">
+                  <!-- TODO: vertically align likes and thumb -->
+                  <a href="{{url_for('increase_likes', brew_id=brew._id)}}" class="thumb-anchor" method="POST">
+                     <i class="material-icons thumb">thumb_up</i>
+                     <span class="likes">{{brew.likes}}</span>
+                  </a>
+               </span>
             </div>
             <div class="collapsible-body">
                <div class="row">
-                  <div class="col s12 m4 l4">
+                  <div class="col s12 m5 l4">
                      <h5>Details:</h5>
                      <form action="{{ url_for('update_brew', brew_id=brew._id) }}" method="POST">
                         <!-- TODO: hide edit button once pressed (addClass) -->
@@ -44,8 +87,10 @@
                            <!-- <i class="material-icons cyan-text">edit</i> -->
                            EDIT
                         </a>
-                        <button class="btn make-changes-btn green hide" type="submit">Submit Changes</button>
-                        <a class="btn cancel-changes-btn grey hide">Discard Changes</a>
+                        <!-- TODO: scale transition buttons which disappear: https://materializecss.com/css-transitions.html#! -->
+                        <button class="btn make-changes-btn waves-effect waves-light hide" type="submit">Submit
+                           Changes</button>
+                        <button class="btn cancel-changes-btn waves-effect waves-light hide">Cancel</button>
                         <ul class=collection>
                            {% if brew.details.brewer == 'Inverted' %}
                            <li class="collection-item avatar brewer">
@@ -104,18 +149,17 @@
                         </ul>
                      </form>
                   </div>
-                  <div class="col s12 m8 l8">
+                  <div class="col s12 m7 l8">
                      <h5>Steps:</h5>
                      <ol class="steps">
                         {% for step in brew.steps %}
                         <li>{{ step }}</li>
                         {% endfor %}
                      </ol>
-
                      <!-- Delete Button -->
-                     <a href="#delete-brew-modal-{{brew._id}}" class="tooltipped waves-effect modal-trigger"
-                        data-position="bottom" data-tooltip="Delete">
-                        <i class="material-icons red-text text-darken-2">delete</i>
+                     <a href="#delete-brew-modal-{{brew._id}}" class="tooltipped btn red waves-effect modal-trigger"
+                        data-position="bottom" data-tooltip="Delete">Delete
+                        <!-- <i class="material-icons red-text text-darken-2">delete</i> -->
                      </a>
                   </div>
                </div>

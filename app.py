@@ -29,15 +29,41 @@ def get_brews():
     total_records = mongo.db.brews.count()
     # split out steps
     return render_template("get_brews.html",
-                           brews=mongo.db.brews.find(), total_records=total_records)
+                           brews=mongo.db.brews.find(),
+                           total_records=total_records,
+                           filtered_records_count=total_records)
 
-
+# winnder filters
+# @app.route('/filter_brews/winners=<winners>/method=<method>/')
 @app.route('/filter_brews')
 def filter_brews():
     rgx = re.compile('Winner.', re.IGNORECASE)
     winners_only = mongo.db.brews.find({"brew_name": rgx})
     return render_template("get_brews.html",
                            brews=winners_only)
+
+# test
+@app.route('/apply_filters')
+def apply_filters():
+    # print(request.args.to_dict())
+    query_string = request.query_string
+    brew_source_array = request.args.getlist('brew_source')
+    brewer_array = request.args.getlist('brewer')
+    filter_array = request.args.getlist('filter')
+
+    filtered_records = mongo.db.brews.find({
+        "brew_source": {"$in": brew_source_array},
+        "details.brewer": {"$in": brewer_array},
+        "details.filter": {"$in": filter_array}
+    })
+    # print(filtered_records)
+    filtered_records_count = filtered_records.count()
+    total_records = mongo.db.brews.count()
+    # TODO: how to maintain checkboxes after refresh
+    return render_template("get_brews.html",
+                           brews=filtered_records,
+                           filtered_records_count=filtered_records_count,
+                           total_records=total_records)
 
 
 @app.route('/add_brew')
@@ -53,27 +79,37 @@ def insert_brew():
 
         # Prepare payload (should this be done in js, not here?)
         stepsArray = []
-        for i in range(1, 20):
-            try:
-                step = req.get("step_" + str(i))
+        for i in range(1, 10):
+            # TODO: fix steps array (nones)
+            step = req.get("step_" + str(i))
+            # If step is not none, append to array
+            if step != 'None':
+                print('Step added: ' + str(i))
                 stepsArray.append(step)
-            except:
+            else:
+                print('stopping')
+                # last step, exit loop
                 break
 
-        # TODO: New brew should be placed at top of list
+        # mins to seconds
+        total_seconds = int(req.get("brew_time"))
+        m, s = divmod(total_seconds, 60)
+        formatted_time = f'{m:01d}:{s:02d}'
+        # print(mins_and_seconds)
+
+        # TODO: New brew should be placed at top of list (do sorting in app.py)
         payload = {
             "brew_name": req.get("brew_name"),
             "barista": req.get("barista_name"),
             "brew_source": "World AeroPress Champion Finalist",
-            # TODO: deal with steps
             "steps": stepsArray,
             # TODO: convert secs to minutes
             "total_brew_time": req.get("brew_time") + "s",
+            "total_brew_time": formatted_time,
             "details": {
                 "coffee": req.get("coffee_weight") + "g",
                 "grind": req.get("grind_size") + "/10",
-                # TODO: add celsius dot
-                "water": req.get("water_temp") + " C",
+                "water": req.get("water_temp") + " \u00b0C",
                 "brewer": req.get("brewer"),
                 "filter": req.get("filter")
             },
@@ -87,22 +123,34 @@ def insert_brew():
 @app.route('/update_brew/<brew_id>', methods=['GET', 'POST'])
 def update_brew(brew_id):
     if request.method == 'POST':
-        print('Brew ID: ' + brew_id)
-        print(request.form)
-        print('Coffee Weight: ' + request.form.get('coffee_weight'))
+        # print('Brew ID: ' + brew_id)
+        # print(request.form)
+        # print('Coffee Weight: ' + request.form.get('coffee_weight'))
         mongo.db.brews.find_one_and_update(
             {'_id': ObjectId(brew_id)},
             {'$set':
              {
                  'details.coffee': request.form.get('coffee_weight')+'g'
+                 # TODO: likes (should this be a separate route?)
+                 #  'likes': request.form.get('')
 
                  # TODO: add other sliders once happy
              }
              }
         )
-        time.sleep(1)
+        time.sleep(0.5)
         # TODO: don't have to reload the page, bc the data is already displayed
         return redirect(url_for('get_brews'))
+
+
+@app.route('/increase_likes/<brew_id>', methods=['GET', 'POST'])
+def increase_likes(brew_id):
+    mongo.db.brews.find_one_and_update(
+        {'_id': ObjectId(brew_id)},
+        {'$inc': {'likes': 1}}
+    )
+    time.sleep(0.5)
+    return redirect(url_for('get_brews'))
 
 
 # @app.route('/delete_brew')
@@ -112,7 +160,7 @@ def delete_brew(brew_id):
     # mongo.db.brews.remove({})
     mongo.db.brews.remove({'_id': ObjectId(brew_id)})
     # TODO: replace sleep
-    time.sleep(1)
+    time.sleep(0.5)
     return redirect(url_for('get_brews'))
 
 # testing purposes only
