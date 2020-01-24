@@ -116,8 +116,6 @@ $(".add-step-btn").on("click", function() {
     alert("do first step then add");
   }
 });
-// remove button
-// $(this).toggleClass('hide');
 
 $(".thumb-anchor").on("click", function() {
   // update like count
@@ -129,45 +127,25 @@ $(".thumb-anchor").on("click", function() {
   });
 });
 
-// TODO: use localStorage to persist checkboxes (or use session storage?)
+// *: OLD way: use localStorage to persist checkboxes (or use session storage?)
 // source: https://www.sitepoint.com/quick-tip-persist-checkbox-checked-state-after-page-reload/
 
-// get existing values, or set empty (where should this be?)
-var checkboxValues = JSON.parse(localStorage.getItem("checkboxValues")) || {};
-var $checkboxes = $("#filters :checkbox");
-
-// on each change:
-$checkboxes.on("change", function() {
-  // get the value of each box
-  $checkboxes.each(function() {
-    checkboxValues[this.id] = this.checked;
-  });
-  //   convert values to json and store in localstorage
-  localStorage.setItem("checkboxValues", JSON.stringify(checkboxValues));
-  //   test
-  $("#filters").submit();
-});
-
-// get checked/notchecked from json, and apply to boxes
-$(document).ready(function() {
-  $.each(checkboxValues, function(key, value) {
-    $("#" + key).prop("checked", value);
-  });
-});
-
-// TODO: Reset btn: see link
-// source: https://www.sitepoint.com/quick-tip-persist-checkbox-checked-state-after-page-reload/
 $("#reset-filters").on("click", function() {
-  console.log("Clearing localStorage");
-  localStorage.clear();
-  window.location.href = `{{url_for('filter_brews')}}`;
+  // TODO: Make Reset btn
 });
 
-// SORT BY Test-----------------------------------------------
-$("#sort-by").on("change", function() {
-  //   let newSortBy = $("#sort-by :selected").val();
-  //   alert(newSortBy);
-//   TODO: persist dropdown state. ideally shouldnt have to reload page?
-  $("#filters").submit();
-  //   window.location.href = `{{url_for('apply_filters', sort=${newSortBy})}}`;
+$("#next-page").on("click", function() {});
+
+// * on click of sort, submit the form
+$("#filters").on("change", function() {
+  // * instead of sort by, should be when any part of form changes,
+  // *  and serialise will take care of the rest
+  console.log("FILTERS changed!");
+  getFirstPage();
+});
+
+$(".page-number a").on("click", function() {
+   // TODO: pagination css
+  alert("page number clicked");
+  //   $(this).addClass(".active");
 });
