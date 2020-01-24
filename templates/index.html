@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+   <div class="row">
+      <br>
+      <h3>Browse Brews</h3>
+      <p>[TODO: pagination, view counts, share button, a few graphs (eg Winning Recipes by Country etc) (dc.js)]</p>
+      <div class="col l2">
+         <!-- <h4>All Brews</h4> -->
+         <!-- <a href="{{url_for('empty_db')}}" class="btn btn-small red" method="POST">Empty Database</a> -->
+         <div class="">
+            <!-- <h5>Sort</h5> -->
+            <form action="javascript:void(0);" id="filters">
+               <!-- <form action="{{ url_for('apply_filters') }}" id="filters"> -->
+               <label for="sort-by">Sort by:</label>
+               <select class="browser-default" id="sort-by" name="sort-by">
+                  <option value="" disabled>Sort by:</option>
+                  <option value="barista" selected>Barista Name: A-Z</option>
+                  <option value="brew_name">Brew Name: A-Z</option>
+                  <option value="total_brew_time">Brew Time: Short to Long</option>
+                  <option value="details.coffee">Coffee Dose: High to Low</option>
+                  <option value="details.grind">Grind Size: Fine to Coarse</option>
+                  <option value="likes">Most Popular</option>
+               </select>
+               <!-- <h5>Filters</h5> -->
+               <br>
+               <b>Brew Source:</b>
+               <label style="display: block;">
+                  <input type="checkbox" id="wac" class="filled-in" checked="checked" name="brew_source"
+                     value="World AeroPress Championships Finalist" />
+                  <span>Championship</span>
+               </label>
+               <label style="display: block;">
+                  <input type="checkbox" id="non-wac" class="filled-in" checked="checked" name="brew_source"
+                     value="Average Joe" />
+                  <span>Average Joe</span>
+               </label>
+               <br>
+               <b>Brewer:</b>
+               <label style="display: block;">
+                  <input type="checkbox" id="upright" class="filled-in" checked="checked" name="brewer"
+                     value="Upright" />
+                  <span>Upright</span>
+               </label>
+               <label style="display: block">
+                  <input type="checkbox" id="inverted" class="filled-in" checked="checked" name="brewer"
+                     value="Inverted" />
+                  <span>Inverted</span>
+               </label>
+               <br>
+               <b>Filter Type:</b>
+               <label style="display: block;">
+                  <input type="checkbox" id="single-paper" class="filled-in" checked="checked" name="filter"
+                     value="Paper" />
+                  <span>Single Paper</span>
+               </label>
+               <label style="display: block">
+                  <input type="checkbox" id="double-paper" class="filled-in" checked="checked" name="filter"
+                     value="Double Paper" />
+                  <span>Double Paper</span>
+               </label>
+               <label style="display: block">
+                  <input type="checkbox" id="metal" class="filled-in" checked="checked" name="filter" value="Metal" />
+                  <span>Metal</span>
+               </label>
+               <label style="display: block">
+                  <input type="checkbox" id="metal-and-paper" class="filled-in" checked="checked" name="filter"
+                     value="Both Metal and Paper" />
+                  <span>Both Metal & Paper</span>
+               </label>
+
+               <!-- TODO: fix reset filter button -->
+               <br>
+               <button class="btn btn-small" id="reset-filters">RESET</button>
+            </form>
+         </div>
+      </div>
+      <div class="col s12 m12 l10" id='response'>
+
+      </div>
+   </div>
+</div>
+<div class="fixed-action-btn">
+   <a href="#" class="btn-floating btn-medium brown">
+      <i class="material-icons">arrow_upward</i>
+      <!-- <i class="large material-icons">mode_edit</i> -->
+   </a>
+</div>
+{% endblock %}
+
+{% block addl_scripts %}
+
+<!-- * could use fetch instead https://www.youtube.com/watch?v=QKcVjdLEX_s -->
+<script type="text/javascript">
+   $(document).ready(function () {
+      getFirstPage();
+   })
+
+   function getFirstPage() {
+      let serialFilters = $('#filters').serialize();
+      console.log('serialFilters: ' + serialFilters)
+      $.ajax({
+         url: `/get_brews?${serialFilters}`,
+         type: "GET",
+         success: function (resp) {
+            $('#response').html(resp.data);
+         }
+      });
+   }
+
+   // additional pages
+   function goToPage(urlPage) {
+      $.ajax({
+         url: urlPage,
+         type: "GET",
+         success: function (resp) {
+            $('#response').html(resp.data);
+         }
+      })
+   };
+</script>
+
+{% endblock %}

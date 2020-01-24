@@ -1,0 +1,159 @@
+<h6>Matching Records: {{ filtered_records_count }}<br>
+   Total Records: {{ total_records }}</h6>
+<br>
+<ul class="collection collapsible popout">
+   {% for brew in brews %}
+   <li id="{{brew._id}}">
+      <div class="collapsible-header">
+         <!-- ? consider loop instead of if statements -->
+         {% if brew.details.brewer == 'Inverted' %}
+         <a href="" class="tooltipped" data-position="bottom" data-tooltip="Inverted">
+            <img src="static/images/aeropress_inverted.svg" alt="Brew Method: Inverted" height="40px">
+         </a>
+         {% endif %}
+         {% if brew.details.brewer == 'Upright' %}
+         <a href="" class="tooltipped" data-position="bottom" data-tooltip="Upright">
+            <img src="static/images/aeropress.svg" alt="Brew Method: Upright" height="40px">
+         </a>
+         {% endif %}
+         <!-- TODO: remove brs -->
+         <div class="col m3">
+            <h6>{{brew.brew_name}}</h6>
+         </div>
+         <div class="col m7">
+            <h6>{{brew.barista}}</h6>
+         </div>
+         <div class="col m2">
+            <span class="likes-count">
+               <!-- TODO: vertically align likes and thumb -->
+               <a href="{{url_for('increase_likes', brew_id=brew._id)}}" class="thumb-anchor waves-effect waves-light"
+                  method="POST">
+                  <i class="material-icons thumb">thumb_up</i>
+                  <span class="likes">{{brew.likes}}</span>
+               </a>
+            </span>
+         </div>
+      </div>
+      <div class="collapsible-body">
+         <div class="row">
+            <div class="col s12 m4 l3">
+               <h5>Details:</h5>
+               <form action="{{ url_for('update_brew', brew_id=brew._id) }}" method="POST">
+                  <a class="btn tooltipped edit-btn" data-position="bottom" data-tooltip="Edit">
+                     EDIT
+                  </a>
+                  <!-- TODO: scale transition buttons which disappear: https://materializecss.com/css-transitions.html#! -->
+                  <button class="btn btn-small make-changes-btn waves-effect waves-light hide"
+                     type="submit">Submit</button>
+                  <!-- TODO: Cancel doesn't reset slider value. it should reset-->
+                  <a class="btn btn-small cancel-changes-btn waves-effect waves-light hide">Cancel</a>
+                  <ul class=collection>
+                     {% if brew.details.brewer == 'Inverted' %}
+                     <li class="collection-item avatar brewer">
+                        <img src="static/images/aeropress_inverted.svg" alt="Brew Method: Inverted" height="40px"
+                           class="circle">
+                        <span class="title">Inverted</span>
+                     </li>
+                     {% endif %}
+                     {% if brew.details.brewer == 'Upright' %}
+                     <li class="collection-item avatar brewer">
+                        <img src="static/images/aeropress.svg" alt="Brew Method: Upright" height="40px" class="circle">
+                        <span class="title">Upright</span>
+                     </li>
+                     {% endif %}
+                     {% if brew.details.coffee != null %}
+                     <li class="collection-item avatar coffee-weight">
+                        <img src="static/images/bean.svg" alt="Coffee Beans" height="22px" class="circle">
+                        <span class="title">
+                           {{brew.details.coffee}}</span>
+                        <input type="range" class="coffee-weight-slider hide" name="coffee_weight" min="10" max="40"
+                           value="{{brew.details.coffee[:-1]}}" />
+                        <label for="coffee-weight">Coffee Dose (g)</label>
+                     </li>
+                     {% endif %}
+                     {% if brew.details.grind != null %}
+                     <li class="collection-item avatar grind">
+                        <img src="static/images/grinder.svg" alt="Coffee Grinder" height="28px" class="circle"><span
+                           class="title">{{brew.details.grind}}</span>
+                     </li>
+                     {% endif %}
+                     {% if brew.details.water != null %}
+                     <li class="collection-item avatar water">
+                        <img src="static/images/thermometer.svg" alt="Thermomenter" height="28px" class="circle">
+                        <span class="title">
+                           {{brew.details.water}}
+                        </span>
+                     </li>
+                     {% endif %}
+                     {% if brew.details.filter != null %}
+                     <li class="collection-item avatar filter">
+                        <img src="static/images/filter.svg" alt="Coffee filter" height="28px" class="circle">
+                        <span class="title">
+                           {{brew.details.filter}}
+                        </span>
+                     </li>
+                     {% endif %}
+                     {% if brew.total_brew_time != null %}
+                     <li class="collection-item avatar brew-time">
+                        <i class="material-icons circle">timer</i>
+                        <span class="title">
+                           {{brew.total_brew_time}}
+                        </span>
+                     </li>
+                     {% endif %}
+                  </ul>
+               </form>
+            </div>
+            <div class="col s12 m8 l9">
+               <h5>Steps:</h5>
+               <ol class="steps collection">
+                  {% for step in brew.steps %}
+                  <li class="collection-item step">{{ step }}</li>
+                  {% endfor %}
+               </ol>
+               <!-- Delete Button -->
+               <a href="#delete-brew-modal-{{brew._id}}" class="tooltipped btn btn-small delete-btn red
+                         waves-effect modal-trigger" data-position="bottom" data-tooltip="Delete">Delete
+               </a>
+            </div>
+         </div>
+      </div>
+   </li>
+   <!-- Modal to delete brew -->
+   <!-- TODO: ideally remove {{brew._id}}. just refer to li brew.id then work down -->
+   <!-- TODO: elminate need for 30 modals -->
+   <div id="delete-brew-modal-{{brew._id}}" class="modal" style="max-width: 400px;">
+      <div class="modal-content">
+         <h5>Delete '{{brew.brew_name}}'?</h5>
+      </div>
+      <div class="modal-footer">
+         <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+         <a href="{{url_for('delete_brew', brew_id=brew._id)}}"
+            class="modal-close waves-effect waves-red btn-flat delete-btn" type="submit" id="{{brew.brew_name}}">OK</a>
+      </div>
+   </div>
+   {% endfor %}
+</ul>
+<!-- * if page number > 1, chevron left li class should be toggled off or removed -->
+<!-- * on click of next chevron, active class removed from current page, added to nex -->
+<!-- * if last page number, apply class disabled to chevron right -->
+<ul class="pagination">
+   <!-- * prev chevron should be disabled (li and a) when on first page -->
+   <li class="waves-effect disabled" id="prev-page"><a onclick="goToPage('{{ prev_url }}')"><i
+            class="material-icons">chevron_left</i></a></li>
+   <!-- * if changing limit, change here also -->
+   {% for page in range(1, num_pages+1) %}
+   <li class="waves-effect page-number" id="page-{{ page }}"><a onclick="goToPage('{{ urls[page] }}')">{{ page }}</a>
+   </li>
+   {% endfor %}
+   <li class="waves-effect" id="next-page"><a onclick="goToPage('{{ next_url }}')">
+         <i class="material-icons">chevron_right</i></a></li>
+</ul>
+
+<!-- TODO: move to main.js -->
+<script>
+   $(".collapsible").collapsible({
+      inDuration: 250,
+      outDuration: 250
+   });
+</script>
