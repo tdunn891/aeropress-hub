@@ -4,41 +4,89 @@
 <ul class="collection collapsible popout">
    {% for brew in brews %}
    <li id="{{brew._id}}">
-      <div class="collapsible-header">
+      <div class="collapsible-header valign-wrapper">
          <!-- ? consider loop instead of if statements -->
-         {% if brew.details.brewer == 'Inverted' %}
-         <a href="" class="tooltipped" data-position="bottom" data-tooltip="Inverted">
-            <img src="static/images/aeropress_inverted.svg" alt="Brew Method: Inverted" height="40px">
-         </a>
+         {% if brew.brew_source == 'Average Joe' %}
+         <i class="material-icons prefix tooltipped" data-position="bottom"
+            data-tooltip="Average Joe Brew">account_circle</i>
+         {% else %}
+         <img src="static/images/WAC.png" class="tooltipped" data-tooltip="Championship Brew" alt="Championship Brew"
+            height="26px">
          {% endif %}
-         {% if brew.details.brewer == 'Upright' %}
-         <a href="" class="tooltipped" data-position="bottom" data-tooltip="Upright">
-            <img src="static/images/aeropress.svg" alt="Brew Method: Upright" height="40px">
-         </a>
-         {% endif %}
+         <div class="col m1 valign-wrapper">
+            <!-- <h6>{{brew.barista}}</h6> -->
+            {% if brew.brew_name.startswith('Winner') -%}
+            <img src="static/images/first_place_medal.svg" class="tooltipped" data-tooltip="First Place"
+               alt="First Place" height="22px">
+            {{brew.brew_name[7:]}}
+            {% elif brew.brew_name.startswith('2nd')  -%}
+            <img src="static/images/second_place_medal.svg" class="tooltipped" data-tooltip="Second Place"
+               alt="Second Place" height="22px">
+            {{brew.brew_name[10:]}}
+            {% elif brew.brew_name.startswith('3rd')  -%}
+            <img src="static/images/third_place_medal.svg" class="tooltipped" data-tooltip="Third Place"
+               alt="Third Place" height="22px">
+            {{brew.brew_name[10:]}}
+            {% else %}
+            {{brew.brew_name}}
+            {%- endif %}
+         </div>
          <!-- TODO: remove brs -->
-         <div class="col m3">
-            <h6>{{brew.brew_name}}</h6>
-         </div>
-         <div class="col m7">
-            <h6>{{brew.barista}}</h6>
-         </div>
          <div class="col m2">
+            <!-- <h6>{{brew.brew_name}}</h6> -->
+            <span class="tooltipped" data-tooltip="Barista">
+               {{brew.barista}}
+            </span>
+         </div>
+         <div class="col m1">
+            {{brew.country}}
+         </div>
+         <div class="col m1 valign-wrapper">
+            <img src="static/images/bean.svg" class="tooltipped" data-tooltip="Coffee Dose (g)" alt="Coffee Beans"
+               height="22px" class="circle">
+            {{brew.details.coffee}}
+         </div>
+         <div class="col m1 valign-wrapper">
+            <img src="static/images/grinder.svg" class="tooltipped" data-tooltip="Grind Size: (1: Fine, 10: Coarse)"
+               alt="Coffee Grinder" height="28px" class="circle">
+            {{brew.details.grind}}
+         </div>
+         <div class="col m1 valign-wrapper">
+            <i class="material-icons tooltipped timer" data-tooltip="Total Brew Time">timer</i>
+            {{brew.total_brew_time}}
+         </div>
+         <div class="col m1 valign-wrapper">
+            {% if brew.details.brewer == 'Inverted' %}
+            <img src="static/images/aeropress_inverted.svg" class="tooltipped" data-tooltip="Brew Method: Inverted"
+               alt="Brew Method: Inverted" height="40px">
+            {% endif %}
+            {% if brew.details.brewer == 'Upright' %}
+            <img src="static/images/aeropress.svg" class="tooltipped" data-tooltip="Brew Method: Upright"
+               alt="Brew Method: Upright" height="40px">
+            {% endif %}
+         </div>
+         <div class="col m1">
+            <img src="static/images/filter.svg" alt="Coffee filter" height="18px">
+            {{brew.details.filter}}
+         </div>
+         <div class="col m1 valign-wrapper center-align">
             <span class="likes-count">
                <!-- TODO: vertically align likes and thumb -->
-               <a href="{{url_for('increase_likes', brew_id=brew._id)}}" class="thumb-anchor waves-effect waves-light"
-                  method="POST">
+               <a href="{{url_for('increase_likes', brew_id=brew._id)}}"
+                  class="thumb-anchor waves-effect waves-light tooltipped" data-tooltip="Likes" method="POST">
                   <i class="material-icons thumb">thumb_up</i>
-                  <span class="likes">{{brew.likes}}</span>
+                  <!-- <span class="likes">{{brew.likes}}</span> -->
+                  {{brew.likes}}
                </a>
             </span>
          </div>
       </div>
       <div class="collapsible-body">
          <div class="row">
-            <div class="col s12 m4 l3">
+            <div class="col s12 m4 l4">
                <h5>Details:</h5>
                <form action="{{ url_for('update_brew', brew_id=brew._id) }}" method="POST">
+                  <!-- TODO: get edit btn to -->
                   <a class="btn tooltipped edit-btn" data-position="bottom" data-tooltip="Edit">
                      EDIT
                   </a>
@@ -104,7 +152,7 @@
                   </ul>
                </form>
             </div>
-            <div class="col s12 m8 l9">
+            <div class="col s12 m8 l8">
                <h5>Steps:</h5>
                <ol class="steps collection">
                   {% for step in brew.steps %}
@@ -137,7 +185,7 @@
 <!-- * if page number > 1, chevron left li class should be toggled off or removed -->
 <!-- * on click of next chevron, active class removed from current page, added to nex -->
 <!-- * if last page number, apply class disabled to chevron right -->
-<ul class="pagination">
+<ul class="pagination center-align">
    <!-- * prev chevron should be disabled (li and a) when on first page -->
    <li class="waves-effect disabled" id="prev-page"><a onclick="goToPage('{{ prev_url }}')"><i
             class="material-icons">chevron_left</i></a></li>
@@ -151,9 +199,5 @@
 </ul>
 
 <!-- TODO: move to main.js -->
-<script>
-   $(".collapsible").collapsible({
-      inDuration: 250,
-      outDuration: 250
-   });
-</script>
+<!-- ? This shd be loaded once response is rendered, instead of included in the reponse -->
+<script src="{{url_for('static', filename='js/main.js')}}"></script>
