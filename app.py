@@ -30,9 +30,11 @@ def index():
 def get_brews():
     total_records = mongo.db.brews.count()
     # brews = mongo.db.brews.find().sort('barista', 1)
-    print('REQUEST.URL: ' + str(request.url))
+    # print('REQUEST.URL: ' + str(request.url))
+    # * below is serial of filters for current page, so eg 'next url' will need different offset'
     serial_filters = str(request.query_string)[2:-1]
-    print('serial_filters: ' + serial_filters)
+    # serial_filters = serial_filters.split('@sort-by')[1]
+    # print('SERIAL_FILTERS_1: ' + serial_filters)
 
 # * Add all filtering here, so brew has been filtered -----------------------
 # * by default, if no filters in request.args, don't apply filters
@@ -68,14 +70,17 @@ def get_brews():
     #    https://www.youtube.com/watch?v=Lnt6JqtzM7I
     # TODO: set offset limits
     # * which ever number is clicked, the offset would be Number * Limit
-    limit = 5
+    limit = 8
     # * default offset should be 0 (shows first page)
     if 'offset' in request.args:
         offset = int(request.args['offset'])
-        print('OFFSET provided: ' + str(offset))
+        # * remove first 2 parameter from serial_filters (limit and offset)
+        serial_filters = serial_filters.split('&', 2)[2]
+        # print('SERIAL_FILTERS_2: ' + str(serial_filters))
+        # print('OFFSET provided: ' + str(offset))
     else:
         offset = 0
-        print('DEFAULT OFFSET: ' + str(offset))
+        # print('DEFAULT OFFSET: ' + str(offset))
 
     # * offset = limit * (page number - 1)
     # * so for first page: offset = 5 * (1-1) = 0
@@ -85,9 +90,9 @@ def get_brews():
     # * the sort field would have to be dynamic (in apply_filters especially). the order by also needs to be dynamic
     if 'sort-by' in request.args:
         sort_field = str(request.args['sort-by'])
-        print('sort_field in args: ' + sort_field)
+        # print('sort_field in args: ' + sort_field)
     else:
-        print('NOT sort_field in args')
+        # print('NOT sort_field in args')
         # * use fallback sort, _id
         sort_field = "_id"
 
@@ -108,12 +113,10 @@ def get_brews():
 
     if '.' in sort_field:
         sort_field_split = sort_field.split('.')
-        print('sortfield1: ', sort_field_split[0])
-        print('sortfield2: ', sort_field_split[1])
         last_id = starting_id[offset][sort_field_split[0]][sort_field_split[1]]
-        print('split required')
+        # print('split required')
     else:
-        print('NO split required')
+        # print('NO split required')
         last_id = starting_id[offset][sort_field]
 
     brews = brew.find({sort_field: {mongo_sort_operator: last_id},
@@ -126,19 +129,20 @@ def get_brews():
     filtered_records_count = str(starting_id.count())
     print('FILTERED RECORDS COUNT: ' + filtered_records_count)
     paginated_brews_displayed = brews.count(with_limit_and_skip=True)
-    print('PAGINATED_BREWS_DISPLAYED: ' + str(paginated_brews_displayed))
+    # print('PAGINATED_BREWS_DISPLAYED: ' + str(paginated_brews_displayed))
 
     # TODO: showing (x of y) from z (Unfiltered: W)
     # ? next and prev prb shouldn be required, just get from urls dict
+    # * the first 2 terms are right, need to exclude offset and limit from serial_filters, before passing in
     next_url = '/get_brews?limit=' + \
         str(limit) + '&offset=' + str(offset + limit) + '&' + serial_filters
+    # next_url = '/get_brews?limit=' + \
+    # str(limit) + '&offset=' + str(offset + limit) + '&' + serial_filters
     prev_url = '/get_brews?limit=' + \
         str(limit) + '&offset=' + str(offset - limit) + '&' + serial_filters
 
     # * could rename num_pages to full_pages (so numpages doesn't mutate)
     num_pages, overflow = divmod(int(filtered_records_count), limit)
-    print('numpages: ' + str(num_pages))
-    print('overflow: ' + str(overflow))
 
     # * if there's an overflow, we need another page
     if overflow > 0:
@@ -151,8 +155,9 @@ def get_brews():
         urls[page_number] = '/get_brews?limit=' + \
             str(limit) + '&offset=' + \
             str(offset_2 + limit) + '&' + serial_filters
-        print('Page num: ' + str(page_number))
-        print('url: ' + str(urls[page_number]))
+        # urls[page_number] = '/get_brews?' + serial_filters
+        # print('Page num: ' + str(page_number))
+        # print('url: ' + str(urls[page_number]))
 
     return jsonify({'data': render_template('response.html',
                                             brews=brews,
@@ -177,7 +182,7 @@ def get_brews():
 #     winners_only = mongo.db.brews.find({"brew_name": rgx})
 
 
-# ? make this async
+# * Not used
 @app.route('/apply_filters')
 def apply_filters():
     # print(request.args.to_dict())
@@ -248,10 +253,12 @@ def insert_brew():
         payload = {
             "brew_name": req.get("brew_name"),
             "barista": req.get("barista_name"),
+            # TODO: Add country
             "brew_source": "Average Joe",
             "steps": stepsArray,
             "total_brew_time": formatted_time,
             "details": {
+                # TODO: remove 'g' and 'C'
                 "coffee": req.get("coffee_weight") + "g",
                 "grind": int(req.get("grind_size")),
                 "water": req.get("water_temp") + "\u00b0C",
@@ -259,6 +266,7 @@ def insert_brew():
                 "filter": req.get("filter")
             },
             "likes": 1
+            # TODO: add view counts
         }
     brews.insert_one(payload)
     # * Could try to AJAX this
@@ -268,6 +276,7 @@ def insert_brew():
 @app.route('/update_brew/<brew_id>', methods=['GET', 'POST'])
 def update_brew(brew_id):
     if request.method == 'POST':
+        print('COFFEE WEIGHT: ' + str(request.form.get('coffee_weight')))
         mongo.db.brews.find_one_and_update(
             {'_id': ObjectId(brew_id)},
             {'$set':
@@ -279,7 +288,7 @@ def update_brew(brew_id):
         )
         time.sleep(0.5)
         # TODO: don't have to reload the page, bc the data is already displayed
-        return redirect(url_for('get_brews'))
+        return redirect(url_for('index'))
 
 
 @app.route('/increase_likes/<brew_id>', methods=['GET', 'POST'])
@@ -289,7 +298,8 @@ def increase_likes(brew_id):
         {'$inc': {'likes': 1}}
     )
     time.sleep(0.5)
-    return redirect(url_for('get_brews'))
+    return redirect(url_for('index'))
+    # return redirect(url_for('get_brews'))
 
 
 @app.route('/delete_brew/<brew_id>')

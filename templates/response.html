@@ -1,6 +1,8 @@
 <h6>Matching Records: {{ filtered_records_count }}<br>
    Total Records: {{ total_records }}</h6>
 <br>
+<!-- ? for mobile screens, remove 'popout' class to maximise available space -->
+<!-- TODO: get some kind of headers -->
 <ul class="collection collapsible popout">
    {% for brew in brews %}
    <li id="{{brew._id}}">
@@ -11,10 +13,9 @@
             data-tooltip="Average Joe Brew">account_circle</i>
          {% else %}
          <img src="static/images/WAC.png" class="tooltipped" data-tooltip="Championship Brew" alt="Championship Brew"
-            height="26px">
+            height="20px">
          {% endif %}
          <div class="col m1 valign-wrapper">
-            <!-- <h6>{{brew.barista}}</h6> -->
             {% if brew.brew_name.startswith('Winner') -%}
             <img src="static/images/first_place_medal.svg" class="tooltipped" data-tooltip="First Place"
                alt="First Place" height="22px">
@@ -33,7 +34,6 @@
          </div>
          <!-- TODO: remove brs -->
          <div class="col m2">
-            <!-- <h6>{{brew.brew_name}}</h6> -->
             <span class="tooltipped" data-tooltip="Barista">
                {{brew.barista}}
             </span>
@@ -58,15 +58,15 @@
          <div class="col m1 valign-wrapper">
             {% if brew.details.brewer == 'Inverted' %}
             <img src="static/images/aeropress_inverted.svg" class="tooltipped" data-tooltip="Brew Method: Inverted"
-               alt="Brew Method: Inverted" height="40px">
+               alt="Brew Method: Inverted" height="26px">
             {% endif %}
             {% if brew.details.brewer == 'Upright' %}
             <img src="static/images/aeropress.svg" class="tooltipped" data-tooltip="Brew Method: Upright"
-               alt="Brew Method: Upright" height="40px">
+               alt="Brew Method: Upright" height="26px">
             {% endif %}
          </div>
          <div class="col m1">
-            <img src="static/images/filter.svg" alt="Coffee filter" height="18px">
+            <img src="static/images/filter.svg" alt="Coffee filter" height="16px">
             {{brew.details.filter}}
          </div>
          <div class="col m1 valign-wrapper center-align">
@@ -83,23 +83,23 @@
       </div>
       <div class="collapsible-body">
          <div class="row">
-            <div class="col s12 m4 l4">
+            <!-- <div class="col s12 m4 l4">
                <h5>Details:</h5>
                <form action="{{ url_for('update_brew', brew_id=brew._id) }}" method="POST">
-                  <!-- TODO: get edit btn to -->
+                  <!~~ TODO: get edit btn to ~~>
                   <a class="btn tooltipped edit-btn" data-position="bottom" data-tooltip="Edit">
                      EDIT
                   </a>
-                  <!-- TODO: scale transition buttons which disappear: https://materializecss.com/css-transitions.html#! -->
+                  <!~~ TODO: scale transition buttons which disappear: https://materializecss.com/css-transitions.html#! ~~>
                   <button class="btn btn-small make-changes-btn waves-effect waves-light hide"
-                     type="submit">Submit</button>
-                  <!-- TODO: Cancel doesn't reset slider value. it should reset-->
+                  type="submit">Submit</button>
+                  <!~~ TODO: Cancel doesn't reset slider value. it should reset~~>
                   <a class="btn btn-small cancel-changes-btn waves-effect waves-light hide">Cancel</a>
                   <ul class=collection>
                      {% if brew.details.brewer == 'Inverted' %}
                      <li class="collection-item avatar brewer">
                         <img src="static/images/aeropress_inverted.svg" alt="Brew Method: Inverted" height="40px"
-                           class="circle">
+                        class="circle">
                         <span class="title">Inverted</span>
                      </li>
                      {% endif %}
@@ -114,44 +114,44 @@
                         <img src="static/images/bean.svg" alt="Coffee Beans" height="22px" class="circle">
                         <span class="title">
                            {{brew.details.coffee}}</span>
-                        <input type="range" class="coffee-weight-slider hide" name="coffee_weight" min="10" max="40"
+                           <input type="range" class="coffee-weight-slider hide" name="coffee_weight" min="10" max="40"
                            value="{{brew.details.coffee[:-1]}}" />
-                        <label for="coffee-weight">Coffee Dose (g)</label>
-                     </li>
-                     {% endif %}
-                     {% if brew.details.grind != null %}
-                     <li class="collection-item avatar grind">
-                        <img src="static/images/grinder.svg" alt="Coffee Grinder" height="28px" class="circle"><span
+                           <label for="coffee-weight">Coffee Dose (g)</label>
+                        </li>
+                        {% endif %}
+                        {% if brew.details.grind != null %}
+                        <li class="collection-item avatar grind">
+                           <img src="static/images/grinder.svg" alt="Coffee Grinder" height="28px" class="circle"><span
                            class="title">{{brew.details.grind}}</span>
-                     </li>
-                     {% endif %}
-                     {% if brew.details.water != null %}
-                     <li class="collection-item avatar water">
-                        <img src="static/images/thermometer.svg" alt="Thermomenter" height="28px" class="circle">
-                        <span class="title">
-                           {{brew.details.water}}
-                        </span>
-                     </li>
-                     {% endif %}
-                     {% if brew.details.filter != null %}
-                     <li class="collection-item avatar filter">
-                        <img src="static/images/filter.svg" alt="Coffee filter" height="28px" class="circle">
-                        <span class="title">
-                           {{brew.details.filter}}
-                        </span>
-                     </li>
-                     {% endif %}
-                     {% if brew.total_brew_time != null %}
-                     <li class="collection-item avatar brew-time">
-                        <i class="material-icons circle">timer</i>
-                        <span class="title">
-                           {{brew.total_brew_time}}
-                        </span>
-                     </li>
-                     {% endif %}
-                  </ul>
-               </form>
-            </div>
+                        </li>
+                        {% endif %}
+                        {% if brew.details.water != null %}
+                        <li class="collection-item avatar water">
+                           <img src="static/images/thermometer.svg" alt="Thermomenter" height="28px" class="circle">
+                           <span class="title">
+                              {{brew.details.water}}
+                           </span>
+                        </li>
+                        {% endif %}
+                        {% if brew.details.filter != null %}
+                        <li class="collection-item avatar filter">
+                           <img src="static/images/filter.svg" alt="Coffee filter" height="28px" class="circle">
+                           <span class="title">
+                              {{brew.details.filter}}
+                           </span>
+                        </li>
+                        {% endif %}
+                        {% if brew.total_brew_time != null %}
+                        <li class="collection-item avatar brew-time">
+                           <i class="material-icons circle">timer</i>
+                           <span class="title">
+                              {{brew.total_brew_time}}
+                           </span>
+                        </li>
+                        {% endif %}
+                     </ul>
+                  </form>
+               </div> -->
             <div class="col s12 m8 l8">
                <h5>Steps:</h5>
                <ol class="steps collection">
@@ -161,7 +161,7 @@
                </ol>
                <!-- Delete Button -->
                <a href="#delete-brew-modal-{{brew._id}}" class="tooltipped btn btn-small delete-btn red
-                         waves-effect modal-trigger" data-position="bottom" data-tooltip="Delete">Delete
+                  waves-effect modal-trigger" data-position="bottom" data-tooltip="Delete">Delete
                </a>
             </div>
          </div>
@@ -187,17 +187,20 @@
 <!-- * if last page number, apply class disabled to chevron right -->
 <ul class="pagination center-align">
    <!-- * prev chevron should be disabled (li and a) when on first page -->
-   <li class="waves-effect disabled" id="prev-page"><a onclick="goToPage('{{ prev_url }}')"><i
-            class="material-icons">chevron_left</i></a></li>
+   <li class="waves-effect disabled" id="prev-page">
+      <a onclick="goToPage('{{ prev_url }}')">
+         <i class="material-icons">chevron_left</i>
+      </a>
+   </li>
    <!-- * if changing limit, change here also -->
    {% for page in range(1, num_pages+1) %}
-   <li class="waves-effect page-number" id="page-{{ page }}"><a onclick="goToPage('{{ urls[page] }}')">{{ page }}</a>
+   <li class="waves-effect page-number" id="page-{{ page }}">
+      <a onclick="goToPage('{{ urls[page] }}')">{{ page }}</a>
    </li>
    {% endfor %}
-   <li class="waves-effect" id="next-page"><a onclick="goToPage('{{ next_url }}')">
-         <i class="material-icons">chevron_right</i></a></li>
+   <li class="waves-effect" id="next-page">
+      <a onclick="goToPage('{{ next_url }}')">
+         <i class="material-icons">chevron_right</i>
+      </a>
+   </li>
 </ul>
-
-<!-- TODO: move to main.js -->
-<!-- ? This shd be loaded once response is rendered, instead of included in the reponse -->
-<script src="{{url_for('static', filename='js/main.js')}}"></script>

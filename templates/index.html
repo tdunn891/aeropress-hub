@@ -5,7 +5,8 @@
    <div class="row">
       <br>
       <h3>Browse Brews</h3>
-      <p>[TODO: pagination, view counts, share button, a few graphs (eg Winning Recipes by Country etc) (dc.js)]</p>
+      <p>[TODO: fix pagination - if serialstring has offset and limit, don't add defaults. view counts, share button, a
+         few graphs (eg Winning Recipes by Country etc) (dc.js)]</p>
       <div class="col l2">
          <!-- <h4>All Brews</h4> -->
          <!-- <a href="{{url_for('empty_db')}}" class="btn btn-small red" method="POST">Empty Database</a> -->
@@ -14,12 +15,14 @@
             <form action="javascript:void(0);" id="filters">
                <!-- <form action="{{ url_for('apply_filters') }}" id="filters"> -->
                <label for="sort-by">Sort by:</label>
-               <select class="browser-default" id="sort-by" name="sort-by">
+               <select class="input-field" id="sort-by" name="sort-by">
+                  <!-- TODO: Add icons to sort dropdown -->
                   <option value="" disabled>Sort by:</option>
                   <option value="barista" selected>Barista Name: A-Z</option>
                   <option value="brew_name">Brew Name: A-Z</option>
                   <option value="total_brew_time">Brew Time: Short to Long</option>
                   <option value="details.coffee">Coffee Dose: High to Low</option>
+                  <option value="country">Country: A-Z</option>
                   <option value="details.grind">Grind Size: Fine to Coarse</option>
                   <option value="likes">Most Popular</option>
                </select>
@@ -70,9 +73,9 @@
                   <span>Both Metal & Paper</span>
                </label>
 
-               <!-- TODO: fix reset filter button -->
+               <!-- TODO: fix reset filter button, so that it ajaxes, not reload -->
                <br>
-               <button class="btn btn-small" id="reset-filters">RESET</button>
+               <a class="btn btn-small" href="{{ url_for('index') }}" id="reset-filters">RESET</a>
             </form>
          </div>
       </div>
@@ -99,24 +102,48 @@
 
    function getFirstPage() {
       let serialFilters = $('#filters').serialize();
-      console.log('serialFilters: ' + serialFilters)
+      //console.log('serialFilters: ' + serialFilters)
+      console.log('getFirstPage running');
       $.ajax({
          url: `/get_brews?${serialFilters}`,
+         //url: `/get_brews?limit=5&${serialFilters}`,
          type: "GET",
          success: function (resp) {
             $('#response').html(resp.data);
          }
-      });
+      }).then(function () {
+         $('.sidenav').sidenav();
+         $('.tooltipped').tooltip();
+         $('.collapsible').collapsible({
+            induration: 250,
+            outduration: 250
+         });
+         $('select').formselect();
+         $('.modal').modal({ opacity: 0.2 });
+         $('.fixed-action-btn').floatingactionbutton();
+      })
    }
-
    // additional pages
    function goToPage(urlPage) {
+      console.log('goToPage running');
+      //test
+      //let serialFilters = $('#filters').serialize();
       $.ajax({
          url: urlPage,
          type: "GET",
          success: function (resp) {
             $('#response').html(resp.data);
          }
+      }).then(function () {
+         $('.sidenav').sidenav();
+         $('.tooltipped').tooltip();
+         $('.collapsible').collapsible({
+            induration: 250,
+            outduration: 250
+         });
+         $('select').formselect();
+         $('.modal').modal({ opacity: 0.2 });
+         $('.fixed-action-btn').floatingactionbutton();
       })
    };
 </script>
