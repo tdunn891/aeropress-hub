@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+   <br>
+   <h3>Edit a Brew</h3>
+   <div class="card">
+      <div class="card-content">
+         <div class="row">
+            <!-- Form Input -->
+            <form class="col s12" action="{{ url_for('insert_brew') }}" method="POST">
+               <div class="row">
+                  <div class="input-field col s12 m10 l6" style="display:block;">
+                     <i class="material-icons prefix">local_cafe</i>
+                     <input id="brew_name" name="brew_name" type="text" class="validate" value="{{ brew.brew_name }}"
+                        required />
+                     <label for="brew_name">Brew Name</label>
+                     <span class="helper-text" data-error="Required" data-success="Yum!"></span>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="input-field col s12 m10 l6">
+                     <!-- <i class="material-icons prefix">phone</i> -->
+                     <i class="material-icons prefix">account_circle</i>
+                     <input id="barista_name" name="barista_name" type="text" class="validate"
+                        value="{{ brew.barista }}" required />
+                     <label for="barista_name">Barista Name</label>
+                     <span class="helper-text" data-error="Required" data-success=""></span>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="input-field col s12 m10 l6">
+                     <i class="material-icons prefix">map</i>
+                     <input id="country" type="text" name="country" class="validate autocomplete"
+                        value="{{ brew.country }}" required />
+                     <label for="country">Country</label>
+                     <span class="helper-text" data-error="Required" data-success=""></span>
+                  </div>
+               </div>
+               <div class="row">
+                  <!-- <h6>Details<h6> -->
+                  <div class="input-field col s12 m10 l4">
+                     <select id="brewer" name="brewer" class="icons" value="{{ brew.details.brewer }}">
+                        <option value="Inverted"
+                           data-icon="{{url_for('static', filename='images/aeropress_inverted.svg')}}" class="left">
+                           Inverted</option>
+                        <option value="Upright" data-icon="{{url_for('static', filename='images/aeropress.svg')}}"
+                           class="left">Upright
+                        </option>
+                     </select>
+                     <label for="brewer">Brewing Method</label>
+                  </div>
+               </div>
+               <div class="row">
+                  <!-- TODO: change sliders to noUiSliders -->
+                  <p class="range-field col s12 m10 l4">
+                     <img src="{{url_for('static', filename='images/bean.svg')}}" alt="Coffee Beans" height="32px">
+                     <label for="coffee_weight_slider">Coffee Dose (g)</label>
+                     <input type="range" id="coffee_weight_slider" name="coffee_weight" min="10" max="40"
+                        value="{{ brew.details.coffee[:-1] }}" onclick="displaySliderValue('coffee_weight');" />
+                     <div id="coffee_weight_label"><span id="coffee_weight_span"></span> grams</div>
+                  </p>
+               </div>
+               <div class="row">
+                  <p class="range-field col s12 m10 l4">
+                     <img src="{{url_for('static', filename='images/grinder.svg')}}" alt="Coffee Grinder" height="36px">
+                     <label for="grind_size_slider">Grind Size (1: fine, 10: coarse)</label>
+                     <input type="range" id="grind_size_slider" name="grind_size" min="1" max="10"
+                        value="{{ brew.details.grind }}" onclick="displaySliderValue('grind_size');" />
+                     <div id="grind_size_label"><span id="grind_size_span"></span>/10</div>
+                  </p>
+               </div>
+               <div class="row">
+                  <p class="range-field col s12 m10 l4">
+                     <img src="{{url_for('static', filename='images/thermometer.svg')}}" alt="Thermomenter"
+                        height="34px">
+                     <label for="water_temp_slider">Water Temp (°C)</label>
+                     <input type="range" id="Water Temp" name="water_temp" min="70" max="100"
+                        value="{{ brew.details.water[:-2] }}" onclick="displaySliderValue('water_temp');" />
+                     <div id="water_temp_label"><span id="water_temp_span"></span> °C</div>
+                  </p>
+               </div>
+               <div class="row">
+                  <p class="range-field col s12 m10 l4">
+                     <!-- TODO: ?Change onclicks to event listeners -->
+                     <i class="material-icons">timer</i>
+                     <label for="brew_time">Total Brew Time (s)</label>
+                     <!-- TODO: brew time mins to seconds for defaul value -->
+                     <input type="range" id="brew_time" name="brew_time" min="30" max="220" step="5"
+                        value="{{ total_brew_time }}" onclick="displaySliderValue('brew_time');" />
+                     <div id="brew_time_label"><span id="brew_time_span"></span> seconds</div>
+                  </p>
+               </div>
+               <div class="row">
+                  <div class="input-field col s12 m10 l4">
+                     <img src="{{ url_for('static', filename='images/filter.svg') }}" alt="Coffee filter" height="32px"
+                        class="prefix">
+                     <!-- ! filter default not working. how to dynamically put 'selected' in option? -->
+                     <select id="filter" name="filter" required>
+                        <option value="Paper">Paper</option>
+                        <option value="Double Paper">Paper x2</option>
+                        <option value="Metal">Metal</option>
+                        <option value="Both Metal &amp; Paper">Metal + Paper</option>
+                        <span class="helper-text" data-error="Required" data-success=""></span>
+                     </select>
+                     <label for="filter">Filter Type</label>
+                  </div>
+               </div>
+               <div class="row">
+                  <h5>
+                     <i class="material-icons">format_list_numbered</i>
+                     Steps
+                  </h5>
+                  <div class="col s12 m10 l6">
+                     <div class="row">
+                        <div class="input-field col s12">
+                           <textarea id="steps-text-area" name="steps-text-area" class="materialize-textarea"
+                              value="{{ brew.steps }}">{{ brew.steps|join('\n') }}</textarea>
+                           <label for="steps-text-area">Steps (Enter each step on a new line)</label>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="card-action">
+                  <!-- MAKE EDITS Button -->
+                  <button class="btn btn-large waves-effect waves-light green" type="submit">Update
+                     <i class="material-icons right">edit</i>
+                  </button>
+               </div>
+            </form>
+         </div>
+      </div>
+   </div>
+</div>
+
+{% endblock %}
+
+{% block additional_scripts %}
+<script type="text/javascript">
+   // TODO: move to main.js or elsewher
+   $(document).ready(function () {
+      displaySliderValue('coffee_weight');
+      displaySliderValue('grind_size');
+      displaySliderValue('water_temp');
+      displaySliderValue('brew_time');
+   })
+
+</script>
+{% endblock %}

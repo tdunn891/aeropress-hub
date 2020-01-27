@@ -9,8 +9,9 @@
       <div class="collapsible-header valign-wrapper">
          <!-- ? consider loop instead of if statements -->
          {% if brew.brew_source == 'Average Joe' %}
-         <i class="material-icons prefix tooltipped" data-position="bottom"
-            data-tooltip="Average Joe Brew">account_circle</i>
+         <!-- TODO: centeralign icon and ensure correct margins -->
+         <i class="material-icons tooltipped" data-tooltip="Average Joe Brew"
+            style="margin-right: 24px;">account_circle</i>
          {% else %}
          <img src="static/images/WAC.png" class="tooltipped" data-tooltip="Championship Brew" alt="Championship Brew"
             height="20px">
@@ -39,11 +40,13 @@
             </span>
          </div>
          <div class="col m1">
-            {{brew.country}}
+            <span class="tooltipped" data-tooltip="Country">
+               {{brew.country}}
+            </span>
          </div>
          <div class="col m1 valign-wrapper">
-            <img src="static/images/bean.svg" class="tooltipped" data-tooltip="Coffee Dose (g)" alt="Coffee Beans"
-               height="22px" class="circle">
+            <img src="{{url_for('static', filename='images/bean.svg')}}" class="tooltipped"
+               data-tooltip="Coffee Dose (g)" alt="Coffee Beans" height="22px" class="circle">
             {{brew.details.coffee}}
          </div>
          <div class="col m1 valign-wrapper">
@@ -66,7 +69,9 @@
             {% endif %}
          </div>
          <div class="col m1">
-            <img src="static/images/filter.svg" alt="Coffee filter" height="16px">
+            <!-- TODO: change to paper x 2, ensure row heights good ui with pagination bar -->
+            <img src="static/images/filter.svg" class="tooltipped" data-tooltip="Filter" alt="Coffee filter"
+               height="16px">
             {{brew.details.filter}}
          </div>
          <div class="col m1 valign-wrapper center-align">
@@ -159,18 +164,21 @@
                   <li class="collection-item step">{{ step }}</li>
                   {% endfor %}
                </ol>
+               <a href="{{ url_for('edit_brew', brew_id=brew._id) }}" class="btn btn-small">
+                  EDIT
+               </a>
                <!-- Delete Button -->
                <a href="#delete-brew-modal-{{brew._id}}" class="tooltipped btn btn-small delete-btn red
                   waves-effect modal-trigger" data-position="bottom" data-tooltip="Delete">Delete
                </a>
+               <span class="right-align">Views: {{brew.views}}</span>
             </div>
          </div>
       </div>
    </li>
    <!-- Modal to delete brew -->
-   <!-- TODO: ideally remove {{brew._id}}. just refer to li brew.id then work down -->
    <!-- TODO: elminate need for 30 modals -->
-   <div id="delete-brew-modal-{{brew._id}}" class="modal" style="max-width: 400px;">
+   <!-- <div id="delete-brew-modal-{{brew._id}}" class="modal" style="max-width: 400px;">
       <div class="modal-content">
          <h5>Delete '{{brew.brew_name}}'?</h5>
       </div>
@@ -179,7 +187,7 @@
          <a href="{{url_for('delete_brew', brew_id=brew._id)}}"
             class="modal-close waves-effect waves-red btn-flat delete-btn" type="submit" id="{{brew.brew_name}}">OK</a>
       </div>
-   </div>
+   </div> -->
    {% endfor %}
 </ul>
 <!-- * if page number > 1, chevron left li class should be toggled off or removed -->
@@ -198,6 +206,7 @@
       <a onclick="goToPage('{{ urls[page] }}')">{{ page }}</a>
    </li>
    {% endfor %}
+   <!-- TODO: ensure next/prev buttons are disabled at right time so can't go any further -->
    <li class="waves-effect" id="next-page">
       <a onclick="goToPage('{{ next_url }}')">
          <i class="material-icons">chevron_right</i>

@@ -84,16 +84,12 @@ def get_brews():
 
     # * offset = limit * (page number - 1)
     # * so for first page: offset = 5 * (1-1) = 0
-    # * second page: offset = 5 * (2-1) = 5
-    # * third page: offset = 5 * (3-1) = 10
-
-    # * the sort field would have to be dynamic (in apply_filters especially). the order by also needs to be dynamic
     if 'sort-by' in request.args:
         sort_field = str(request.args['sort-by'])
         # print('sort_field in args: ' + sort_field)
     else:
         # print('NOT sort_field in args')
-        # * use fallback sort, _id
+        # ! use fallback sort, _id (should be barista-name?)
         sort_field = "_id"
 
     # if Most Popular or Coffee Grind, sort descending
@@ -105,26 +101,41 @@ def get_brews():
         sort_direction = 1
         mongo_sort_operator = "$gte"
 
+    # * this is just maintaining the full sorted records each time (by field, then by id)
     starting_id = brew.find({
         "brew_source": {"$in": brew_source_array},
         "details.brewer": {"$in": brewer_array},
         "details.filter": {"$in": filter_array}
-    }).sort(sort_field, sort_direction)
+        # }).sort(sort_field, sort_direction)
+    }).collation({"locale": "en"}).sort([(sort_field, sort_direction), ('_id', sort_direction)])
 
-    if '.' in sort_field:
-        sort_field_split = sort_field.split('.')
-        last_id = starting_id[offset][sort_field_split[0]][sort_field_split[1]]
-        # print('split required')
-    else:
-        # print('NO split required')
-        last_id = starting_id[offset][sort_field]
+    # print('STARTING_ID: ' + str(starting_id))
+    # if '.' in sort_field:
+    #     print('SPLIT REQUIRED')
+    #     print('SORT_FIELD: ' + str(sort_field))
+    #     sort_field_split = sort_field.split('.')
+    #     # last_id = starting_id[offset][sort_field_split[0]][sort_field_split[1]]
+    #     # last_id_2 = starting_id[offset]['_id']
+    #     # print('LAST_ID: ' + str(last_id))
+    #     # print('LAST_ID_2: ' + str(last_id_2))
+    # else:
+    #     print('NO split required')
+    # last_id = starting_id[offset][sort_field]
+    # last_id_2 = starting_id[offset]['_id']
+    # print('LAST_ID: ' + str(last_id))
+    # print('LAST_ID_2: ' + str(last_id_2))
 
-    brews = brew.find({sort_field: {mongo_sort_operator: last_id},
-                       "brew_source": {"$in": brew_source_array},
-                       "details.brewer": {"$in": brewer_array},
-                       "details.filter": {"$in": filter_array}
-                       }).sort(
-        sort_field, sort_direction).limit(limit)
+# * this method won't work when sorting a-z in on a different field: eg only including records wiht an id higher than something is illogical, eg if Zambia's id was 1, it would be excluded
+# * it causes issues with duplicate values, bc it includes records in the next page that were already in the last page
+    # * test (works!)
+    brews = starting_id[offset:offset+limit]
+    #   not needed
+    # brews = brew.find({sort_field: {mongo_sort_operator: last_id},
+    #                    "brew_source": {"$in": brew_source_array},
+    #                    "details.brewer": {"$in": brewer_array},
+    #                    "details.filter": {"$in": filter_array}
+    #                    }).sort([
+    #                        (sort_field, sort_direction), ('_id', sort_direction)]).limit(limit)
     print('TOTAL RECORDS: ' + str(total_records))
     filtered_records_count = str(starting_id.count())
     print('FILTERED RECORDS COUNT: ' + filtered_records_count)
@@ -136,8 +147,6 @@ def get_brews():
     # * the first 2 terms are right, need to exclude offset and limit from serial_filters, before passing in
     next_url = '/get_brews?limit=' + \
         str(limit) + '&offset=' + str(offset + limit) + '&' + serial_filters
-    # next_url = '/get_brews?limit=' + \
-    # str(limit) + '&offset=' + str(offset + limit) + '&' + serial_filters
     prev_url = '/get_brews?limit=' + \
         str(limit) + '&offset=' + str(offset - limit) + '&' + serial_filters
 
@@ -182,6 +191,127 @@ def get_brews():
 #     winners_only = mongo.db.brews.find({"brew_name": rgx})
 
 
+@app.route('/add_brew')
+def add_brew():
+    return render_template("add_brew.html")
+
+
+@app.route('/insert_brew', methods=['GET', 'POST'])
+def insert_brew():
+    brews = mongo.db.brews
+    if request.method == 'POST':
+        req = request.form
+        print(req)
+        # Prepare payload (should this be done in js, not here?)
+        # stepsArray = []
+
+        stepsArray = req.get("steps-text-area").split('\r\n')
+        # for i in range(1, 10):
+        #     # TODO: fix steps array (nones)
+        #     step = req.get("step_" + str(i))
+        #     # If step is not none, append to array
+        #     if step != 'None':
+        #         print('Step added: ' + str(i))
+        #         stepsArray.append(step)
+        #     else:
+        #         print('stopping')
+        #         # last step, exit loop
+        #         break
+
+        # mins to seconds
+        total_seconds = int(req.get("brew_time"))
+        m, s = divmod(total_seconds, 60)
+        formatted_time = f'{m:01d}:{s:02d}'
+        # print(mins_and_seconds)
+
+        # TODO: Remove units from database
+        payload = {
+            "brew_name": req.get("brew_name"),
+            "barista": req.get("barista_name"),
+            "country": req.get("country"),
+            "brew_source": "Average Joe",
+            "total_brew_time": formatted_time,
+            "steps": stepsArray,
+            "details": {
+                # TODO: remove 'g' and 'C'
+                "coffee": req.get("coffee_weight") + "g",
+                "grind": int(req.get("grind_size")),
+                "water": req.get("water_temp") + "\u00b0C",
+                "brewer": req.get("brewer"),
+                "filter": req.get("filter")
+            },
+            "likes": 1
+            # TODO: add view counts
+        }
+    brews.insert_one(payload)
+    # * Could try to AJAX this
+    return redirect(url_for('index'))
+
+
+@app.route('/update_brew/<brew_id>', methods=['GET', 'POST'])
+def update_brew(brew_id):
+    # test
+
+    if request.method == 'POST':
+        print('COFFEE WEIGHT: ' + str(request.form.get('coffee_weight')))
+        mongo.db.brews.find_one_and_update(
+            {'_id': ObjectId(brew_id)},
+            {'$set':
+             {
+                 'details.coffee': request.form.get('coffee_weight')+'g'
+                 # TODO: add other sliders once happy
+             }
+             }
+        )
+        time.sleep(0.5)
+        # TODO: don't have to reload the page, bc the data is already displayed
+        return redirect(url_for('index'))
+
+    # test
+
+
+@app.route('/edit_brew/<brew_id>')
+def edit_brew(brew_id):
+    # TODO: prefill form with existing values from db
+    brew = mongo.db.brews.find_one({'_id': ObjectId(brew_id)})
+    # convert mins/secs to total secs
+    mins = brew['total_brew_time'][0]
+    secs = brew['total_brew_time'][2:]
+
+    total_secs = int(mins)*60 + int(secs)
+    print(total_secs)
+    return render_template('edit_brew.html', brew=brew, total_brew_time=total_secs)
+
+
+@app.route('/increase_likes/<brew_id>', methods=['GET', 'POST'])
+def increase_likes(brew_id):
+    mongo.db.brews.find_one_and_update(
+        {'_id': ObjectId(brew_id)},
+        {'$inc': {'likes': 1}}
+    )
+    time.sleep(0.5)
+    return redirect(url_for('index'))
+    # return redirect(url_for('get_brews'))
+
+
+@app.route('/delete_brew/<brew_id>')
+def delete_brew(brew_id):
+    mongo.db.brews.remove({'_id': ObjectId(brew_id)})
+    # TODO: replace sleep
+    time.sleep(0.5)
+    return redirect(url_for('get_brews'))
+
+# testing purposes only (EMPTY)
+@app.route('/empty_db')
+def empty_db():
+    mongo.db.brews.remove({})
+    return redirect(url_for('get_brews'))
+
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 # * Not used
 @app.route('/apply_filters')
 def apply_filters():
@@ -216,109 +346,6 @@ def apply_filters():
                            brews=filtered_records,
                            filtered_records_count=filtered_records_count,
                            total_records=total_records)
-
-
-@app.route('/add_brew')
-def add_brew():
-    return render_template("add_brew.html")
-
-
-@app.route('/insert_brew', methods=['GET', 'POST'])
-def insert_brew():
-    brews = mongo.db.brews
-    if request.method == 'POST':
-        req = request.form
-
-        # Prepare payload (should this be done in js, not here?)
-        stepsArray = []
-        for i in range(1, 10):
-            # TODO: fix steps array (nones)
-            step = req.get("step_" + str(i))
-            # If step is not none, append to array
-            if step != 'None':
-                print('Step added: ' + str(i))
-                stepsArray.append(step)
-            else:
-                print('stopping')
-                # last step, exit loop
-                break
-
-        # mins to seconds
-        total_seconds = int(req.get("brew_time"))
-        m, s = divmod(total_seconds, 60)
-        formatted_time = f'{m:01d}:{s:02d}'
-        # print(mins_and_seconds)
-
-        # TODO: Remove units from database
-        payload = {
-            "brew_name": req.get("brew_name"),
-            "barista": req.get("barista_name"),
-            # TODO: Add country
-            "brew_source": "Average Joe",
-            "steps": stepsArray,
-            "total_brew_time": formatted_time,
-            "details": {
-                # TODO: remove 'g' and 'C'
-                "coffee": req.get("coffee_weight") + "g",
-                "grind": int(req.get("grind_size")),
-                "water": req.get("water_temp") + "\u00b0C",
-                "brewer": req.get("brewer"),
-                "filter": req.get("filter")
-            },
-            "likes": 1
-            # TODO: add view counts
-        }
-    brews.insert_one(payload)
-    # * Could try to AJAX this
-    return redirect(url_for('index'))
-
-
-@app.route('/update_brew/<brew_id>', methods=['GET', 'POST'])
-def update_brew(brew_id):
-    if request.method == 'POST':
-        print('COFFEE WEIGHT: ' + str(request.form.get('coffee_weight')))
-        mongo.db.brews.find_one_and_update(
-            {'_id': ObjectId(brew_id)},
-            {'$set':
-             {
-                 'details.coffee': request.form.get('coffee_weight')+'g'
-                 # TODO: add other sliders once happy
-             }
-             }
-        )
-        time.sleep(0.5)
-        # TODO: don't have to reload the page, bc the data is already displayed
-        return redirect(url_for('index'))
-
-
-@app.route('/increase_likes/<brew_id>', methods=['GET', 'POST'])
-def increase_likes(brew_id):
-    mongo.db.brews.find_one_and_update(
-        {'_id': ObjectId(brew_id)},
-        {'$inc': {'likes': 1}}
-    )
-    time.sleep(0.5)
-    return redirect(url_for('index'))
-    # return redirect(url_for('get_brews'))
-
-
-@app.route('/delete_brew/<brew_id>')
-def delete_brew(brew_id):
-    mongo.db.brews.remove({'_id': ObjectId(brew_id)})
-    # TODO: replace sleep
-    time.sleep(0.5)
-    return redirect(url_for('get_brews'))
-
-# testing purposes only (EMPTY)
-@app.route('/empty_db')
-def empty_db():
-    mongo.db.brews.remove({})
-    return redirect(url_for('get_brews'))
-
-
-@app.route('/about')
-def about():
-    return render_template('about.html')
 
 
 if __name__ == '__main__':
