@@ -1,5 +1,7 @@
-<h6>Matching Records: {{ filtered_records_count }}<br>
-   Total Records: {{ total_records }}</h6>
+<h6><br>Matching Brews:
+   {{ filtered_records_count }}
+   (showing {{ offset+1 }}-{{offset+brews_displayed}})<br>
+   Total Brews: {{ total_records }}</h6>
 <br>
 <!-- ? for mobile screens, remove 'popout' class to maximise available space -->
 <!-- TODO: get some kind of headers -->
@@ -18,16 +20,16 @@
          {% endif %}
          <div class="col m1 valign-wrapper">
             {% if brew.brew_name.startswith('Winner') -%}
-            <img src="static/images/first_place_medal.svg" class="tooltipped" data-tooltip="First Place"
-               alt="First Place" height="22px">
+            <img src="static/images/first_place_medal.svg" class="tooltipped" data-tooltip="1st Place" alt="First Place"
+               height="22px">
             {{brew.brew_name[7:]}}
             {% elif brew.brew_name.startswith('2nd')  -%}
-            <img src="static/images/second_place_medal.svg" class="tooltipped" data-tooltip="Second Place"
+            <img src="static/images/second_place_medal.svg" class="tooltipped" data-tooltip="2nd Place"
                alt="Second Place" height="22px">
             {{brew.brew_name[10:]}}
             {% elif brew.brew_name.startswith('3rd')  -%}
-            <img src="static/images/third_place_medal.svg" class="tooltipped" data-tooltip="Third Place"
-               alt="Third Place" height="22px">
+            <img src="static/images/third_place_medal.svg" class="tooltipped" data-tooltip="3rd Place" alt="Third Place"
+               height="22px">
             {{brew.brew_name[10:]}}
             {% else %}
             {{brew.brew_name}}
@@ -168,7 +170,7 @@
                   EDIT
                </a>
                <!-- Delete Button -->
-               <a href="#delete-brew-modal-{{brew._id}}" class="tooltipped btn btn-small delete-btn red
+               <a data-id="{{brew._id}}" class="tooltipped btn btn-small delete-btn red
                   waves-effect modal-trigger" data-position="bottom" data-tooltip="Delete">Delete
                </a>
                <span class="right-align">Views: {{brew.views}}</span>
@@ -177,39 +179,82 @@
       </div>
    </li>
    <!-- Modal to delete brew -->
-   <!-- TODO: elminate need for 30 modals -->
-   <!-- <div id="delete-brew-modal-{{brew._id}}" class="modal" style="max-width: 400px;">
+
+   {% endfor %}
+
+   <!-- Modal Structure -->
+   <div id="modal1" class="modal">
       <div class="modal-content">
-         <h5>Delete '{{brew.brew_name}}'?</h5>
+         <h4>Delete</h4>
+         <p>Delete?</p>
       </div>
       <div class="modal-footer">
-         <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
-         <a href="{{url_for('delete_brew', brew_id=brew._id)}}"
-            class="modal-close waves-effect waves-red btn-flat delete-btn" type="submit" id="{{brew.brew_name}}">OK</a>
+         <a href="" data-id="" class="modal-close waves-effect waves-green btn-flat confirm-delete-btn">Delete</a>
       </div>
-   </div> -->
-   {% endfor %}
+   </div>
+
 </ul>
-<!-- * if page number > 1, chevron left li class should be toggled off or removed -->
-<!-- * on click of next chevron, active class removed from current page, added to nex -->
-<!-- * if last page number, apply class disabled to chevron right -->
+<!-- TODO: pagination classes, find more elegant way. mb in app.py dictionary -->
 <ul class="pagination center-align">
-   <!-- * prev chevron should be disabled (li and a) when on first page -->
+   <!-- If current page is 1, disable the left chevron -->
+   {% if current_page == 1 %}
    <li class="waves-effect disabled" id="prev-page">
+      <a>
+         <i class="material-icons">chevron_left</i>
+      </a>
+   </li>
+   {% else %}
+   <!-- remove disabled class from left chevron -->
+   <li class="waves-effect" id="prev-page">
       <a onclick="goToPage('{{ prev_url }}')">
          <i class="material-icons">chevron_left</i>
       </a>
    </li>
-   <!-- * if changing limit, change here also -->
+   {% endif %}
    {% for page in range(1, num_pages+1) %}
+   <!-- If current page, apply active class -->
+   {% if page == current_page %}
+   <li class="active page-number" id="page-{{ page }}">
+      <a onclick="goToPage('{{ urls[page] }}')">{{ page }}</a>
+   </li>
+   {% else %}
    <li class="waves-effect page-number" id="page-{{ page }}">
       <a onclick="goToPage('{{ urls[page] }}')">{{ page }}</a>
    </li>
+   {% endif %}
    {% endfor %}
-   <!-- TODO: ensure next/prev buttons are disabled at right time so can't go any further -->
+   <!-- If current page is last page, disable right chevron -->
+   {% if current_page == num_pages %}
+   <li class="waves-effect disabled" id="next-page">
+      <a>
+         <i class="material-icons">chevron_right</i>
+      </a>
+   </li>
+   {% else %}
+   <!-- remove disabled class from chevron -->
    <li class="waves-effect" id="next-page">
       <a onclick="goToPage('{{ next_url }}')">
          <i class="material-icons">chevron_right</i>
       </a>
    </li>
+   {% endif %}
 </ul>
+<script>
+   $(document).on("click", ".delete-btn", function () {
+      let testid = $(this).data('id');
+      //alert(testid);
+      //alert($('.confirm-delete-btn').data('id'));
+      $('.confirm-delete-btn').attr('data-id', testid);
+      // TODO: how to pass brew_id to delete modal? 
+      //$('.confirm-delete-btn').attr('href', "{{url_for('delete_brew', brew_id=testid)}}");
+   });
+
+   $(document).on("click", ".page-number a", function () {
+      //alert('test');
+      //apply class to this
+      //alert($(this).text());
+      //$(this).parent('li').addClass('.test-class');
+      //$(this).parent('li').toggleClass('.active');
+
+   })
+</script>
