@@ -1,18 +1,156 @@
+/* TODO: fix scrolling bug */
+html {
+	scroll-behavior: smooth;
+}
+
 body {
-  /* background-color: #4a2c2a; */
-  color: #4a2c2a !important;
-  font-size: large;
+	/* background-color: #4a2c2a; */
+	color: #4a2c2a !important;
+	/* font-size: medium; */
+	font-size: 12px;
+	/* font-family: 'Concert One', cursive; */
+	font-family: 'Montserrat', sans-serif;
 }
 
 /* Nav bar */
 nav {
-   background-color: #4a2c2a !important;
+	background-color: #4a2c2a !important;
+	line-height: 88px;
+	height: 88px;
 }
 
-.container {
-   margin-left: 5%;
+.input-field {
+	margin: 0 auto;
+}
+
+/* height of Details list items */
+.collection-item.avatar {
+	min-height: 54px !important;
+}
+
+.collection {
+	overflow: visible;
+}
+
+.step {
+	/* font-size: medium; */
+	border-bottom: none !important;
+}
+
+.circle {
+	border-radius: 0%;
+}
+
+.timer {
+	margin-right: 1px !important;
+}
+
+.select-dropdown li span {
+	/* font-size: medium; */
+}
+
+/* test */
+.row,
+.range-field {
+	/* padding: 0; */
+	/* margin: 0 auto !important; */
+	/* margin-top: 2px !important; */
+	/* margin-bottom: 2px !important; */
+}
+
+.delete-btn {
+	margin-right: 2px;
+	margin-left: auto;
+}
+
+.brew-time i {
+	background-color: white !important;
+	color: black !important;
+	font-size: 23px !important;
+}
+
+.timer {
+	font-size: 16px !important;
+}
+
+.thumb {
+	margin-right: 0px !important;
+	font-size: 1.1rem !important;
+	/* margin: auto 0 !important; */
+}
+
+/* * IDEA: all text could go white (against dark bg) on hover */
+.thumb-anchor:hover {
+	color: white;
+}
+
+.hide {
+	display: none;
+}
+
+/* TODO: collabsible header, once clicked should remain coloured until click out */
+
+#headers {
+	font-size: 14px;
+	background-color: #4a2c2a;
+	color: white;
+}
+
+.collapsible-header {
+	transition: all 0.1s ease-in-out;
+	padding: 8px;
+}
+
+.collapsible-body {
+	padding: 14px;
+	/* background-color: bisque; */
+}
+
+.m1,
+.m2 {
+	padding: 0px !important;
+}
+
+.collapsible-header:hover {
+	background-color: burlywood;
+	transition: all 0.1s ease-in;
+}
+
+#sort-by {
+	max-width: 360px;
+	/* margin-right: 10px; */
+	/* margin-left: auto; */
+}
+
+.waves-effect a:hover {
+	background-color: pink;
+	transition: all 0.2s ease-in-out;
+	color: white;
 }
 
 footer {
-   background-color: #4a2c2a !important;
+	background-color: #4a2c2a !important;
+	/* bottom: 0 !important; */
+	/* margin: auto; */
+}
+
+/* media queries */
+@media (min-width: 360px) {
+	.container {
+		width: 97%;
+		max-width: 97%;
+	}
+}
+
+/* Desktop devices */
+@media (min-width: 992px) {
+	.container {
+		width: 85%;
+		max-width: 85%;
+	}
+}
+
+* {
+	/* outline: 1px solid pink; */
+	outline-offset: -1px;
 }
