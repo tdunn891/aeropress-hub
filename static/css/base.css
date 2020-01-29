@@ -1,31 +1,28 @@
-/* TODO: fix scrolling bug */
 html {
+	height: 100%;
 	scroll-behavior: smooth;
 }
 
 body {
-	/* background-color: #4a2c2a; */
 	color: #4a2c2a !important;
-	/* font-size: medium; */
-	font-size: 12px;
-	/* font-family: 'Concert One', cursive; */
+	font-size: 13px;
 	font-family: 'Montserrat', sans-serif;
+	background-image: url('https://image.shutterstock.com/z/stock-vector-seamless-doodle-pattern-aeropress-vector-illustration-413930686.jpg');
+	/* background-image: url('https://image.shutterstock.com/z/stock-photo-preparation-of-coffee-in-aeropress-portable-filter-coffee-maker-797339080.jpg'); */
+	/* background-image: url('https://image.shutterstock.com/z/stock-photo-coffee-concept-beans-ground-instant-capsules-aeropress-marble-background-top-view-1440849941.jpg'); */
+	background-size: cover;
+	background-repeat: no-repeat;
 }
 
 /* Nav bar */
 nav {
 	background-color: #4a2c2a !important;
-	line-height: 88px;
-	height: 88px;
+	line-height: 82px;
+	height: 82px;
 }
 
 .input-field {
 	margin: 0 auto;
-}
-
-/* height of Details list items */
-.collection-item.avatar {
-	min-height: 54px !important;
 }
 
 .collection {
@@ -33,34 +30,9 @@ nav {
 }
 
 .step {
-	/* font-size: medium; */
+	font-size: 14px;
+	padding: 2px 10px !important;
 	border-bottom: none !important;
-}
-
-.circle {
-	border-radius: 0%;
-}
-
-.timer {
-	margin-right: 1px !important;
-}
-
-.select-dropdown li span {
-	/* font-size: medium; */
-}
-
-/* test */
-.row,
-.range-field {
-	/* padding: 0; */
-	/* margin: 0 auto !important; */
-	/* margin-top: 2px !important; */
-	/* margin-bottom: 2px !important; */
-}
-
-.delete-btn {
-	margin-right: 2px;
-	margin-left: auto;
 }
 
 .brew-time i {
@@ -70,13 +42,14 @@ nav {
 }
 
 .timer {
-	font-size: 16px !important;
+	font-size: 38px !important;
+	/* margin-right: 1px; */
 }
 
 .thumb {
 	margin-right: 0px !important;
 	font-size: 1.1rem !important;
-	/* margin: auto 0 !important; */
+	/* display: inline; */
 }
 
 /* * IDEA: all text could go white (against dark bg) on hover */
@@ -91,35 +64,58 @@ nav {
 /* TODO: collabsible header, once clicked should remain coloured until click out */
 
 #headers {
-	font-size: 14px;
+	/* font-size: 14px; */
 	background-color: #4a2c2a;
 	color: white;
+	cursor: auto;
+}
+
+.collapsible {
+	margin-top: 0px;
 }
 
 .collapsible-header {
 	transition: all 0.1s ease-in-out;
-	padding: 8px;
+	padding: 8px 1px;
+}
+.collapsible-header:hover {
+	background-color: burlywood;
+	/* background-color: darkgoldenrod; */
+	transition: all 0.1s ease-in;
+	color: white;
 }
 
 .collapsible-body {
 	padding: 14px;
-	/* background-color: bisque; */
+	background-color: lightgray;
+	/* background-color: brown; */
+	/* color: white; */
 }
 
-.m1,
-.m2 {
-	padding: 0px !important;
+.steps li {
+	background-color: lightgray !important;
 }
 
-.collapsible-header:hover {
-	background-color: burlywood;
-	transition: all 0.1s ease-in;
+.edit-btn {
+	margin-right: 12px;
+}
+
+.s1,
+.s2 {
+	padding: 1px !important;
+	margin-left: 2px;
+}
+
+.medal {
+	display: inline;
 }
 
 #sort-by {
 	max-width: 360px;
-	/* margin-right: 10px; */
-	/* margin-left: auto; */
+}
+
+.pagination {
+	margin: 20px auto;
 }
 
 .waves-effect a:hover {
@@ -129,17 +125,34 @@ nav {
 }
 
 footer {
+	/* TODO: sticky footer */
 	background-color: #4a2c2a !important;
-	/* bottom: 0 !important; */
-	/* margin: auto; */
+	width: 100%;
+	bottom: 0 !important;
+	margin: auto;
+	height: -webkit-fit-content;
+	height: -moz-fit-content;
+	height: fit-content;
 }
 
-/* media queries */
-@media (min-width: 360px) {
+/* iPhone X and smaller */
+@media (max-width: 375px) {
 	.container {
 		width: 97%;
 		max-width: 97%;
 	}
+	.icon {
+		display: none !important;
+	}
+	#response {
+		padding: 2px 0px;
+	}
+	body {
+		font-size: 10px;
+	}
+}
+/* media queries */
+@media (min-width: 320px) {
 }
 
 /* Desktop devices */
