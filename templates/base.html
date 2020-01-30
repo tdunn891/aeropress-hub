@@ -10,31 +10,37 @@
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
    <!-- Material Icons -->
    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+   <!-- Google font -->
+   <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
    <!-- style.css -->
    <link rel="stylesheet" href="{{url_for('static', filename='css/base.css')}}" type="text/css" />
-
+   <!-- Favicon -->
+   <link rel="shortcut icon" href="{{url_for('static', filename='images/aeropress_colour.png')}}" type="image/x-icon">
 
    <title>AeroPress Brews</title>
 </head>
 
 <body>
    <!-- Nav bar -->
-   <nav>
-      <div class="nav-wrapper">
-         <a href="{{url_for('get_brews')}}" class="brand-logo">
-            <i class="material-icons prefix">local_cafe</i>
-            AeroPress Brews
-         </a>
-         <ul class="right hide-on-med-and-down">
-            <li><a href="#"><i class="material-icons">search</i></a></li>
-            <li><a href="#"><i class="material-icons">view_module</i></a></li>
-            <li><a href="{{url_for('insert_brew')}}"><i class="material-icons">add_circle</i></a></li>
-            <!-- <li><a href="collapsible.html"><i class="material-icons">refresh</i></a></li> -->
-            <!-- <li><a href="mobile.html"><i class="material-icons">more_vert</i></a></li> -->
-         </ul>
-      </div>
-   </nav>
-   <!-- <h1>Base.html</h1> -->
+   <!-- TODO: ensure navbar responsive -->
+   <div class="navbar">
+      <nav>
+         <div class="nav-wrapper">
+            <a href="{{url_for('index')}}" class="brand-logo center">AeroPress Hub</a>
+            <ul class="right hide-on-med-and-down">
+               <li class={{get_brews_active}}>
+                  <a href="{{url_for('index')}}" class="waves-effect waves-light">BREW BROWSER</a>
+               </li>
+               <li class={{add_brew_active}}>
+                  <a href="{{url_for('add_brew')}}" class="waves-effect waves-light">ADD A BREW</a>
+               </li>
+               <li class={{about_active}}>
+                  <a href="{{url_for('about')}}" class="waves-effect waves-light">ABOUT</a>
+               </li>
+            </ul>
+         </div>
+      </nav>
+   </div>
    {% block content %}
 
    {% endblock %}
@@ -45,33 +51,31 @@
    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
    <!-- some of the below is only relevant for certain pages -->
    <script src="{{url_for('static', filename='js/main.js')}}"></script>
-   <script>$(document).ready(function () {
-         $('select').formSelect();
-         $('input#input_text, textarea#textarea2').characterCounter();
-         $('.sidenav').sidenav();
-      });
-   </script>
-   {% block additional_scripts %}
+   {% block addl_scripts %}
+
    {% endblock %}
+
    <footer class="page-footer">
       <div class="container">
          <div class="row">
             <div class="col l6 s12">
-               <!-- <h5 class="white-text">Footer</h5> -->
-               <p class="grey-text text-lighten-4">Brews Sourced from: <a href="https://www.aeropress.com/" target="_blank">AeroPress.com</a></p>
+               <p class="grey-text text-lighten-4">Brews Sourced from: <a href="https://www.aeropress.com/"
+                     target="_blank">AeroPress.com</a>
+               </p>
             </div>
             <div class="col l4 offset-l2 s12">
                <h5 class="white-text">Links</h5>
                <ul>
-                  <li><a class="grey-text text-lighten-3" href="https://www.worldaeropresschampionship.com/" target="_blank">World AeroPress Championships</a></li>
+                  <li>
+                     <a class="grey-text text-lighten-3" href="https://www.worldaeropresschampionship.com/"
+                        target="_blank">World AeroPress Championships</a>
+                  </li>
                </ul>
             </div>
          </div>
       </div>
       <div class="footer-copyright">
          <div class="container">
-            Developed by Thomas Dunn
-            <!-- <a class="grey-text text-lighten-4 right" href="#!">More Links</a> -->
          </div>
       </div>
    </footer>

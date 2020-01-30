@@ -1,95 +1,93 @@
 {% extends 'base.html' %}
 {% block content %}
-
-<div class="container">
-   <div class="row">
-      <br>
-      <h3>Browse Brews</h3>
-      <p>[TODO: fix pagination - if serialstring has offset and limit, don't add defaults. view counts, share button, a
-         few graphs (eg Winning Recipes by Country etc) (dc.js)]</p>
-      <div class="col l2">
-         <!-- <h4>All Brews</h4> -->
-         <!-- <a href="{{url_for('empty_db')}}" class="btn btn-small red" method="POST">Empty Database</a> -->
-         <div class="">
-            <!-- <h5>Sort</h5> -->
+<main>
+   <div class="container">
+      <div class="row">
+         <h3><img src="{{url_for('static', filename='images/cup-with-steam.gif') }}" height="52px" />Brew Browser</h3>
+         <div class="col s12 m12 l2 form-container">
+            <!-- EMPTY DB -->
+            <!-- <a href="{{url_for('empty_db')}}" class="btn btn-small red" method="POST">Empty Database</a> -->
             <form action="javascript:void(0);" id="filters">
-               <!-- <form action="{{ url_for('apply_filters') }}" id="filters"> -->
-               <label for="sort-by">Sort by:</label>
-               <select class="input-field" id="sort-by" name="sort-by">
-                  <!-- TODO: Add icons to sort dropdown -->
-                  <option value="" disabled>Sort by:</option>
-                  <option value="barista" selected>Barista Name: A-Z</option>
-                  <option value="brew_name">Brew Name: A-Z</option>
-                  <option value="total_brew_time">Brew Time: Short to Long</option>
-                  <option value="details.coffee">Coffee Dose: High to Low</option>
-                  <option value="country">Country: A-Z</option>
-                  <option value="details.grind">Grind Size: Fine to Coarse</option>
-                  <option value="likes">Most Popular</option>
-               </select>
-               <!-- <h5>Filters</h5> -->
-               <br>
-               <b>Brew Source:</b>
-               <label style="display: block;">
-                  <input type="checkbox" id="wac" class="filled-in" checked="checked" name="brew_source"
-                     value="World AeroPress Championships Finalist" />
-                  <span>Championship</span>
-               </label>
-               <label style="display: block;">
-                  <input type="checkbox" id="non-wac" class="filled-in" checked="checked" name="brew_source"
-                     value="Average Joe" />
-                  <span>Average Joe</span>
-               </label>
-               <br>
-               <b>Brewer:</b>
-               <label style="display: block;">
-                  <input type="checkbox" id="upright" class="filled-in" checked="checked" name="brewer"
-                     value="Upright" />
-                  <span>Upright</span>
-               </label>
-               <label style="display: block">
-                  <input type="checkbox" id="inverted" class="filled-in" checked="checked" name="brewer"
-                     value="Inverted" />
-                  <span>Inverted</span>
-               </label>
-               <br>
-               <b>Filter Type:</b>
-               <label style="display: block;">
-                  <input type="checkbox" id="single-paper" class="filled-in" checked="checked" name="filter"
-                     value="Paper" />
-                  <span>Single Paper</span>
-               </label>
-               <label style="display: block">
-                  <input type="checkbox" id="double-paper" class="filled-in" checked="checked" name="filter"
-                     value="Double Paper" />
-                  <span>Double Paper</span>
-               </label>
-               <label style="display: block">
-                  <input type="checkbox" id="metal" class="filled-in" checked="checked" name="filter" value="Metal" />
-                  <span>Metal</span>
-               </label>
-               <label style="display: block">
-                  <input type="checkbox" id="metal-and-paper" class="filled-in" checked="checked" name="filter"
-                     value="Both Metal and Paper" />
-                  <span>Both Metal & Paper</span>
-               </label>
-
-               <!-- TODO: fix reset filter button, so that it ajaxes, not reload -->
-               <br>
-               <a class="btn btn-small" href="{{ url_for('index') }}" id="reset-filters">RESET</a>
+               <div class="col s12">
+                  <label for="sort-by">Sort by:</label>
+                  <select class="input-field hoverable browser-default" id="sort-by" name="sort-by">
+                     <option value="" disabled>Sort by:</option>
+                     <option value="barista" selected>Barista Name: A-Z</option>
+                     <option value="brew_name">Brew Name: A-Z</option>
+                     <option value="total_brew_time">Brew Time: Short-Long</option>
+                     <option value="details.coffee">Dose: High-Low</option>
+                     <option value="country">Country: A-Z</option>
+                     <option value="details.grind">Grind: Fine-Coarse</option>
+                     <option value="likes">Most Popular</option>
+                     <option value="place">Place: Winners First</option>
+                     <option value="year">Year: Most Recent</option>
+                  </select>
+                  <br>
+               </div>
+               <div class="col s6 m6 l12">
+                  <b>Brew Source:</b>
+                  <label class="checkbox-label">
+                     <input type="checkbox" id="wac" class="filled-in" checked="checked" name="brew_source"
+                        value="World AeroPress Championships Finalist" />
+                     <span>Championship</span>
+                  </label>
+                  <label class="checkbox-label">
+                     <input type="checkbox" id="non-wac" class="filled-in" checked="checked" name="brew_source"
+                        value="Average Joe" />
+                     <span>Average Joe</span>
+                  </label>
+                  <b>Brewer:</b>
+                  <label class="checkbox-label">
+                     <input type="checkbox" id="upright" class="filled-in" checked="checked" name="brewer"
+                        value="Upright" />
+                     <span>Upright</span>
+                  </label>
+                  <label class="checkbox-label">
+                     <input type="checkbox" id="inverted" class="filled-in" checked="checked" name="brewer"
+                        value="Inverted" />
+                     <span>Inverted</span>
+                  </label>
+               </div>
+               <div class="col s6 m6 l12">
+                  <b>Filter Type:</b>
+                  <label class="checkbox-label">
+                     <input type="checkbox" id="single-paper" class="filled-in" checked="checked" name="filter"
+                        value="Paper" />
+                     <span>Paper</span>
+                  </label>
+                  <label class="checkbox-label">
+                     <input type="checkbox" id="double-paper" class="filled-in" checked="checked" name="filter"
+                        value="Paper x2" />
+                     <span>Paper x2</span>
+                  </label>
+                  <label class="checkbox-label">
+                     <input type="checkbox" id="metal" class="filled-in" checked="checked" name="filter"
+                        value="Metal" />
+                     <span>Metal</span>
+                  </label>
+                  <label class="checkbox-label">
+                     <input type="checkbox" id="metal-and-paper" class="filled-in" checked="checked" name="filter"
+                        value="Metal &#43; Paper" />
+                     <span>Metal + Paper</span>
+                  </label>
+               </div>
+               <div class="col s12 center">
+                  <a class="btn btn-small reset-btn" href="{{ url_for('index') }}" id="reset-filters">RESET</a>
+               </div>
             </form>
          </div>
-      </div>
-      <div class="col s12 m12 l10" id='response'>
+         <div class="col s12 m12 l10" id='response'>
+            <!-- TODO: move 2 cards out of response, into index -->
 
+         </div>
       </div>
    </div>
-</div>
-<div class="fixed-action-btn">
-   <a href="#" class="btn-floating btn-medium brown">
-      <i class="material-icons">arrow_upward</i>
-      <!-- <i class="large material-icons">mode_edit</i> -->
-   </a>
-</div>
+   <div class="fixed-action-btn">
+      <a href="#" class="btn-floating btn-medium brown">
+         <i class="material-icons">arrow_upward</i>
+      </a>
+   </div>
+</main>
 {% endblock %}
 
 {% block addl_scripts %}
@@ -126,8 +124,6 @@
    // additional pages
    function goToPage(urlPage) {
       console.log('goToPage running');
-      //test
-      //let serialFilters = $('#filters').serialize();
       $.ajax({
          url: urlPage,
          type: "GET",
@@ -146,6 +142,7 @@
          $('.fixed-action-btn').floatingactionbutton();
       })
    };
+
 </script>
 
 {% endblock %}

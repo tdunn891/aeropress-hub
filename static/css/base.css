@@ -5,22 +5,46 @@ html {
 
 body {
 	color: #4a2c2a !important;
-	font-size: 13px;
+	font-size: 14px;
 	font-family: 'Montserrat', sans-serif;
-	background-image: url('https://image.shutterstock.com/z/stock-vector-seamless-doodle-pattern-aeropress-vector-illustration-413930686.jpg');
-	/* background-image: url('https://image.shutterstock.com/z/stock-photo-preparation-of-coffee-in-aeropress-portable-filter-coffee-maker-797339080.jpg'); */
-	/* background-image: url('https://image.shutterstock.com/z/stock-photo-coffee-concept-beans-ground-instant-capsules-aeropress-marble-background-top-view-1440849941.jpg'); */
-	background-size: cover;
+	/* TODO: Background image should just be for browse page */
+	/* Coffee beans background image */
+	background-image: url('/static/images/beans-background.jpg');
+	background-position: center 100%;
+	background-size: 100% auto;
 	background-repeat: no-repeat;
+	background-attachment: fixed;
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
 }
 
-/* Nav bar */
+main {
+	flex: 1 0 auto;
+}
+
+/* Navigation bar */
 nav {
 	background-color: #4a2c2a !important;
-	line-height: 82px;
-	height: 82px;
+	/* background-color: wheat !important; */
+	/* background-color: white !important; */
+	/* line-height: 82px; */
+	/* height: 82px; */
 }
 
+.brand-logo {
+	/* color: burlywood !important; */
+	color: white !important;
+}
+
+.form-container {
+	border: 1px solid #4a2c2a;
+	background-color: white;
+	opacity: 0.97;
+	padding: 8px !important;
+}
+
+/* Input field selectors */
 .input-field {
 	margin: 0 auto;
 }
@@ -29,6 +53,37 @@ nav {
 	overflow: visible;
 }
 
+.beans {
+	margin-right: 5px;
+	height: 18px;
+}
+
+.grinder {
+	height: 25px;
+}
+
+.medal {
+	height: 22px;
+}
+
+.champ-brew-logo {
+	height: 34px;
+}
+
+.inverted-icon,
+.upright-icon {
+	height: 46px;
+}
+
+.thermometer {
+	height: 40px;
+}
+
+#headers-list {
+	margin: 0 0px;
+}
+
+/* Steps */
 .step {
 	font-size: 14px;
 	padding: 2px 10px !important;
@@ -38,21 +93,14 @@ nav {
 .brew-time i {
 	background-color: white !important;
 	color: black !important;
-	font-size: 23px !important;
 }
 
-.timer {
-	font-size: 38px !important;
-	/* margin-right: 1px; */
-}
-
+/* 'Like' thumb */
 .thumb {
 	margin-right: 0px !important;
 	font-size: 1.1rem !important;
-	/* display: inline; */
 }
 
-/* * IDEA: all text could go white (against dark bg) on hover */
 .thumb-anchor:hover {
 	color: white;
 }
@@ -61,12 +109,10 @@ nav {
 	display: none;
 }
 
-/* TODO: collabsible header, once clicked should remain coloured until click out */
-
 #headers {
-	/* font-size: 14px; */
 	background-color: #4a2c2a;
 	color: white;
+	/* color: wheat; */
 	cursor: auto;
 }
 
@@ -77,66 +123,96 @@ nav {
 .collapsible-header {
 	transition: all 0.1s ease-in-out;
 	padding: 8px 1px;
-}
-.collapsible-header:hover {
-	background-color: burlywood;
-	/* background-color: darkgoldenrod; */
-	transition: all 0.1s ease-in;
-	color: white;
+	opacity: 0.97;
 }
 
+/* Collapsible header */
+.collapsible-header:hover {
+	/* background-color: burlywood; */
+	background-color: wheat;
+	transition: all 0.1s ease-in;
+}
+
+/* Collapsible content */
 .collapsible-body {
 	padding: 14px;
-	background-color: lightgray;
-	/* background-color: brown; */
-	/* color: white; */
+	/* background-color: lightgray; */
+	background-color: wheat;
+	opacity: 0.97;
 }
 
+/* Steps background color */
 .steps li {
-	background-color: lightgray !important;
+	/* background-color: lightgray !important; */
+	background-color: wheat !important;
 }
 
 .edit-btn {
 	margin-right: 12px;
 }
 
-.s1,
-.s2 {
-	padding: 1px !important;
-	margin-left: 2px;
+.reset-btn {
+	margin: 10px;
 }
 
-.medal {
-	display: inline;
-}
-
-#sort-by {
-	max-width: 360px;
-}
-
+/* Pagination bar */
 .pagination {
-	margin: 20px auto;
+	max-width: 320px;
+	margin: 0px auto !important;
+	padding: 4px 0 !important;
+	background-color: white;
+	opacity: 0.97;
 }
 
 .waves-effect a:hover {
 	background-color: pink;
+	background-color: wheat;
 	transition: all 0.2s ease-in-out;
-	color: white;
+	/* color: white; */
+}
+
+/* Filter checkboxes */
+[type='checkbox'].filled-in:checked + span:not(.lever):after {
+	background-color: #4a2c2a;
+	border: 2px solid #4a2c2a;
+}
+
+label {
+	color: #4a2c2a;
+}
+
+.checkbox-label {
+	display: block;
+}
+
+.checkbox-label span:hover {
+	color: darkorange;
+	/* font-size: 18px; */
+	/* font-weight: bold; */
+}
+
+.hoverable {
+	-webkit-transition: -webkit-box-shadow 0.15s;
+	transition: -webkit-box-shadow 0.15s;
+	transition: box-shadow 0.15s;
+	transition: box-shadow 0.15s, -webkit-box-shadow 0.15s;
+}
+.hoverable:hover {
+	-webkit-box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.2),
+		0 2px 8px 0 rgba(0, 0, 0, 0.19);
+	box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.2), 0 2px 8px 0 rgba(0, 0, 0, 0.19);
+	cursor: pointer;
 }
 
 footer {
 	/* TODO: sticky footer */
 	background-color: #4a2c2a !important;
-	width: 100%;
-	bottom: 0 !important;
-	margin: auto;
-	height: -webkit-fit-content;
-	height: -moz-fit-content;
-	height: fit-content;
+	/* background-color: whitesmoke !important; */
 }
 
-/* iPhone X and smaller */
-@media (max-width: 375px) {
+/* Media Queries */
+/* iPhone 8 Plus width and smaller */
+@media (max-width: 414px) {
 	.container {
 		width: 97%;
 		max-width: 97%;
@@ -150,16 +226,22 @@ footer {
 	body {
 		font-size: 10px;
 	}
-}
-/* media queries */
-@media (min-width: 320px) {
+	.brand-logo {
+		font-size: 20px !important;
+	}
+	h3 {
+		font-size: 28px;
+	}
+	.card-title {
+		font-size: 18px !important;
+	}
 }
 
 /* Desktop devices */
 @media (min-width: 992px) {
 	.container {
-		width: 85%;
-		max-width: 85%;
+		width: 90%;
+		max-width: 90%;
 	}
 }
 
