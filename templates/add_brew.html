@@ -2,32 +2,25 @@
 {% block content %}
 
 <div class="container">
-   <h3>Add a Brew</h3>
-   <p>Share your delight with the community</p>
+   <!-- <h4>Add a Brew</h4> -->
+   <!-- <p>Share yours with the community</p> -->
    <div class="row">
-      <div class="col m3 l3">
-         <!-- src="https://image.shutterstock.com/z/stock-photo-professional-barista-preparing-coffee-alternative-method-515650723.jpg" -->
-         <!-- src="https://image.shutterstock.com/z/stock-photo-alternative-method-of-making-aeropress-coffee-thick-foam-on-the-surface-of-the-coffee-1611101257.jpg" -->
-         <!-- src="https://image.shutterstock.com/z/stock-vector-doodle-icon-aeropress-vector-illustration-406481650.jpg" -->
-         <img
-            src="https://image.shutterstock.com/z/stock-photo-professional-barista-preparing-coffee-alternative-method-515650723.jpg"
-            class="responsive-img" alt="" height="700px">
+      <div class="col m3">
+         <img src="{{url_for('static', filename='images/barista-woman.jpg')}}" id="barista-woman" class="responsive-img"
+            alt="Barista" />
       </div>
-      <div class="col m9 l8">
-         <!-- <div class="card horizontal"> -->
+      <div class="col m8">
          <div class="card">
-            <!-- <div class="card-image">
-                  <img
-                     src="https://image.shutterstock.com/z/stock-photo-professional-barista-preparing-coffee-alternative-method-515650723.jpg"
-                     alt="" height="700px">
-               </div> -->
             <div class="card-content">
-               <span class="card-title">Your Details</span>
+               <span class="card-title">
+                  <i class="material-icons">
+                     add_circle
+                  </i> Add a Brew</span>
+               <!-- <h5>Your Details</h5> -->
                <br>
-               <!-- <div class="row"> -->
                <form class="" action="{{ url_for('insert_brew') }}" method="POST">
                   <div class="row">
-                     <div class="input-field col s12 m12 l12" style="display:block;">
+                     <div class="input-field col s12 m12 l12">
                         <i class="material-icons prefix">local_cafe</i>
                         <input id="brew_name" name="brew_name" type="text" class="validate" required />
                         <label for="brew_name">Brew Name</label>
@@ -41,19 +34,15 @@
                         <label for="barista_name">Barista Name</label>
                         <span class="helper-text" data-error="Required" data-success=""></span>
                      </div>
-                     <!-- </div> -->
-                     <!-- <div class="row"> -->
                      <div class="input-field col s12 m12 l6">
                         <i class="material-icons prefix">map</i>
                         <input id="country" type="text" name="country" class="validate autocomplete" />
                         <label for="country">Country</label>
-                        <!-- <span class="helper-text" data-error="Required" data-success=""></span> -->
                      </div>
                   </div>
                   <div class="row">
-                     <h5>Your Brew</h5>
-                     <br>
-                     <div class="input-field col s12 m10 l4">
+                     <div class="input-field col s12 m8 l4">
+                        <!-- <h5>Your Brew</h5> -->
                         <select id="brewer" name="brewer" class="icons">
                            <option value="Inverted" data-icon="static/images/aeropress_inverted.svg" class="left"
                               default>
@@ -64,44 +53,53 @@
                         <label for="brewer">Brewing Method</label>
                      </div>
                   </div>
-                  <div class="row">
-                     <p class="range-field col s12 m10 l8">
-                        <img src="static/images/bean.svg" alt="Coffee Beans" height="32px">
+                  <div class="row valign-wrapper">
+                     <div class="range-field col s10 m8">
+                        <img src="static/images/bean.svg" alt="Coffee Beans" class="beans-form">
                         <label for="coffee_weight_slider">Coffee Dose (g)</label>
                         <input type="range" id="coffee_weight_slider" name="coffee_weight" min="10" max="40" value="16"
                            onclick="displaySliderValue('coffee_weight');" />
-                        <div id="coffee_weight_label"><span id="coffee_weight_span"></span> grams</div>
-                     </p>
+                     </div>
+                     <div class="col s2 m4">
+                        <div class="slider-value"><span id="coffee_weight_span"></span>g</div>
+                     </div>
                   </div>
-                  <div class="row">
-                     <p class="range-field col s12 m10 l8">
-                        <img src="static/images/grinder.svg" alt="Coffee Grinder" height="36px">
+
+                  <div class="row valign-wrapper">
+                     <div class="range-field col s10 m8">
+                        <img src="static/images/grinder.svg" alt="Coffee Grinder" class="grinder-form">
                         <label for="grind_size_slider">Grind Size (1: fine, 10: coarse)</label>
                         <input type="range" id="grind_size_slider" name="grind_size" min="1" max="10" value="5"
                            onclick="displaySliderValue('grind_size');" />
-                        <div id="grind_size_label"><span id="grind_size_span"></span>/10</div>
-                     </p>
+                     </div>
+                     <div class="col s2 m4">
+                        <div class="slider-value"><span id="grind_size_span"></span>/10</div>
+                     </div>
                   </div>
-                  <div class="row">
-                     <p class="range-field col s12 m10 l8">
-                        <img src="static/images/thermometer.svg" alt="Thermomenter" height="34px">
+                  <div class="row valign-wrapper">
+                     <div class="range-field col s10 m8">
+                        <img src="static/images/thermometer.svg" alt="Thermomenter" class="thermometer-form">
                         <label for="water_temp_slider">Water Temp (°C)</label>
                         <input type="range" id="Water Temp" name="water_temp" min="70" max="100" value="90"
                            onclick="displaySliderValue('water_temp');" />
-                        <div id="water_temp_label"><span id="water_temp_span"></span> °C</div>
-                     </p>
+                     </div>
+                     <div class="col s2 m4">
+                        <div class="slider-value"><span id="water_temp_span"></span>°C</div>
+                     </div>
                   </div>
-                  <div class="row">
-                     <p class="range-field col s12 m10 l8">
+                  <div class="row valign-wrapper">
+                     <div class="range-field col s10 m8">
                         <i class="material-icons">timer</i>
                         <label for="brew_time">Total Brew Time (s)</label>
                         <input type="range" id="brew_time" name="brew_time" min="30" max="220" value="120" step="5"
                            onclick="displaySliderValue('brew_time');" />
-                        <div id="brew_time_label"><span id="brew_time_span"></span> seconds</div>
-                     </p>
+                     </div>
+                     <div class="col s2 m4">
+                        <div class="slider-value"><span id="brew_time_span"></span>s</div>
+                     </div>
                   </div>
                   <div class="row">
-                     <div class="input-field col s12 m10 l4">
+                     <div class="input-field col s12 m8 l4">
                         <!-- <img src="static/images/filter.svg" alt="Coffee filter" height="32px" class="prefix"> -->
                         <select id="filter" name="filter" required>
                            <option value="Paper" default>Paper</option>
@@ -119,7 +117,6 @@
                         Process
                      </h5>
                      <div class="col s12 m12 l12">
-                        <!-- * Test steps with textarea -->
                         <div class="row">
                            <div class="input-field col s12">
                               <textarea id="steps-text-area" name="steps-text-area"
@@ -130,33 +127,18 @@
                      </div>
                   </div>
                   <div class="card-action">
-                     <a class="btn btn-medium waves-effect waves-light green" type="submit">
+                     <button class="btn btn-medium waves-effect waves-light green" type="submit">
                         Submit
                         <i class="material-icons right">send</i>
-                     </a>
+                     </button>
                      <a href="{{url_for('index')}}" class="btn btn-medium waves-effect waves-light grey">
                         Cancel
                      </a>
                   </div>
                </form>
-               <!-- </div> -->
             </div>
          </div>
       </div>
    </div>
 </div>
-
-{% endblock %}
-
-{% block additional_scripts %}
-<script type="text/javascript">
-   // TODO: move to main.js or elsewher
-   $(document).ready(function () {
-      displaySliderValue('coffee_weight');
-      displaySliderValue('grind_size');
-      displaySliderValue('water_temp');
-      displaySliderValue('brew_time');
-   })
-
-</script>
 {% endblock %}

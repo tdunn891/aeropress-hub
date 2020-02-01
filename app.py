@@ -24,7 +24,7 @@ mongo = PyMongo(app)
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html', get_brews_active='active')
+    return render_template('index.html', get_brews_active='active', title="Brew Browser")
 
 
 @app.route('/get_brews')
@@ -70,7 +70,7 @@ def get_brews():
         sort_field = "barista"
 
     # if Most Popular or Coffee Grind, sort descending
-    if sort_field in ['likes', 'details.coffee', 'year']:
+    if sort_field in ['likes', 'details.coffee_dose_g', 'year']:
         sort_direction = -1
         mongo_sort_operator = "$lte"
     else:
@@ -130,7 +130,7 @@ def get_brews():
 
 @app.route('/add_brew')
 def add_brew():
-    return render_template("add_brew.html", add_brew_active="active")
+    return render_template("add_brew.html", add_brew_active="active", title="Add Brew")
 
 
 @app.route('/insert_brew', methods=['GET', 'POST'])
@@ -140,9 +140,9 @@ def insert_brew():
         req = request.form
         stepsArray = req.get("steps-text-area").split('\r\n')
         # convert total seconds to mins and seconds
-        total_seconds = int(req.get("brew_time"))
-        m, s = divmod(total_seconds, 60)
-        formatted_time = f'{m:01d}:{s:02d}'
+        # total_seconds = int(req.get("brew_time"))
+        # m, s = divmod(total_seconds, 60)
+        # formatted_time = f'{m:01d}:{s:02d}'
 
         payload = {
             "brew_name": req.get("brew_name"),
@@ -151,13 +151,13 @@ def insert_brew():
             "barista": req.get("barista_name"),
             "country": req.get("country"),
             "brew_source": "Average Joe",
-            "total_brew_time": formatted_time,
+            "total_brew_time": int(req.get("brew_time")),
             "steps": stepsArray,
             "details": {
                 # TODO: remove 'g' and 'C'
-                "coffee": req.get("coffee_weight") + "g",
+                "coffee_dose_g": int(req.get("coffee_weight")),
                 "grind": int(req.get("grind_size")),
-                "water": req.get("water_temp") + "\u00b0C",
+                "water_temp_c": int(req.get("water_temp")),
                 "brewer": req.get("brewer"),
                 "filter": req.get("filter")
             },
@@ -171,9 +171,9 @@ def insert_brew():
 def edit_brew(brew_id):
     brew = mongo.db.brews.find_one({'_id': ObjectId(brew_id)})
     # convert mins/secs to total secs
-    mins = brew['total_brew_time'][0]
-    secs = brew['total_brew_time'][2:]
-    total_secs = int(mins)*60 + int(secs)
+    # mins = brew['total_brew_time'][0]
+    # secs = brew['total_brew_time'][2:]
+    # total_secs = int(mins)*60 + int(secs)
     # print(total_secs)
     prefilled_filter = brew['details']['filter']
     # print(prefilled_filter)
@@ -190,18 +190,14 @@ def edit_brew(brew_id):
 
     return render_template('edit_brew.html',
                            brew=brew,
-                           total_brew_time=total_secs,
-                           filter_dict=filter_dict)
+                           filter_dict=filter_dict,
+                           title="Edit Brew")
 
 
 @app.route('/update_brew/<brew_id>', methods=['GET', 'POST'])
 def update_brew(brew_id):
     if request.method == 'POST':
         req = request.form
-        # convert total seconds to mins and seconds
-        total_seconds = int(req.get("brew_time"))
-        m, s = divmod(total_seconds, 60)
-        formatted_time = f'{m:01d}:{s:02d}'
         # populate list from steps
         stepsArray = req.get("steps-text-area").split('\r\n')
         mongo.db.brews.find_one_and_update(
@@ -211,13 +207,13 @@ def update_brew(brew_id):
                 "brew_name": req.get("brew_name"),
                 "barista": req.get("barista_name"),
                 "country": req.get("country"),
-                "total_brew_time": formatted_time,
+                "total_brew_time": int(req.get("brew_time")),
                 "steps": stepsArray,
                 "details": {
                     # TODO: remove 'g' and 'C'
-                    "coffee": req.get("coffee_weight") + "g",
+                    "coffee_dose_g": int(req.get("coffee_weight")),
                     "grind": int(req.get("grind_size")),
-                    "water": req.get("water_temp") + "\u00b0C",
+                    "water_temp_c": int(req.get("water_temp")),
                     "brewer": req.get("brewer"),
                     "filter": req.get("filter")
                 }
@@ -249,12 +245,12 @@ def empty_db():
 
 @app.route('/about')
 def about():
-    return render_template('about.html', about_active='active')
+    return render_template('about.html', about_active='active', title="About")
 
 
 @app.errorhandler(404)
-def error404():
-    return render_template('error404.html')
+def error404(notfound):
+    return render_template('error404.html', title="404 - Page Not Found")
 
 
 if __name__ == '__main__':
