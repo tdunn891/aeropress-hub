@@ -2,20 +2,31 @@
 {% block content %}
 
 <div class="container">
-   <!-- <h4>Add a Brew</h4> -->
-   <!-- <p>Share yours with the community</p> -->
    <div class="row">
-      <div class="col m3">
-         <img src="{{url_for('static', filename='images/barista-woman.jpg')}}" id="barista-woman" class="responsive-img"
-            alt="Barista" />
+      <div class="col s12 l2">
+         <h3>Add Brew</h3>
+         <p>Share yours with the community</p>
       </div>
-      <div class="col m8">
-         <div class="card">
+      <!-- src="https://image.shutterstock.com/z/stock-photo-empty-clear-aeropress-filter-cap-two-paper-filters-and-steel-travel-cup-held-up-in-the-air-by-496228861.jpg" -->
+      <!-- <div class="col s12 center"> -->
+      <!-- </div> -->
+      <!-- <img src="{{url_for('static',filename='images/aeropress_four_hands.png')}}" alt="" width="90%"> -->
+      <!-- </div> -->
+      <!-- <div class="row"> -->
+      <!-- <div class="col m3">
+         <img src="{{url_for('static', filename='images/barista-woman.jpg')}}" id="barista-woman" class="responsive-img"
+         alt="Barista" />
+      </div> -->
+      <!-- <div class="col m10 offset-m1 l8 offset-l2"> -->
+      <div class="col m10 l8">
+         <div class="card" id="add-brew-container">
+            <img src="{{url_for('static',filename='images/aeropress_four_hands_slim.png')}}" alt="AeroPress Four Hands"
+               width="100%">
             <div class="card-content">
                <span class="card-title">
                   <i class="material-icons">
                      add_circle
-                  </i> Add a Brew</span>
+                  </i>Brew</span>
                <!-- <h5>Your Details</h5> -->
                <br>
                <form class="" action="{{ url_for('insert_brew') }}" method="POST">
@@ -41,6 +52,8 @@
                      </div>
                   </div>
                   <div class="row">
+                     <h5>Details</h5>
+                     <br>
                      <div class="input-field col s12 m8 l4">
                         <!-- <h5>Your Brew</h5> -->
                         <select id="brewer" name="brewer" class="icons">
@@ -58,7 +71,7 @@
                         <img src="static/images/bean.svg" alt="Coffee Beans" class="beans-form">
                         <label for="coffee_weight_slider">Coffee Dose (g)</label>
                         <input type="range" id="coffee_weight_slider" name="coffee_weight" min="10" max="40" value="16"
-                           onclick="displaySliderValue('coffee_weight');" />
+                           class="input-slider" />
                      </div>
                      <div class="col s2 m4">
                         <div class="slider-value"><span id="coffee_weight_span"></span>g</div>
@@ -68,9 +81,9 @@
                   <div class="row valign-wrapper">
                      <div class="range-field col s10 m8">
                         <img src="static/images/grinder.svg" alt="Coffee Grinder" class="grinder-form">
-                        <label for="grind_size_slider">Grind Size (1: fine, 10: coarse)</label>
+                        <label for="grind_size_slider">Grind Size (1: Fine, 10: Coarse)</label>
                         <input type="range" id="grind_size_slider" name="grind_size" min="1" max="10" value="5"
-                           onclick="displaySliderValue('grind_size');" />
+                           class="input-slider" />
                      </div>
                      <div class="col s2 m4">
                         <div class="slider-value"><span id="grind_size_span"></span>/10</div>
@@ -81,7 +94,7 @@
                         <img src="static/images/thermometer.svg" alt="Thermomenter" class="thermometer-form">
                         <label for="water_temp_slider">Water Temp (°C)</label>
                         <input type="range" id="Water Temp" name="water_temp" min="70" max="100" value="90"
-                           onclick="displaySliderValue('water_temp');" />
+                           class="input-slider" />
                      </div>
                      <div class="col s2 m4">
                         <div class="slider-value"><span id="water_temp_span"></span>°C</div>
@@ -92,7 +105,7 @@
                         <i class="material-icons">timer</i>
                         <label for="brew_time">Total Brew Time (s)</label>
                         <input type="range" id="brew_time" name="brew_time" min="30" max="220" value="120" step="5"
-                           onclick="displaySliderValue('brew_time');" />
+                           class="input-slider" />
                      </div>
                      <div class="col s2 m4">
                         <div class="slider-value"><span id="brew_time_span"></span>s</div>

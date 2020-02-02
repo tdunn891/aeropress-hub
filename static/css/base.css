@@ -26,22 +26,33 @@ main {
 /* Navigation bar */
 nav {
 	background-color: #4a2c2a !important;
-	/* background-color: wheat !important; */
-	/* background-color: white !important; */
-	/* line-height: 82px; */
-	/* height: 82px; */
+}
+
+#mobile-nav {
+	background-color: #4a2c2a;
+}
+
+#mobile-nav * {
+	color: white !important;
 }
 
 .brand-logo {
-	/* color: burlywood !important; */
 	color: white !important;
 }
 
 .form-container {
-	border: 1px solid #4a2c2a;
+	/* border: 1px solid #4a2c2a; */
+	display: block;
 	background-color: white;
 	opacity: 0.97;
-	padding: 8px !important;
+	/* padding: 10px !important; */
+	-webkit-box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.14);
+	-moz-box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.14);
+	box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.14);
+}
+
+#add-brew-container {
+	opacity: 0.97;
 }
 
 /* Input field selectors */
@@ -58,8 +69,16 @@ nav {
 	height: 18px;
 }
 
+.beans-form {
+	height: 32px;
+}
+
 .grinder {
 	height: 25px;
+}
+
+.grinder-form {
+	height: 36px;
 }
 
 .medal {
@@ -77,6 +96,10 @@ nav {
 
 .thermometer {
 	height: 40px;
+}
+
+.thermometer-form {
+	height: 34px;
 }
 
 #headers-list {
@@ -98,7 +121,9 @@ nav {
 /* 'Like' thumb */
 .thumb {
 	margin-right: 0px !important;
-	font-size: 1.1rem !important;
+	font-size: 1.2rem !important;
+	display: inline !important;
+	vertical-align: middle !important;
 }
 
 .thumb-anchor:hover {
@@ -109,10 +134,12 @@ nav {
 	display: none;
 }
 
+.slider-value {
+	font-size: large;
+}
 #headers {
 	background-color: #4a2c2a;
 	color: white;
-	/* color: wheat; */
 	cursor: auto;
 }
 
@@ -128,7 +155,6 @@ nav {
 
 /* Collapsible header */
 .collapsible-header:hover {
-	/* background-color: burlywood; */
 	background-color: wheat;
 	transition: all 0.1s ease-in;
 }
@@ -136,23 +162,26 @@ nav {
 /* Collapsible content */
 .collapsible-body {
 	padding: 14px;
-	/* background-color: lightgray; */
 	background-color: wheat;
 	opacity: 0.97;
 }
 
 /* Steps background color */
 .steps li {
-	/* background-color: lightgray !important; */
 	background-color: wheat !important;
 }
 
-.edit-btn {
+/* Delete and Edit buttons */
+.edit-btn,
+.delete-btn {
+	display: flex;
 	margin-right: 12px;
 }
 
-.reset-btn {
-	margin: 10px;
+/* Delete and Edit button icons */
+.pencil,
+.bin {
+	margin-right: 5px;
 }
 
 /* Pagination bar */
@@ -168,7 +197,6 @@ nav {
 	background-color: pink;
 	background-color: wheat;
 	transition: all 0.2s ease-in-out;
-	/* color: white; */
 }
 
 /* Filter checkboxes */
@@ -187,8 +215,6 @@ label {
 
 .checkbox-label span:hover {
 	color: darkorange;
-	/* font-size: 18px; */
-	/* font-weight: bold; */
 }
 
 .hoverable {
@@ -202,6 +228,11 @@ label {
 		0 2px 8px 0 rgba(0, 0, 0, 0.19);
 	box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.2), 0 2px 8px 0 rgba(0, 0, 0, 0.19);
 	cursor: pointer;
+}
+
+#spilled-beans {
+	height: 230px;
+	width: auto;
 }
 
 footer {
