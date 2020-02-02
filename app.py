@@ -24,93 +24,102 @@ mongo = PyMongo(app)
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html', get_brews_active='active', title="Brew Browser")
+    # Renders index.html
+    return render_template('index.html',
+                           get_brews_active='active',
+                           title="Brew Browser")
 
 
 @app.route('/get_brews')
 def get_brews():
-    total_records = mongo.db.brews.count()
-    # * below is serial of filters for current page, so eg 'next url' will need different offset'
+    # Retreives filtered, sorted brews from MongoDB, and returns jsonified rendered template: response.html
+
+    # serialised filters for current page
     serial_filters = str(request.query_string)[2:-1]
+    # print(request.args)
 
-    if 'brew_source' in request.args:
-        brew_source_array = request.args.getlist('brew_source')
+    # if all arguments are populated, save arguments as list
+    if all(arg in request.args for arg in ('brew_source', 'brewer', 'filter')):
+        brew_source_args = request.args.getlist('brew_source')
+        brewer_args = request.args.getlist('brewer')
+        filter_args = request.args.getlist('filter')
     else:
+        # no matching records
         return jsonify({'data': '<h6>No Matching Records</h6>'})
 
-    if 'brewer' in request.args:
-        brewer_array = request.args.getlist('brewer')
-    else:
-        return jsonify({'data': '<h6>No Matching Records</h6>'})
-
-    if 'filter' in request.args:
-        filter_array = request.args.getlist('filter')
-    else:
-        return jsonify({'data': '<h6>No Matching Records</h6>'})
-
-    brew = mongo.db.brews
-
-    # Pagination
-    #    https://www.youtube.com/watch?v=Lnt6JqtzM7I
-    # * which ever number is clicked, the offset would be Number * Limit
+    # Pagination limit: 8 results per page
     limit = 8
-    # * default offset should be 0 (shows first page)
+
     if 'offset' in request.args:
+        # get offset from query string
         offset = int(request.args['offset'])
-        # * remove first 2 parameter from serial_filters (limit and offset)
+        # remove first 2 parameters from serial_filters (limit and offset)
         serial_filters = serial_filters.split('&', 2)[2]
-        print('SERIAL_FILTERS_2: ' + str(serial_filters))
+        # print('SERIAL_FILTERS_2: ' + str(serial_filters))
     else:
+        # if offset not provided, offset: 0
         offset = 0
 
-    # * offset = limit * (page number - 1)
+    # if sort-by in query string
     if 'sort-by' in request.args:
+        # get sort_field from request argument
         sort_field = str(request.args['sort-by'])
     else:
+        # sort by barista
         sort_field = "barista"
 
-    # if Most Popular or Coffee Grind, sort descending
+    # if sort field is Most Popular, Coffee Grind, or Year, sort descending
     if sort_field in ['likes', 'details.coffee_dose_g', 'year']:
         sort_direction = -1
         mongo_sort_operator = "$lte"
     else:
-        # else sort ascending
+        # sort ascending
         sort_direction = 1
         mongo_sort_operator = "$gte"
 
-    # * this is just maintaining the full sorted records each time (by field, then by id)
+    # all brews
+    brew = mongo.db.brews
+
+    # filtered and sorted records
     starting_id = brew.find({
-        "brew_source": {"$in": brew_source_array},
-        "details.brewer": {"$in": brewer_array},
-        "details.filter": {"$in": filter_array}
+        "brew_source": {"$in": brew_source_args},
+        "details.brewer": {"$in": brewer_args},
+        "details.filter": {"$in": filter_args}
     }).collation({"locale": "en"}).sort([(sort_field, sort_direction), ('_id', sort_direction)])
 
+    # select only records to be displayed on current page
     brews = starting_id[offset:offset+limit]
+    # count of filtered records
     filtered_records_count = str(starting_id.count())
     brews_displayed = brews.count(with_limit_and_skip=True)
 
-    # ? next and prev prb shouldn be required, just get from urls dict
-    # * the first 2 terms are right, need to exclude offset and limit from serial_filters, before passing in
+    # next url for right chevron anchor
     next_url = '/get_brews?limit=' + \
         str(limit) + '&offset=' + str(offset + limit) + '&' + serial_filters
+    # prev url for left chevron anchor
     prev_url = '/get_brews?limit=' + \
         str(limit) + '&offset=' + str(offset - limit) + '&' + serial_filters
 
-    # calculate number of pages required
-    num_pages, overflow = divmod(int(filtered_records_count), limit)
-    current_page = ((int(offset)+1) // limit) + 1
+    # number of pages required, and extra records
+    num_pages, extra_records = divmod(int(filtered_records_count), limit)
 
-    # if there's an overflow, increase num_pagese by 1
-    if overflow > 0:
+    # if extra_records exist, an additional page is required
+    if extra_records > 0:
         num_pages += 1
 
-    # prepare urls for each page number
+    # current page, used as input to calculate which records are displayed
+    current_page = ((int(offset)+1) // limit) + 1
+
+    # prepare  pagination urls for each page number
     urls = {}
     for page_number in range(1, num_pages+1):
         offset_2 = limit * (page_number - 2)
         urls[page_number] = '/get_brews?limit=' + \
             str(limit) + '&offset=' + \
             str(offset_2 + limit) + '&' + serial_filters
+
+    # count of total records
+    total_records = mongo.db.brews.count()
 
     return jsonify({'data': render_template('response.html',
                                             brews=brews,
@@ -130,21 +139,20 @@ def get_brews():
 
 @app.route('/add_brew')
 def add_brew():
-    return render_template("add_brew.html", add_brew_active="active", title="Add Brew")
+    # renders Add Brew page, ready for user form input
+    return render_template("add_brew.html",
+                           add_brew_active="active",
+                           title="Add Brew")
 
 
 @app.route('/insert_brew', methods=['GET', 'POST'])
 def insert_brew():
+    # inserts record into database
+
     brews = mongo.db.brews
     if request.method == 'POST':
         req = request.form
-        stepsArray = req.get("steps-text-area").split('\r\n')
-        # convert total seconds to mins and seconds
-        # total_seconds = int(req.get("brew_time"))
-        # m, s = divmod(total_seconds, 60)
-        # formatted_time = f'{m:01d}:{s:02d}'
-
-        payload = {
+        record = {
             "brew_name": req.get("brew_name"),
             "year": datetime.datetime.now().year,
             "place": 100,
@@ -152,9 +160,8 @@ def insert_brew():
             "country": req.get("country"),
             "brew_source": "Average Joe",
             "total_brew_time": int(req.get("brew_time")),
-            "steps": stepsArray,
+            "steps": req.get("steps-text-area").split('\r\n'),
             "details": {
-                # TODO: remove 'g' and 'C'
                 "coffee_dose_g": int(req.get("coffee_weight")),
                 "grind": int(req.get("grind_size")),
                 "water_temp_c": int(req.get("water_temp")),
@@ -163,43 +170,29 @@ def insert_brew():
             },
             "likes": 0
         }
-    brews.insert_one(payload)
+    brews.insert_one(record)
     return redirect(url_for('index'))
 
 
 @app.route('/edit_brew/<brew_id>')
 def edit_brew(brew_id):
+    # renders Edit Brew page, presenting user with form input
+    # find user-selected brew, so that it is ready for editing
     brew = mongo.db.brews.find_one({'_id': ObjectId(brew_id)})
-    # convert mins/secs to total secs
-    # mins = brew['total_brew_time'][0]
-    # secs = brew['total_brew_time'][2:]
-    # total_secs = int(mins)*60 + int(secs)
-    # print(total_secs)
-    prefilled_filter = brew['details']['filter']
-    # print(prefilled_filter)
-    filter_dict = {
-        "Paper": '',
-        "Paper x2": '',
-        "Metal": '',
-        "Metal \u002B Paper": ''
-    }
-
-    for i in filter_dict:
-        if (i == prefilled_filter):
-            filter_dict[prefilled_filter] = "selected='selected'"
 
     return render_template('edit_brew.html',
                            brew=brew,
-                           filter_dict=filter_dict,
+                           brewers=['Upright', 'Inverted'],
+                           filters=['Paper', 'Paper x2',
+                                    'Metal', 'Metal \u002B Paper'],
                            title="Edit Brew")
 
 
 @app.route('/update_brew/<brew_id>', methods=['GET', 'POST'])
 def update_brew(brew_id):
+    # posts updates from Edit Brew page to database
     if request.method == 'POST':
         req = request.form
-        # populate list from steps
-        stepsArray = req.get("steps-text-area").split('\r\n')
         mongo.db.brews.find_one_and_update(
             {'_id': ObjectId(brew_id)},
             {'$set': {
@@ -208,9 +201,8 @@ def update_brew(brew_id):
                 "barista": req.get("barista_name"),
                 "country": req.get("country"),
                 "total_brew_time": int(req.get("brew_time")),
-                "steps": stepsArray,
+                "steps": req.get("steps-text-area").split('\r\n'),
                 "details": {
-                    # TODO: remove 'g' and 'C'
                     "coffee_dose_g": int(req.get("coffee_weight")),
                     "grind": int(req.get("grind_size")),
                     "water_temp_c": int(req.get("water_temp")),
@@ -223,6 +215,7 @@ def update_brew(brew_id):
 
 @app.route('/increase_likes/<brew_id>', methods=['GET', 'POST'])
 def increase_likes(brew_id):
+    # increases like count by 1
     mongo.db.brews.find_one_and_update(
         {'_id': ObjectId(brew_id)},
         {'$inc': {'likes': 1}}
@@ -232,6 +225,7 @@ def increase_likes(brew_id):
 
 @app.route('/delete_brew/<brew_id>')
 def delete_brew(brew_id):
+    # deletes brew from database
     mongo.db.brews.remove({'_id': ObjectId(brew_id)})
     return redirect(url_for('index'))
 
@@ -245,12 +239,17 @@ def empty_db():
 
 @app.route('/about')
 def about():
-    return render_template('about.html', about_active='active', title="About")
+    # renders About page
+    return render_template('about.html',
+                           about_active='active',
+                           title="About")
 
 
 @app.errorhandler(404)
 def error404(notfound):
-    return render_template('error404.html', title="404 - Page Not Found")
+    # Renders ERROR 404 page
+    return render_template('error404.html',
+                           title="404 - Page Not Found")
 
 
 if __name__ == '__main__':
