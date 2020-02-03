@@ -3,35 +3,25 @@
 
 <div class="container">
    <div class="row">
-      <div class="col s12 l2">
-         <h3>Add Brew</h3>
+      <div class="col s12 l3">
+         <h3>Add Brew
+            <i class="material-icons">
+               add_circle
+            </i>
+         </h3>
          <p>Share yours with the community</p>
+         <img src="{{url_for('static',filename='images/barista-woman.jpg')}}"
+            class="responsive-img hide-on-med-and-down">
       </div>
-      <!-- src="https://image.shutterstock.com/z/stock-photo-empty-clear-aeropress-filter-cap-two-paper-filters-and-steel-travel-cup-held-up-in-the-air-by-496228861.jpg" -->
-      <!-- <div class="col s12 center"> -->
-      <!-- </div> -->
-      <!-- <img src="{{url_for('static',filename='images/aeropress_four_hands.png')}}" alt="" width="90%"> -->
-      <!-- </div> -->
-      <!-- <div class="row"> -->
-      <!-- <div class="col m3">
-         <img src="{{url_for('static', filename='images/barista-woman.jpg')}}" id="barista-woman" class="responsive-img"
-         alt="Barista" />
-      </div> -->
-      <!-- <div class="col m10 offset-m1 l8 offset-l2"> -->
-      <div class="col m10 l8">
+      <div class="col s12 l9">
          <div class="card" id="add-brew-container">
-            <img src="{{url_for('static',filename='images/aeropress_four_hands_slim.png')}}" alt="AeroPress Four Hands"
-               width="100%">
+            <!-- <img src="{{url_for('static',filename='images/aeropress_four_hands_slim.png')}}" class="responsive-img"
+               alt="AeroPress Four Hands" /> -->
             <div class="card-content">
-               <span class="card-title">
-                  <i class="material-icons">
-                     add_circle
-                  </i>Brew</span>
-               <!-- <h5>Your Details</h5> -->
-               <br>
+               <span class="card-title">Brew</span>
                <form class="" action="{{ url_for('insert_brew') }}" method="POST">
                   <div class="row">
-                     <div class="input-field col s12 m12 l12">
+                     <div class="input-field col s12">
                         <i class="material-icons prefix">local_cafe</i>
                         <input id="brew_name" name="brew_name" type="text" class="validate" required />
                         <label for="brew_name">Brew Name</label>
@@ -55,12 +45,9 @@
                      <h5>Details</h5>
                      <br>
                      <div class="input-field col s12 m8 l4">
-                        <!-- <h5>Your Brew</h5> -->
                         <select id="brewer" name="brewer" class="icons">
-                           <option value="Inverted" data-icon="static/images/aeropress_inverted.svg" class="left"
-                              default>
-                              Inverted</option>
-                           <option value="Upright" data-icon="static/images/aeropress.svg" class="left">Upright
+                           <option value="Inverted" data-icon="static/images/aeropress_inverted.svg">Inverted</option>
+                           <option value="Upright" data-icon="static/images/aeropress.svg">Upright
                            </option>
                         </select>
                         <label for="brewer">Brewing Method</label>
@@ -77,7 +64,6 @@
                         <div class="slider-value"><span id="coffee_weight_span"></span>g</div>
                      </div>
                   </div>
-
                   <div class="row valign-wrapper">
                      <div class="range-field col s10 m8">
                         <img src="static/images/grinder.svg" alt="Coffee Grinder" class="grinder-form">
@@ -93,7 +79,7 @@
                      <div class="range-field col s10 m8">
                         <img src="static/images/thermometer.svg" alt="Thermomenter" class="thermometer-form">
                         <label for="water_temp_slider">Water Temp (°C)</label>
-                        <input type="range" id="Water Temp" name="water_temp" min="70" max="100" value="90"
+                        <input type="range" id="water_temp_slider" name="water_temp" min="70" max="100" value="90"
                            class="input-slider" />
                      </div>
                      <div class="col s2 m4">
@@ -113,13 +99,11 @@
                   </div>
                   <div class="row">
                      <div class="input-field col s12 m8 l4">
-                        <!-- <img src="static/images/filter.svg" alt="Coffee filter" height="32px" class="prefix"> -->
-                        <select id="filter" name="filter" required>
-                           <option value="Paper" default>Paper</option>
+                        <select id="filter" name="filter">
+                           <option value="Paper">Paper</option>
                            <option value="Paper x2">Paper x2</option>
                            <option value="Metal">Metal</option>
                            <option value="Metal &#43; Paper">Metal &#43; Paper</option>
-                           <span class="helper-text" data-error="Required" data-success=""></span>
                         </select>
                         <label for="filter">Filter Type</label>
                      </div>
@@ -129,6 +113,7 @@
                         <i class="material-icons">format_list_numbered</i>
                         Process
                      </h5>
+                     <br>
                      <div class="col s12 m12 l12">
                         <div class="row">
                            <div class="input-field col s12">
@@ -140,7 +125,7 @@
                      </div>
                   </div>
                   <div class="card-action">
-                     <button class="btn btn-medium waves-effect waves-light green" type="submit">
+                     <button class="btn btn-medium waves-effect waves-light green" id="add-brew-btn" type="submit">
                         Submit
                         <i class="material-icons right">send</i>
                      </button>

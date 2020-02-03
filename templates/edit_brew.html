@@ -3,28 +3,20 @@
 
 <div class="container">
    <div class="row">
-      <div class="col s12 l2">
-         <h3>Edit Brew</h3>
-         <p>Something not quite right?</p>
+      <div class="col s12 l3">
+         <h3>Edit Brew
+            <i class="material-icons pencil">edit</i>
+         </h3>
+         <p>Share yours with the community</p>
+         <img src="{{url_for('static',filename='images/barista-woman.jpg')}}"
+            class="responsive-img hide-on-med-and-down">
       </div>
-      <!-- src="https://image.shutterstock.com/z/stock-photo-empty-clear-aeropress-filter-cap-two-paper-filters-and-steel-travel-cup-held-up-in-the-air-by-496228861.jpg" -->
-      <!-- <div class="col s12 center"> -->
-      <!-- </div> -->
-      <!-- <img src="{{url_for('static',filename='images/aeropress_four_hands.png')}}" alt="" width="90%"> -->
-      <!-- </div> -->
-      <!-- <div class="row"> -->
-      <!-- <div class="col m3">
-         <img src="{{url_for('static', filename='images/barista-woman.jpg')}}" id="barista-woman" class="responsive-img"
-         alt="Barista" />
-      </div> -->
-      <!-- <div class="col m10 offset-m1 l8 offset-l2"> -->
-      <div class="col m10 l8">
+      <div class="col s12 l9">
          <div class="card">
-            <img src="{{url_for('static',filename='images/aeropress_four_hands_slim.png')}}" alt="" width="100%">
+            <!-- <img src="{{url_for('static',filename='images/aeropress_four_hands_slim.png')}}" alt="AeroPress Four Hands"> -->
             <div class="card-content">
                <span class="card-title">
                   Brew</span>
-               <!-- <h5>Your Details</h5> -->
                <br>
                <form class="" action="{{ url_for('update_brew', brew_id=brew._id) }}" method="POST">
                   <div class="row">
@@ -55,8 +47,6 @@
                      <h5>Brew Details</h5>
                      <br>
                      <div class="input-field col s12 m8 l4">
-                        <!-- <h5>Your Brew</h5> -->
-                        <!-- TODO: clean solution for preselected dropdown (without big if statement) -->
                         <select id="brewer" name="brewer" class="icons">
                            {% for brewer in brewers %}
                            {% if brewer == brew.details.brewer %}
@@ -81,7 +71,6 @@
                         <div class="slider-value"><span id="coffee_weight_span"></span>g</div>
                      </div>
                   </div>
-
                   <div class="row valign-wrapper">
                      <div class="range-field col s10 m8">
                         <img src="{{url_for('static', filename='images/grinder.svg')}}" alt="Coffee Grinder"
@@ -99,7 +88,7 @@
                         <img src="{{url_for('static', filename='images/thermometer.svg')}}" alt="Thermomenter"
                            class="thermometer-form">
                         <label for="water_temp_slider">Water Temp (°C)</label>
-                        <input type="range" id="Water Temp" name="water_temp" min="70" max="100"
+                        <input type="range" id="water_temp_slider" name="water_temp" min="70" max="100"
                            value="{{ brew.details.water_temp_c }}" class="input-slider" />
                      </div>
                      <div class="col s2 m4">
@@ -119,9 +108,7 @@
                   </div>
                   <div class="row">
                      <div class="input-field col s12 m8 l4">
-                        <!-- <img src="static/images/filter.svg" alt="Coffee filter" height="32px" class="prefix"> -->
-                        <!-- TODO: edit_brew filter html -->
-                        <select id="filter" name="filter" required>
+                        <select id="filter" name="filter">
                            {% for filter_type in filters %}
                            {% if filter_type == brew.details.filter %}
                            <option value='{{ filter_type }}' selected='selected'>{{ filter_type }}</option>
@@ -129,7 +116,6 @@
                            <option value='{{ filter_type }}'>{{filter_type}}</option>
                            {% endif %}
                            {% endfor %}
-                           <span class="helper-text" data-error="Required" data-success=""></span>
                         </select>
                         <label for="filter">Filter Type</label>
                      </div>
@@ -139,18 +125,19 @@
                         <i class="material-icons">format_list_numbered</i>
                         Process
                      </h5>
+                     <br>
                      <div class="col s12 m12 l12">
                         <div class="row">
                            <div class="input-field col s12">
-                              <textarea id="steps-text-area" name="steps-text-area" class="materialize-textarea"
-                                 value="{{ brew.steps }}">{{brew.steps|join('\n')}}</textarea>
+                              <textarea id="steps-text-area" name="steps-text-area"
+                                 class="materialize-textarea">{{brew.steps|join('\n')}}</textarea>
                               <label for="steps-text-area">Enter each step on a new line</label>
                            </div>
                         </div>
                      </div>
                   </div>
                   <div class="card-action">
-                     <button class="btn btn-medium waves-effect waves-light green" type="submit">
+                     <button class="btn btn-medium waves-effect waves-light green" id="update-brew-btn" type="submit">
                         <i class="material-icons right">edit</i>
                         Update Brew
                      </button>
@@ -164,17 +151,4 @@
       </div>
    </div>
 </div>
-{% endblock %}
-
-{% block additional_scripts %}
-<script type="text/javascript">
-   // TODO: move to main.js or elsewher
-   $(document).ready(function () {
-      displaySliderValue('coffee_weight');
-      displaySliderValue('grind_size');
-      displaySliderValue('water_temp');
-      displaySliderValue('brew_time');
-   })
-
-</script>
 {% endblock %}
