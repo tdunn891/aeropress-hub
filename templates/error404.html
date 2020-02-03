@@ -1,8 +1,14 @@
 {% extends 'base.html' %} {% block content %}
 
 <!-- 404 message -->
-<h5>404 Error</h5>
-<p>Oops!</p>
-<a href="{{url_for('index')}}">Take me back</a>
+<div class="center">
+   <h3>Oops!</h3>
+   <br>
+   <h5>404 - Page Not Found</h5>
+   <img src="https://cdn.pixabay.com/photo/2016/05/18/03/51/coffee-1399799_960_720.jpg" id="spilled-beans"
+      class="img-responsive" alt="Spilled Coffee Beans" />
+   <p>The page you are looking for might have been removed, had its name changed or is temporarily unavailable.</p>
+   <a href="{{url_for('index')}}" class="btn btn-medium waves-effect">Go to homepage</a>
+</div>
 
 {% endblock %}

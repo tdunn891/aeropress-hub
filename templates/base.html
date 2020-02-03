@@ -5,7 +5,6 @@
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
    <!-- Compiled and minified CSS -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
    <!-- Material Icons -->
@@ -16,23 +15,22 @@
    <link rel="stylesheet" href="{{url_for('static', filename='css/base.css')}}" type="text/css" />
    <!-- Favicon -->
    <link rel="shortcut icon" href="{{url_for('static', filename='images/aeropress_colour.png')}}" type="image/x-icon">
-
-   <title>AeroPress Brews</title>
+   <title>AeroPress Hub | {{ title }}</title>
 </head>
 
 <body>
-   <!-- Nav bar -->
-   <!-- TODO: ensure navbar responsive -->
+   <!-- Navgation Bar -->
    <div class="navbar">
       <nav>
          <div class="nav-wrapper">
             <a href="{{url_for('index')}}" class="brand-logo center">AeroPress Hub</a>
+            <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
                <li class={{get_brews_active}}>
                   <a href="{{url_for('index')}}" class="waves-effect waves-light">BREW BROWSER</a>
                </li>
                <li class={{add_brew_active}}>
-                  <a href="{{url_for('add_brew')}}" class="waves-effect waves-light">ADD A BREW</a>
+                  <a href="{{url_for('add_brew')}}" class="waves-effect waves-light">ADD BREW</a>
                </li>
                <li class={{about_active}}>
                   <a href="{{url_for('about')}}" class="waves-effect waves-light">ABOUT</a>
@@ -40,6 +38,27 @@
             </ul>
          </div>
       </nav>
+
+      <!-- Side Navigation Bar -->
+      <ul class="sidenav" id="mobile-nav">
+         <li class={{get_brews_active}}>
+            <a href="{{url_for('index')}}" class="waves-effect waves-light">
+               <i class="material-icons prefix">local_cafe</i>
+               BREW BROWSER</a>
+         </li>
+         <li class={{add_brew_active}}>
+            <a href="{{url_for('add_brew')}}" class="waves-effect waves-light">
+               <i class="material-icons">add_circle</i>
+               ADD BREW
+            </a>
+         </li>
+         <li class={{about_active}}>
+            <a href="{{url_for('about')}}" class="waves-effect waves-light">
+               <i class="material-icons">info</i>
+               ABOUT
+            </a>
+         </li>
+      </ul>
    </div>
    {% block content %}
 
@@ -51,15 +70,12 @@
    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
    <!-- some of the below is only relevant for certain pages -->
    <script src="{{url_for('static', filename='js/main.js')}}"></script>
-   {% block addl_scripts %}
-
-   {% endblock %}
 
    <footer class="page-footer">
       <div class="container">
          <div class="row">
             <div class="col l6 s12">
-               <p class="grey-text text-lighten-4">Brews Sourced from: <a href="https://www.aeropress.com/"
+               <p class="grey-text text-lighten-4">Championship Brews Sourced from: <a href="https://www.aeropress.com/"
                      target="_blank">AeroPress.com</a>
                </p>
             </div>

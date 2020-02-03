@@ -1,160 +1,328 @@
-$(document).ready(function() {
-	$('select').formSelect();
-	// $('input#input_text, textarea#textarea2').characterCounter();
-	$('.sidenav').sidenav();
-	//TODO: Adjust tool tip delays
+// After response from database is recieved
+$(document).ajaxComplete(() => {
 	$('.tooltipped').tooltip();
 	$('.collapsible').collapsible({
-		inDuration: 250,
-		outDuration: 250
+		induration: 250,
+		outduration: 250
 	});
+
+	// Toast confirming delete
+	$('.confirm-delete-btn').on('click', () => {
+		M.toast({
+			html: `Deleted &nbsp; <i class="material-icons bin">delete</i>`,
+			classes: 'rounded'
+		});
+	});
+
+	// Pagination: Go to page
+	$('.page-number').on('click', function() {
+		let url = $(this).attr('data-page-url');
+		goToPage(url);
+	});
+
+	// Toast confirming 'Like'
+	$('.thumb-anchor').on('click', () => {
+		M.toast({
+			html: `Liked &nbsp; <i class="material-icons thumb">thumb_up</i>`,
+			classes: 'rounded'
+		});
+	});
+
+	// 'Delete' modal
 	$('.modal').modal({ opacity: 0.2 });
-	$('.fixed-action-btn').floatingActionButton();
+	$('.delete-btn').on('click', function() {
+		let id = $(this).data('id');
+		$('.confirm-delete-btn').attr('href', '/delete_brew/' + id);
+	});
 });
 
-// shows value of slider
+$(document).ready(() => {
+	// TODO: window location href not ideal (doesn't load initially)
+	if (window.location.href.includes('/index')) {
+		getFirstPage();
+	}
+
+	// Toast: 'Updated'
+	$('#update-brew-btn').on('click', () => {
+		M.toast({
+			html: `Brew Updated &nbsp; <i class="material-icons pencil">edit</i>`,
+			classes: 'rounded'
+		});
+	});
+
+	// Toast: 'Added'
+	$('#add-brew-btn').on('click', () => {
+		M.toast({
+			html: `Brew Added &nbsp; <i class="material-icons">add_circle</i>`,
+			classes: 'rounded'
+		});
+	});
+
+	// Display slider values (only relates to Add and Edit)
+	const sliderValues = [
+		'coffee_weight',
+		'grind_size',
+		'water_temp',
+		'brew_time'
+	];
+
+	sliderValues.forEach(sliderValue => {
+		displaySliderValue(sliderValue);
+	});
+
+	// On change of form, submit the form and reload the table
+	$('#filters').on('change', () => {
+		getFirstPage();
+	});
+
+	// Initialise Material components
+	$('select').formSelect();
+	$('.sidenav').sidenav();
+
+	// Autocomplete for country input
+	$('input.autocomplete').autocomplete({
+		data: {
+			Afghanistan: null,
+			Albania: null,
+			Algeria: null,
+			Andorra: null,
+			Angola: null,
+			Anguilla: null,
+			'Antigua &amp; Barbuda': null,
+			Argentina: null,
+			Armenia: null,
+			Aruba: null,
+			Australia: null,
+			Austria: null,
+			Azerbaijan: null,
+			Bahamas: null,
+			Bahrain: null,
+			Bangladesh: null,
+			Barbados: null,
+			Belarus: null,
+			Belgium: null,
+			Belize: null,
+			Benin: null,
+			Bermuda: null,
+			Bhutan: null,
+			Bolivia: null,
+			'Bosnia &amp; Herzegovina': null,
+			Botswana: null,
+			Brazil: null,
+			'British Virgin Islands': null,
+			Brunei: null,
+			Bulgaria: null,
+			'Burkina Faso': null,
+			Burundi: null,
+			Cambodia: null,
+			Cameroon: null,
+			'Cape Verde': null,
+			'Cayman Islands': null,
+			Chad: null,
+			Chile: null,
+			China: null,
+			Colombia: null,
+			Congo: null,
+			'Cook Islands': null,
+			'Costa Rica': null,
+			'Cote D Ivoire': null,
+			Croatia: null,
+			Cuba: null,
+			Cyprus: null,
+			'Czech Republic': null,
+			Denmark: null,
+			Djibouti: null,
+			Dominica: null,
+			'Dominican Republic': null,
+			Ecuador: null,
+			Egypt: null,
+			'El Salvador': null,
+			'Equatorial Guinea': null,
+			Estonia: null,
+			Ethiopia: null,
+			'Falkland Islands': null,
+			'Faroe Islands': null,
+			Fiji: null,
+			Finland: null,
+			France: null,
+			'French Polynesia': null,
+			'French West Indies': null,
+			Gabon: null,
+			Gambia: null,
+			Georgia: null,
+			Germany: null,
+			Ghana: null,
+			Gibraltar: null,
+			Greece: null,
+			Greenland: null,
+			Grenada: null,
+			Guam: null,
+			Guatemala: null,
+			Guernsey: null,
+			Guinea: null,
+			'Guinea Bissau': null,
+			Guyana: null,
+			Haiti: null,
+			Honduras: null,
+			'Hong Kong': null,
+			Hungary: null,
+			Iceland: null,
+			India: null,
+			Indonesia: null,
+			Iran: null,
+			Iraq: null,
+			Ireland: null,
+			'Isle of Man': null,
+			Israel: null,
+			Italy: null,
+			Jamaica: null,
+			Japan: null,
+			Jersey: null,
+			Jordan: null,
+			Kazakhstan: null,
+			Kenya: null,
+			Kuwait: null,
+			'Kyrgyz Republic': null,
+			Laos: null,
+			Latvia: null,
+			Lebanon: null,
+			Lesotho: null,
+			Liberia: null,
+			Libya: null,
+			Liechtenstein: null,
+			Lithuania: null,
+			Luxembourg: null,
+			Macau: null,
+			Macedonia: null,
+			Madagascar: null,
+			Malawi: null,
+			Malaysia: null,
+			Maldives: null,
+			Mali: null,
+			Malta: null,
+			Mauritania: null,
+			Mauritius: null,
+			Mexico: null,
+			Moldova: null,
+			Monaco: null,
+			Mongolia: null,
+			Montenegro: null,
+			Montserrat: null,
+			Morocco: null,
+			Mozambique: null,
+			Namibia: null,
+			Nepal: null,
+			Netherlands: null,
+			'Netherlands Antilles': null,
+			'New Caledonia': null,
+			'New Zealand': null,
+			Nicaragua: null,
+			Niger: null,
+			Nigeria: null,
+			Norway: null,
+			Oman: null,
+			Pakistan: null,
+			Palestine: null,
+			Panama: null,
+			'Papua New Guinea': null,
+			Paraguay: null,
+			Peru: null,
+			Philippines: null,
+			Poland: null,
+			Portugal: null,
+			'Puerto Rico': null,
+			Qatar: null,
+			Reunion: null,
+			Romania: null,
+			Russia: null,
+			Rwanda: null,
+			'Saint Pierre &amp; Miquelon': null,
+			Samoa: null,
+			'San Marino': null,
+			Satellite: null,
+			'Saudi Arabia': null,
+			Senegal: null,
+			Serbia: null,
+			Seychelles: null,
+			'Sierra Leone': null,
+			Singapore: null,
+			Slovakia: null,
+			Slovenia: null,
+			'South Africa': null,
+			'South Korea': null,
+			Spain: null,
+			'Sri Lanka': null,
+			'St Kitts &amp; Nevis': null,
+			'St Lucia': null,
+			'St Vincent': null,
+			'St. Lucia': null,
+			Sudan: null,
+			Suriname: null,
+			Swaziland: null,
+			Sweden: null,
+			Switzerland: null,
+			Syria: null,
+			Taiwan: null,
+			Tajikistan: null,
+			Tanzania: null,
+			Thailand: null,
+			"Timor L'Este": null,
+			Togo: null,
+			Tonga: null,
+			'Trinidad &amp; Tobago': null,
+			Tunisia: null,
+			Turkey: null,
+			Turkmenistan: null,
+			'Turks &amp; Caicos': null,
+			Uganda: null,
+			Ukraine: null,
+			'United Arab Emirates': null,
+			'United Kingdom': null,
+			USA: null,
+			Uruguay: null,
+			Uzbekistan: null,
+			Venezuela: null,
+			Vietnam: null,
+			'Virgin Islands (US)': null,
+			Yemen: null,
+			Zambia: null,
+			Zimbabwe: null
+		}
+	});
+});
+
+// Displays value of slider in Add Brew & Edit Brew pages
 function displaySliderValue(slider_name) {
 	let sliderNameValue = $(`input[name="${slider_name}"]`).val();
 	$(`#${slider_name}_span`).text(`${sliderNameValue}`);
 }
 
-// Delete button
-$('.delete-btn').on('click', function() {
-	brew_name = $(this).attr('id');
-	M.toast({
-		html: 'Deleted: ' + brew_name,
-		classes: 'rounded',
-		displayLength: 4000
+// on click of input slider, call displaySliderValue
+$('.input-slider').on('click', function() {
+	let slider_name = $(this).attr('name');
+	displaySliderValue(slider_name);
+});
+
+// get first page
+function getFirstPage() {
+	// Get filters from form
+	let serialFilters = $('#filters').serialize();
+	$.ajax({
+		url: `/get_brews?${serialFilters}`,
+		type: 'GET',
+		success: resp => {
+			$('#response').html(resp.data);
+		}
 	});
-});
+}
 
-$('.edit-btn').on('click', function() {
-	console.log('EDIT clicked.');
-	// TODO: change 'this' to use li id selector. hide/show based on a single class eg 'sliders'
-	// Show slider
-	$(this)
-		.siblings('.collection')
-		.find('.coffee-weight-slider')
-		.removeClass('hide');
-	// Show Submit Changes button
-	$(this)
-		.siblings('.make-changes-btn')
-		.removeClass('hide');
-	$(this)
-		.siblings('.cancel-changes-btn')
-		.removeClass('hide');
-	//  hide edit butonn
-	$(this).addClass('hide');
-});
-
-// Make changes btn
-$('.make-changes-btn').on('click', function() {
-	let coffee = $(this)
-		.parent()
-		.find('.coffee-weight-slider')
-		.attr('value');
-	// toast
-	M.toast({
-		html: 'Updated',
-		classes: 'rounded',
-		displayLength: 4000
+// Pagination: go to page and return response
+function goToPage(urlPage) {
+	$.ajax({
+		url: urlPage,
+		type: 'GET',
+		success: resp => {
+			$('#response').html(resp.data);
+		}
 	});
-});
-
-$('.coffee-weight-slider').on('click', function() {
-	let newSliderValue = $(this)
-		.next()
-		.children('.value')
-		.text();
-	//update span w class=title
-	$(this)
-		.prev('.title')
-		.text(newSliderValue + 'g');
-	//update actual value of slider
-	$(this).attr('value', newSliderValue);
-});
-
-$('.cancel-changes-btn').on('click', function() {
-	// exit 'edit mode' (remove sliders etc)
-
-	// Collapse body
-	$(this)
-		.parents('.collapsible-body')
-		.attr('style', '');
-	//  Collapse header
-	$(this)
-		.parents('li')
-		.toggleClass('active');
-	//  hide cancel changes btn and Submit changes btn
-	$(this).addClass('hide');
-	$(this)
-		.siblings('.make-changes-btn')
-		.addClass('hide');
-	// make edit btn shown
-	$(this)
-		.siblings('.edit-btn')
-		.removeClass('hide');
-});
-
-// Add step buton
-$('.add-step-btn').on('click', function() {
-	// Get current step count (number of children)
-	let stepCounter = $(this)
-		.siblings('.steps')
-		.children().length;
-	let nextStep = stepCounter + 1;
-
-	// Add nother step only if previous step not blank
-	if ($(`#step_${stepCounter}`).hasClass('valid')) {
-		$(this).siblings('.steps').append(`
-     <div class="input-field step">
-     <input id="step_${nextStep}" name="step_${nextStep}" type="text" class="validate" required>
-     <label for="step_${nextStep}">Step ${nextStep}</label>
-     </div>`);
-		// put focus on that step
-		$(`#step_${nextStep}`).focus();
-	} else {
-		alert('do first step then add');
-	}
-});
-
-$('.thumb-anchor').on('click', function() {
-	// TODO: figure out why this isnt being triggered
-	// update like count
-	//  * Toasts will have to be initialised after each ajax request
-	console.log('Thumb clicked');
-	M.toast({
-		html: 'Liked',
-		classes: 'rounded',
-		displayLength: 4000
-	});
-});
-
-// OLD way: use localStorage to persist checkboxes (or use session storage?)
-// source: https://www.sitepoint.com/quick-tip-persist-checkbox-checked-state-after-page-reload/
-
-$('#reset-filters').on('click', function() {
-	// TODO: Make Reset btn
-});
-
-// * on click of sort, submit the form
-$('#filters').on('change', function() {
-	// * instead of sort by, should be when any part of form changes,
-	// *  and serialise will take care of the rest
-	console.log('FILTERS changed!');
-	getFirstPage();
-});
-
-// test
-// function initializeMaterialize() {
-// 	alert('test');
-// 	$('.sidenav').sidenav();
-// 	$('.tooltipped').tooltip();
-// 	$('.collapsible').collapsible({
-// 		induration: 250,
-// 		outduration: 250
-// 	});
-// 	$('select').formselect();
-// 	$('.modal').modal({ opacity: 0.2 });
-// 	$('.fixed-action-btn').floatingactionbutton();
-// }
+}

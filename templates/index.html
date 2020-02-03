@@ -3,146 +3,95 @@
 <main>
    <div class="container">
       <div class="row">
-         <h3><img src="{{url_for('static', filename='images/cup-with-steam.gif') }}" height="52px" />Brew Browser</h3>
-         <div class="col s12 m12 l2 form-container">
-            <!-- EMPTY DB -->
-            <!-- <a href="{{url_for('empty_db')}}" class="btn btn-small red" method="POST">Empty Database</a> -->
-            <form action="javascript:void(0);" id="filters">
-               <div class="col s12">
-                  <label for="sort-by">Sort by:</label>
-                  <select class="input-field hoverable browser-default" id="sort-by" name="sort-by">
-                     <option value="" disabled>Sort by:</option>
-                     <option value="barista" selected>Barista Name: A-Z</option>
-                     <option value="brew_name">Brew Name: A-Z</option>
-                     <option value="total_brew_time">Brew Time: Short-Long</option>
-                     <option value="details.coffee">Dose: High-Low</option>
-                     <option value="country">Country: A-Z</option>
-                     <option value="details.grind">Grind: Fine-Coarse</option>
-                     <option value="likes">Most Popular</option>
-                     <option value="place">Place: Winners First</option>
-                     <option value="year">Year: Most Recent</option>
-                  </select>
-                  <br>
-               </div>
-               <div class="col s6 m6 l12">
-                  <b>Brew Source:</b>
-                  <label class="checkbox-label">
-                     <input type="checkbox" id="wac" class="filled-in" checked="checked" name="brew_source"
-                        value="World AeroPress Championships Finalist" />
-                     <span>Championship</span>
-                  </label>
-                  <label class="checkbox-label">
-                     <input type="checkbox" id="non-wac" class="filled-in" checked="checked" name="brew_source"
-                        value="Average Joe" />
-                     <span>Average Joe</span>
-                  </label>
-                  <b>Brewer:</b>
-                  <label class="checkbox-label">
-                     <input type="checkbox" id="upright" class="filled-in" checked="checked" name="brewer"
-                        value="Upright" />
-                     <span>Upright</span>
-                  </label>
-                  <label class="checkbox-label">
-                     <input type="checkbox" id="inverted" class="filled-in" checked="checked" name="brewer"
-                        value="Inverted" />
-                     <span>Inverted</span>
-                  </label>
-               </div>
-               <div class="col s6 m6 l12">
-                  <b>Filter Type:</b>
-                  <label class="checkbox-label">
-                     <input type="checkbox" id="single-paper" class="filled-in" checked="checked" name="filter"
-                        value="Paper" />
-                     <span>Paper</span>
-                  </label>
-                  <label class="checkbox-label">
-                     <input type="checkbox" id="double-paper" class="filled-in" checked="checked" name="filter"
-                        value="Paper x2" />
-                     <span>Paper x2</span>
-                  </label>
-                  <label class="checkbox-label">
-                     <input type="checkbox" id="metal" class="filled-in" checked="checked" name="filter"
-                        value="Metal" />
-                     <span>Metal</span>
-                  </label>
-                  <label class="checkbox-label">
-                     <input type="checkbox" id="metal-and-paper" class="filled-in" checked="checked" name="filter"
-                        value="Metal &#43; Paper" />
-                     <span>Metal + Paper</span>
-                  </label>
-               </div>
-               <div class="col s12 center">
-                  <a class="btn btn-small reset-btn" href="{{ url_for('index') }}" id="reset-filters">RESET</a>
-               </div>
-            </form>
+         <div class="col s12 l2">
+            <h4>Brew Browser</h4>
+            <div class="form-container">
+               <!-- TODO: remove empty db -->
+               <!-- EMPTY DB -->
+               <!-- <a href="{{url_for('empty_db')}}" class="btn btn-small red" method="POST">Empty Database</a> -->
+               <form id="filters">
+                  <div class="col s12">
+                     <p>
+                        <label for="sort-by">Sort by:</label>
+                        <select class="input-field hoverable browser-default" id="sort-by" name="sort-by">
+                           <option value="" disabled>Sort by:</option>
+                           <option value="barista" selected>Barista Name: A-Z</option>
+                           <option value="brew_name">Brew Name: A-Z</option>
+                           <option value="total_brew_time">Brew Time: Short-Long</option>
+                           <option value="details.coffee_dose_g">Dose: High-Low</option>
+                           <option value="country">Country: A-Z</option>
+                           <option value="details.grind">Grind: Fine-Coarse</option>
+                           <option value="likes">Most Popular</option>
+                           <option value="place">Place: Winners First</option>
+                           <option value="year">Year: Most Recent</option>
+                        </select>
+                     </p>
+                  </div>
+                  <div class="col s6 l12">
+                     <p>
+                        <b>Brew Source:</b>
+                        <label class="checkbox-label">
+                           <input type="checkbox" id="wac" class="filled-in" checked="checked" name="brew_source"
+                              value="World AeroPress Championships Finalist" />
+                           <span>Championship</span>
+                        </label>
+                        <label class="checkbox-label">
+                           <input type="checkbox" id="non-wac" class="filled-in" checked="checked" name="brew_source"
+                              value="Average Joe" />
+                           <span>Average Joe</span>
+                        </label>
+                     </p>
+                     <p>
+                        <b>Brewer:</b>
+                        <label class="checkbox-label">
+                           <input type="checkbox" id="upright" class="filled-in" checked="checked" name="brewer"
+                              value="Upright" />
+                           <span>Upright</span>
+                        </label>
+                        <label class="checkbox-label">
+                           <input type="checkbox" id="inverted" class="filled-in" checked="checked" name="brewer"
+                              value="Inverted" />
+                           <span>Inverted</span>
+                        </label>
+                     </p>
+                  </div>
+                  <div class="col s6 l12">
+                     <p>
+                        <b>Filter Type:</b>
+                        <label class="checkbox-label">
+                           <input type="checkbox" id="single-paper" class="filled-in" checked="checked" name="filter"
+                              value="Paper" />
+                           <span>Paper</span>
+                        </label>
+                        <label class="checkbox-label">
+                           <input type="checkbox" id="double-paper" class="filled-in" checked="checked" name="filter"
+                              value="Paper x2" />
+                           <span>Paper x2</span>
+                        </label>
+                        <label class="checkbox-label">
+                           <input type="checkbox" id="metal" class="filled-in" checked="checked" name="filter"
+                              value="Metal" />
+                           <span>Metal</span>
+                        </label>
+                        <label class="checkbox-label">
+                           <input type="checkbox" id="metal-and-paper" class="filled-in" checked="checked" name="filter"
+                              value="Metal &#43; Paper" />
+                           <span>Metal + Paper</span>
+                        </label>
+                     </p>
+                  </div>
+                  <div class="col s12">
+                     <a class="waves-effect reset-btn" href="{{ url_for('index') }}" id="reset-filters">
+                        Reset
+                     </a>
+                  </div>
+               </form>
+            </div>
          </div>
-         <div class="col s12 m12 l10" id='response'>
+         <div class="col s12 l10" id='response'>
             <!-- TODO: move 2 cards out of response, into index -->
-
          </div>
       </div>
    </div>
-   <div class="fixed-action-btn">
-      <a href="#" class="btn-floating btn-medium brown">
-         <i class="material-icons">arrow_upward</i>
-      </a>
-   </div>
 </main>
-{% endblock %}
-
-{% block addl_scripts %}
-
-<!-- * could use fetch instead https://www.youtube.com/watch?v=QKcVjdLEX_s -->
-<script type="text/javascript">
-   $(document).ready(function () {
-      getFirstPage();
-   })
-
-   function getFirstPage() {
-      let serialFilters = $('#filters').serialize();
-      //console.log('serialFilters: ' + serialFilters)
-      console.log('getFirstPage running');
-      $.ajax({
-         url: `/get_brews?${serialFilters}`,
-         //url: `/get_brews?limit=5&${serialFilters}`,
-         type: "GET",
-         success: function (resp) {
-            $('#response').html(resp.data);
-         }
-      }).then(function () {
-         $('.sidenav').sidenav();
-         $('.tooltipped').tooltip();
-         $('.collapsible').collapsible({
-            induration: 250,
-            outduration: 250
-         });
-         $('select').formselect();
-         $('.modal').modal({ opacity: 0.2 });
-         $('.fixed-action-btn').floatingactionbutton();
-      })
-   }
-   // additional pages
-   function goToPage(urlPage) {
-      console.log('goToPage running');
-      $.ajax({
-         url: urlPage,
-         type: "GET",
-         success: function (resp) {
-            $('#response').html(resp.data);
-         }
-      }).then(function () {
-         $('.sidenav').sidenav();
-         $('.tooltipped').tooltip();
-         $('.collapsible').collapsible({
-            induration: 250,
-            outduration: 250
-         });
-         $('select').formselect();
-         $('.modal').modal({ opacity: 0.2 });
-         $('.fixed-action-btn').floatingactionbutton();
-      })
-   };
-
-</script>
-
 {% endblock %}

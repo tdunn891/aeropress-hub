@@ -36,7 +36,6 @@ def get_brews():
 
     # serialised filters for current page
     serial_filters = str(request.query_string)[2:-1]
-    # print(request.args)
 
     # if all arguments are populated, save arguments as list
     if all(arg in request.args for arg in ('brew_source', 'brewer', 'filter')):
@@ -55,7 +54,6 @@ def get_brews():
         offset = int(request.args['offset'])
         # remove first 2 parameters from serial_filters (limit and offset)
         serial_filters = serial_filters.split('&', 2)[2]
-        # print('SERIAL_FILTERS_2: ' + str(serial_filters))
     else:
         # if offset not provided, offset: 0
         offset = 0
