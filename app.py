@@ -15,7 +15,8 @@ app = Flask(__name__)
 # MONGO_URI = "mongodb+srv://root:ypb3Sgz1@myfirstcluster-bgxgx.mongodb.net/aeropress-hub?retryWrites=true&w=majority"
 
 app.config["MONGO_DBNAME"] = 'aeropress'
-app.config["MONGO_URI"] = os.getenv('MONGO_URI', 'mongodb://localhost')
+app.config["MONGO_URI"] = os.environ.get('MONGO_URI')
+# app.config["MONGO_URI"] = os.getenv('MONGO_URI', 'mongodb://localhost')
 # app.config["MONGO_URI"] = MONGO_URI
 
 mongo = PyMongo(app)
