@@ -7,8 +7,6 @@ body {
 	color: #4a2c2a !important;
 	font-size: 14px;
 	font-family: 'Montserrat', sans-serif;
-	/* TODO: Background image should just be for browse page */
-	/* Coffee beans background image */
 	background-image: url('/static/images/beans-background.jpg');
 	background-position: center 100%;
 	background-size: 100% auto;
@@ -28,29 +26,28 @@ nav {
 	background-color: #4a2c2a !important;
 }
 
+/* Mobile navigation  */
 #mobile-nav {
 	background-color: #4a2c2a;
 }
 
+/* Mobile navigation text */
 #mobile-nav * {
 	color: white !important;
 }
 
-.brand-logo {
-	color: white !important;
-}
-
+/* Filter and sorting container */
 .form-container {
-	/* border: 1px solid #4a2c2a; */
-	display: block;
-	background-color: white;
+	background-color: white !important;
 	opacity: 0.97;
-	/* padding: 10px !important; */
+	padding: 5px !important;
+	/* TODO: decide on box shadow */
 	-webkit-box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.14);
 	-moz-box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.14);
 	box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.14);
 }
 
+/* Add Brew form container */
 #add-brew-container {
 	opacity: 0.97;
 }
@@ -60,93 +57,101 @@ nav {
 	margin: 0 auto;
 }
 
-.collection {
-	overflow: visible;
-}
-
+/* Coffee beans icon in Brew Browser*/
 .beans {
 	margin-right: 5px;
 	height: 18px;
 }
 
+/* Coffee beans icon in Add/Edit form */
 .beans-form {
 	height: 32px;
 }
 
+/* Grinder icon in Brew Browser */
 .grinder {
 	height: 25px;
 }
 
+/* Grinder icon in Add/Edit form */
 .grinder-form {
 	height: 36px;
 }
 
+/* Medal icon in Brew Browser */
 .medal {
 	height: 22px;
 }
 
+/* WAC icon */
 .champ-brew-logo {
 	height: 34px;
 }
 
+/* Brewer orientation icons */
 .inverted-icon,
 .upright-icon {
 	height: 46px;
 }
 
+/* Thermometer icon in Brew Browser */
 .thermometer {
 	height: 40px;
 }
 
+/* Thermometer icon in Add/Edit form */
 .thermometer-form {
 	height: 34px;
 }
 
+/* Table headers list in Brew Browser */
 #headers-list {
-	margin: 0 0px;
+	margin: 0 0;
 }
 
-/* Steps */
+/* Each step in collapsible body in Brew Browser */
 .step {
 	font-size: 14px;
-	padding: 2px 10px !important;
+	padding: 3px 8px !important;
 	border-bottom: none !important;
-}
-
-.brew-time i {
-	background-color: white !important;
-	color: black !important;
 }
 
 /* 'Like' thumb */
 .thumb {
 	margin-right: 0px !important;
-	font-size: 1.2rem !important;
+	font-size: 1rem !important;
 	display: inline !important;
 	vertical-align: middle !important;
 }
 
+/* 'Likes' column */
+.likes-col {
+	padding-right: 0px !important;
+}
+
+/* Thumb and likes count anchor */
 .thumb-anchor:hover {
-	color: white;
+	color: darkblue;
 }
 
-.hide {
-	display: none;
-}
-
+/* Range slider value displays in Add/Edit pages */
 .slider-value {
-	font-size: large;
+	font-size: 18px;
 }
+
+/* Table headers */
 #headers {
 	background-color: #4a2c2a;
 	color: white;
 	cursor: auto;
 }
 
+/* Collapsible margin */
 .collapsible {
 	margin-top: 0px;
 }
 
+/* Collapsible header */
 .collapsible-header {
 	transition: all 0.1s ease-in-out;
 	padding: 8px 1px;
@@ -199,16 +204,23 @@ nav {
 	transition: all 0.2s ease-in-out;
 }
 
+/* Filters */
+#filters {
+	overflow: auto;
+}
+
 /* Filter checkboxes */
 [type='checkbox'].filled-in:checked + span:not(.lever):after {
 	background-color: #4a2c2a;
 	border: 2px solid #4a2c2a;
 }
 
+/* checkboxes and text above inputs */
 label {
 	color: #4a2c2a;
 }
 
+/* checkbox filters */
 .checkbox-label {
 	display: block;
 }
@@ -217,12 +229,14 @@ label {
 	color: darkorange;
 }
 
+/* hoverable class applied to filter dropdown */
 .hoverable {
 	-webkit-transition: -webkit-box-shadow 0.15s;
 	transition: -webkit-box-shadow 0.15s;
 	transition: box-shadow 0.15s;
 	transition: box-shadow 0.15s, -webkit-box-shadow 0.15s;
 }
+
 .hoverable:hover {
 	-webkit-box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.2),
 		0 2px 8px 0 rgba(0, 0, 0, 0.19);
@@ -230,26 +244,40 @@ label {
 	cursor: pointer;
 }
 
+/* Beans Image on 404 Error page */
 #spilled-beans {
 	height: 230px;
 	width: auto;
 }
 
+/* AeroPress video */
+#embedded-video {
+	/* TODO: fix video proportions */
+	min-height: 300px;
+	max-width: 100%;
+}
+
+/* Footer */
 footer {
 	/* TODO: sticky footer */
 	background-color: #4a2c2a !important;
-	/* background-color: whitesmoke !important; */
 }
 
 /* Media Queries */
 /* iPhone 8 Plus width and smaller */
 @media (max-width: 414px) {
 	.container {
-		width: 97%;
-		max-width: 97%;
+		width: 99%;
+		max-width: 99%;
 	}
 	.icon {
 		display: none !important;
+	}
+	.collapsible-header .col {
+		padding: 0;
+	}
+	#filters .col span {
+		font-size: 13px;
 	}
 	#response {
 		padding: 2px 0px;
@@ -276,6 +304,7 @@ footer {
 	}
 }
 
+/* TODO: remove outline css before deploy */
 * {
 	/* outline: 1px solid pink; */
 	outline-offset: -1px;
