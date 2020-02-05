@@ -15,7 +15,7 @@
    <link rel="stylesheet" href="{{url_for('static', filename='css/base.css')}}" type="text/css" />
    <!-- Favicon -->
    <link rel="shortcut icon" href="{{url_for('static', filename='images/aeropress_colour.png')}}" type="image/x-icon">
-   <title>AeroPress Hub | {{ title }}</title>
+   <title>AeroPress Brews | {{ title }}</title>
 </head>
 
 <body>
@@ -23,7 +23,11 @@
    <div class="navbar">
       <nav>
          <div class="nav-wrapper">
-            <a href="{{url_for('index')}}" class="brand-logo center">AeroPress Hub</a>
+            <a href="{{url_for('index')}}" class="brand-logo center">
+               <img src="https://image.flaticon.com/icons/svg/901/901721.svg" height="50px" id="hub-logo" class="right"
+                  alt="AeroPress Hub Logo">
+               AeroPress Hub
+            </a>
             <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
                <li class={{get_brews_active}}>
@@ -41,6 +45,11 @@
 
       <!-- Side Navigation Bar -->
       <ul class="sidenav" id="mobile-nav">
+         <li class={{get_brews_active}}>
+            <div class="background">
+               <img src="{{url_for('static', filename='images/lake-bled.jpg')}}" alt="Cup at Lake Bled" id="lake-bled">
+            </div>
+         </li>
          <li class={{get_brews_active}}>
             <a href="{{url_for('index')}}" class="waves-effect waves-light">
                <i class="material-icons prefix">local_cafe</i>
@@ -61,7 +70,6 @@
       </ul>
    </div>
    {% block content %}
-
    {% endblock %}
    <!-- jQuery -->
    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
@@ -75,23 +83,37 @@
       <div class="container">
          <div class="row">
             <div class="col l6 s12">
-               <p class="grey-text text-lighten-4">Championship Brews Sourced from: <a href="https://www.aeropress.com/"
-                     target="_blank">AeroPress.com</a>
+               <p class="grey-text">Championship Recipes from
+                  <a href="https://www.aeropress.com/" target="_blank">AeroPress.com</a>
+               </p>
+               <p>
+                  <a class="grey-text" href="https://www.aero.press/" target="_blank">
+                     World AeroPress Champs
+                  </a>
                </p>
             </div>
             <div class="col l4 offset-l2 s12">
-               <h5 class="white-text">Links</h5>
+               <h6 class="white-text">Affiliate Links</h6>
                <ul>
                   <li>
-                     <a class="grey-text text-lighten-3" href="https://www.worldaeropresschampionship.com/"
-                        target="_blank">World AeroPress Championships</a>
+                     <a class="grey-text" href="https://amzn.to/36Z0ywG" target="_blank">AeroPress on Amazon</a>
+                  </li>
+                  <li>
+                     <a class="grey-text" href="https://amzn.to/399vbAK" target="_blank">Paper Filters on
+                        Amazon</a>
+                  </li>
+                  <li>
+                     <a class="grey-text" href="https://amzn.to/2UobLnK" target="_blank">KOFFI Metal Filters on
+                        Amazon</a>
                   </li>
                </ul>
             </div>
          </div>
       </div>
       <div class="footer-copyright">
-         <div class="container">
+         <div class="container center">
+            Developed by Thomas Dunn <a href="https://github.com/tdunn891/milestone-3" target="_blank"><img
+                  src="{{url_for('static', filename='images/github-32.png')}}" id="github-logo" alt="GitHub Logo" /></a>
          </div>
       </div>
    </footer>
