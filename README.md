@@ -10,7 +10,6 @@
    - [**Scope**](#scope)
    - [**Structure**](#structure)
    - [**Skeleton**](#skeleton)
-     - [**Wireframes**](#wireframes)
    - [**Surface**](#surface)
    - [**User Stories**](#user-stories)
 
@@ -25,84 +24,108 @@
 
 6. [**Testing**](#testing)
 
-   - [**Manual Testing**](#manual-testing)
-
 7. [**Deployment**](#deployment)
 
 8. [**Credits**](#credits)
 
-   - [**Contents**](#contents)
+   - [**Content**](#content)
    - [**Media**](#media)
    - [**Acknowledgements**](#acknowledgements)
 
 ## Project Purpose
 
-AeroPress Hub was developed to centralise and showcase AeroPress coffee brews, from both champion baristas and AeroPress enthusiasts. Users can add their own, edit or delete existing brews. This application aims to provide value to the niche, passionate global community that exists around this humble coffee brewing device.
+AeroPress Hub was developed to centralise and showcase AeroPress coffee brews, from both champion baristas and AeroPress enthusiasts. Users can share their own as well as edit or delete existing brews. The application caters to the passionate global community that exists around this humble yet iconic brewer.
 
 ## UX
 
 ### Strategy
 
-Site Objectives:
+Site Objective: Provide platform for Aeropress enthusiasts to find and share AeroPress recipes
 
-- Provide a hub for AeroPress recipes
+User Needs: Contribute, view, edit, and delete brews
 
-User Needs:
+Opportunities/Problems table used to determine the strategic priorities UX efforts should address (in this order):
 
-- Contribute, view, edit, and delete brews
-
-The following Opportunities/Problems table was used to determine which strategic priorities the UX efforts should address (in this order):
-
-| Opportunity/Problem                                  | Importance | Viability/Feasibility |
-| ---------------------------------------------------- | :--------: | :-------------------: |
-| A. Centralise AeroPress recipes                      |     5      |           5           |
-| B. Allow contributions, edits, and deletion of brews |     5      |           5           |
-| C. Encourage AeroPress purchases via affiliate links |     2      |           2           |
+| Opportunity/Problem                                                 | Importance | Viability/Feasibility |
+| ------------------------------------------------------------------- | :--------: | :-------------------: |
+| A. Centralise AeroPress recipes                                     |     5      |           5           |
+| B. Allow contributions, edits, and deletion of brews                |     5      |           5           |
+| D. Provide graphs and statistics of previous World AeroPress Champs |     2      |           4           |
+| E. Encourage AeroPress purchases via affiliate links                |     1      |           2           |
 
 ### Scope
 
 #### Functional Specifications
 
-In considering functional specifications,
+In considering functional specifications, I researched existing coffee recipe sites, including the AeroPress official website, and the World AeroPress Championship website and Android applications such as Brew Timer. This helped to identify the key data fields and features users of coffee applications expect to see.
 
 Feature Set:
 
-- Filterable, sortable table of communal dataset of brews from World AeroPress Champions and regular user brews.
-- Ability to add brew to communal data set
+- Brew Browser: Filterable, sortable table of communal dataset of brews from World AeroPress Champions and regular user brews.
+- Add Brew: Ability to add brew to communal data set
+- Edit Brew: Ability to edit any field
+- Delete Brew: Ability to delete any brew
+- About Page: To find out more about the competition
 
 #### Content Requirements
 
 In order to provide the value of the above features, the following content is required:
 
-- Material collapsible collection
+- MaterializeCSS 'collapsible' collection
 - Checkboxes for filtering
-- Select Dropdowns for sorting and for form input
+- Dropdowns for sorting and for form input (Add & Edit)
+- MaterializeCSS range sliders for form input (Add & Edit)
 
 ### Structure
 
 #### Interaction Design
 
-Consistency & Predictability
+Consistency & Predictability:
+
+- A consistent coffee colour scheme and navigation bar is present throughout the site
+- On smaller devices, navigation links collapse into 'burger' button
 
 Feedback:
 
-Tooltips are used to offer additional information, eg Grind Size.
+All interactive elements provide feedback to the user to encourage interaction and provide confirmation when actions are taken.
+
+- Checkbox labels change colour on hover.
+- Sort by dropdown has border transition on hover.
+- Each record in the table changes background colour and cursor on hover.
+- 'Like' button changes colour on hover.
+- Icons: medal, timer, water temp provide tooltip additional infomation on hover.
+- Navigation links change colour on hover.
+- Pagination links (including chevrons) have background colour change on hover.
+- All buttons have border transition on hover.
+- All buttons have wave effect on click.
+- Form validation exists in Add & Edit pages for relevant fields - field displays red 'Required' if invalid, green if valid.
+- 'Toast' messages are briefly displayed to show confirmation of these user actions - Brew Added, Brew Updated, Brew Deleted, Brew Liked.
 
 #### Information Architecture
+
+The filtering and sorting panel is located on the left of the brew table (on desktop devices), a logical and intuitive position expected by users.
+
+Pagination was implemented in the Brew Browser, showing only 8 brews at a time in order prevent cognitative overload. Pagination ensures that the sorting and filtering panel is easily reachable, particularly on mobile devices. The relatively small amount of records (~40) lends itself to pagination, as only a handful of pages are needed to hold all records. As the number of records grows, the records per page could be increased.
+
+The Add Brew and Edit Brew pages are on their own pages for two main reasons: 1. The form features a significant amount of fields (10), which requires a sufficient amount of the viewport. 2. There is no benefit derived from viewing the Brew Browser at the same time while Adding a Brew. In the case of Edit Brew, the form fields are all prefilled (including range sliders) with the brew's current values.
 
 ### Skeleton
 
 #### Wireframes
 
-Two sets of wireframes were created in the early development stage to help set out the content and layout in differing device sizes.
+Two sets of wireframes were created in the early development stage to inform the strucutre and layout for different device sizes.
 
-<!-- TODO: insert wireframe links -->
+[Desktop & Mobile Wireframes](https://github.com/tdunn891/milestone-3/tree/master/static/images/wireframes)
 
 ### Surface
 
-Colours: Coffee Brown was chosen as the primary colour for obvious reasons.
+Colours: Coffee Brown (#4a2c2a) was chosen as the dominant colour across the site for obvious reasons.
 
-Fonts: A playful font was selected to emulate the fun nature of the World AeroPress Championships.
+Background Image: The coffee beans background image is immediately engage the user. The image covers only the lower portion of the viewport to ensure that it doesn't distract from the main content.
+
+Other Images: The image with four hands holding AeroPress components was selected to give a feeling of community and encourage sharing of brews.
+
+Fonts: A playful font ('Montserrat') was selected to emulate the fun nature of the World AeroPress Championships.
 
 ### User Stories
 
@@ -110,17 +133,17 @@ User stories:
 
 - User 1 - "As a user who has just bought an AeroPress but doesn't know how to use it, I want to see how the champion baristas use it."
 - User 2 - "As a user who has discovered an innovative new way to brew with the AeroPress, I want to share it with the community."
-- User 3 - "As a user who is interested in analysing what makes a gold medal brew, I want to be able to hone in (filter) on these brews."
-- User 4 - "As a user who has just purchased a metal filter, I want to see how other uses are brewing with it."
+- User 3 - "As a user who is interested in analysing what makes a gold medal brew, I want to be able to hone in on these brews."
+- User 4 - "As a user who has just purchased a metal filter and producing poor results, I want to see the community's most popular metal filter brews."
 - User 5 - "As a user who has tried a recipe submitted by another user, I want to be able to edit (improve) it for the benefit of other users."
 - User 6 - "As a user who loves high coffee dosages, I want to sort the dataset by dosage."
 
 How their needs are met:
 
-- User 1's needs are met by having the ability to browse through champion brews with detailed steps.
-- User 2's needs are met by the ability to share a brew via the Add Brew page.
+- User 1's needs are met by the ability to browse through champion brews with detailed steps
+- User 2's needs are met by the ability to share a brew via the Add Brew page
 - User 3's needs are met by the ability to filter by Place: Winners First
-- User 4's needs are met by the ability to filter by metal filter
+- User 4's needs are met by the ability to filter by metal filter and sort by 'Most Popular'
 - User 5's needs are met by the ability to Edit a brew
 - User 6's needs are met by the ability to sort by coffee dosage
 
@@ -128,40 +151,42 @@ How their needs are met:
 
 ### Existing Features
 
-- Feature 1: User can view brews and apply filters and sorting
-- Feature 2: User can contribute a brew with details and process
-- Feature 3: User can delete a brew
-- Feature 4: User can edit an existing brew
-- Feature 5: User can 'like' a brew, which increments the like count in the database by 1
+- Feature 1: User can view brews and apply filters and sorting. Clicking on a brew reveals additional information, including brewer position, brew time, water temperature and process
+- Feature 2: User can contribute a brew. Range sliders and dropdown boxes were employed for input validation purposes, which is essential for effective filtering and sorting
+- Feature 3: User can edit an existing brew
+- Feature 4: User can delete an existing brew. On click of delete button, a modal is presented to ask for confirmation
+- Feature 5: User can 'like' a brew, which increments the likes count by 1
 
 ### Features Left to Implement
 
-Potential Feature 1: Graphs analysing traits of winning brews
-Potential Feature 2: Ability to sort table by clicking header - clicking on current sort field changes toggles direction
-Potential Feature 3: Ability to share brew with a friend via a link
+- Potential Feature 1: Graphs analysing traits of winning brews
+- Potential Feature 2: Ability to sort table by clicking column header - clicking on current sort field changes toggles direction
+- Potential Feature 3: Ability to share brew with a friend via a link
+- Potential Feature 4: User login functionality so that users can 'star' brews to keep a list of favourites. Also, users would only be able to edit/delete their own brews.
+- Potential Feature 4:
 
 ## Database
 
-The document-based NoSQL database, MongoDB was employed. PyMongo interacts with the database.
+The document-based NoSQL database, MongoDB was employed. PyMongo is used to interact with the database.
 
-Schema
+The database has a single collection named 'brews', with the following fields:
 
-| Field         | Type     | Description                                                 |
-| :------------ | :------- | :---------------------------------------------------------- |
-| \_id          | ObjectId | ID is auto-created by MongoDB                               |
-| brew_name     | String   | Name of brew                                                |
-| year          | String   | Year                                                        |
-| place         | String   | Podium place if Champ brew. If Average Joe brew, set to 100 |
-| barista       | String   | Name of barista or user                                     |
-| country       | String   | Country of origin                                           |
-| brew_source   | String   | Source of brew, either WAC or Average Joe (regular user)    |
-| steps         | Array    | Process. Each element in array is a step                    |
-| coffee_dose_g | Double   | Coffee dose (grams)                                         |
-| grind         | Int32    | Coffee grind out of 10 (1: Fine, 10: Coarse)                |
-| water_temp_c  | Int32    | Water temperature (Celsius)                                 |
-| brewer        | String   | Brewing method (either Upright or Inverted)                 |
-| filter        | String   | Filter type                                                 |
-| likes         | Int32    | Number of Likes                                             |
+| Field         | Type     | Description                                |
+| :------------ | :------- | :----------------------------------------- |
+| \_id          | ObjectId | ID is auto-created by MongoDB              |
+| barista       | String   | Name of barista or user                    |
+| brew_name     | String   | Name of brew                               |
+| brew_source   | String   | Source of brew (WAC or Average Joe)        |
+| brewer        | String   | Brewing method (Upright or Inverted)       |
+| coffee_dose_g | Double   | Coffee dose (grams)                        |
+| country       | String   | Barista's country of origin (optional)     |
+| filter        | String   | Filter type (eg. Paper, Metal)             |
+| grind         | Int32    | Grind size from 1-10 (1: Fine, 10: Coarse) |
+| likes         | Int32    | Number of Likes (initial value: 0)         |
+| steps         | Array    | Process - each element in array is a step  |
+| place         | String   | Podium place if Champ brew                 |
+| water_temp_c  | Int32    | Water temperature (Celsius)                |
+| year          | String   | Year - set to current year when bre added  |
 
 ## Technologies Used
 
@@ -184,9 +209,9 @@ Schema
 
 ## Testing
 
-### Manual Tests
+Extensive manual testing was conducted to ensure the site functions and looks well on all major browsers (Chrome, Firefox, Safari, Edge) and device sizes.
 
-Desktop Tests
+### Desktop Testing
 
 Brew Browser Page
 
@@ -207,6 +232,7 @@ Brew Browser Page
 - Confirm delete button: on click a confirmation 'Toast' message is displayed: 'Deleted'
 - Colours: all text is readable with good colour contrast
 - Background Image: sticks to bottom of body during scroll
+- Forward and Back browser buttons are never required, but if clicked, don't break the site.
 
 Add Brew page
 
@@ -218,6 +244,7 @@ Add Brew page
 - On click of submit button, a confirmation 'Toast' message is displayed: 'Added'
 - Cancel form button returns to Brew Browser page
 - Navigation buttons function
+- Forward and Back browser buttons are never required, but if clicked, don't break the site.
 
 Edit Brew page
 
@@ -225,11 +252,14 @@ Edit Brew page
 - Update button submits form and record is updated correctly in database
 - On click of update button, a confirmation 'Toast' message is displayed: 'Updated'
 - Cancel button returns to Brew Browser
+- Navigation buttons function
+- Forward and Back browser buttons are never required, but if clicked, don't break the site.
 
 About page
 
 - Embedded video plays
 - Navigation buttons function
+- Forward and Back browser buttons are never required, but if clicked, don't break the site.
 
 404 Error Page
 
@@ -237,25 +267,23 @@ About page
 - Return home button takes user back to Brew Browser page
 - Navigation buttons function
 
-Mobile and Tablet Tests
+### Mobile and Tablet Tests
 
-The above Desktop Tests were performed on a mobile device. The following mobile and tablet-specific tests were conducted:
+The above Desktop Tests were also conducted on mobile and tablet devices (via Chrome DevTools). In addition, the following mobile and tablet-specific tests were run:
 
-Brew Browser Page
+Brew Browser Page (Mobile)
 
-- No content is squished or overlapping
 - Navigation links collapse into 'burger' icon
 - Burger icon expands side navigation bar, with all links functioning
 
-Extensive manual testing was conducted to ensure the site functions and looks well on all major browsers (Chrome, Firefox, Safari, Edge) and device sizes.
-
 The following tests failed:
 
-| Issue No. | Test Name   | Issue       | Resolved?   | Action Taken |
-| :-------- | :---------- | :---------- | :---------- | :----------- |
-| 1         | placeholder | placeholder | placeholder | placeholder  |
+| Issue No. | Test Name                                       | Issue                                                                        | Resolved? | Action Taken                                                             |
+| :-------- | :---------------------------------------------- | :--------------------------------------------------------------------------- | :-------- | :----------------------------------------------------------------------- |
+| 1         | Content is not squeezed or overlapping (Mobile) | Brew Browser table has overlapping horizontal content, even with small text. | Yes       | Added materialise class 'hide-on-med-and-down' to bean and grinder icons |
+| 2         | Text is appropriately sized (Mobile)            | Title text in navigation bar is too large, causing text to overflow          | Yes       | Title text added to mobile media query                                   |
 
-Code Validation
+### Code Validation
 
 | Code                                                            | Result |
 | :-------------------------------------------------------------- | :----- |
@@ -272,21 +300,73 @@ Code Validation
 
 ## Deployment
 
-The application was deployed to Heroku, using the following steps:
+### Heroku
+
+The application was deployed to Heroku, via the following steps:
+
+1. Heroku.com > Create new app > App name: aeropress-hub, Region: Europe
+2. Deploy > Deployment method > Link Github account
+3. Select repository 'milestone-3'
+4. Select branch: 'master'
+5. Set Config Vars: Heroku Settings > Config Vars:
+   - IP: 0.0.0.0
+   - PORT: 5000
+   - MONGO_URI: mongodb+srv://[user]:[password]@myfirstcluster-bgxgx.mongodb.net/aeropress?retryWrites=true&w=majority
+6. Manual Deploy > Deploy Branch (master)
+7. Heroku Website > Open App
+
+### Local Deployment
+
+1. 'Clone or download' repository from https://github.com/tdunn891/milestone-3, or from command line:
+
+   `git clone https://github.com/tdunn891/milestone-3`
+
+2. If your IDE doesn't include a virtual environment, create one (see Python docs: [Creation of virtual environments](https://docs.python.org/3/library/venv.html):
+
+   `python3 venv /path/to/new/virtual/environment`
+
+3. Activate virtual environment:
+
+   `source /path/to/new/virtual/environment`
+
+4. Install dependencies in requirements.txt via 'pip':
+
+   `pip -r requirements.txt`
+
+5. Run app:
+
+   `python3 app.py`
+
+6. Go to Local Host in browser to view:
+
+   `http://127.0.0.1:5500/`
 
 ## Credits
 
 ### Content
 
-- WAC Logo from [World AeroPress Championships](https://aero.press/)
-- Championship Recipes sourced from [AeroPress.com](https://aeropress.com/championships/wac-recipes/)
-- Coffee icons: [FlatIcon](https://www.flaticon.com/)
-  <!-- TODO: list icon creators (most in Notion) -->
+- World AeroPress Champs logo and About page text source: [World AeroPress Championships](https://aero.press/)
+- Championship Recipes webscraped from [AeroPress.com](https://aeropress.com/championships/wac-recipes/)
 
 ### Media
 
-- Images from [Shutterstock](https://www.shutterstock.com/) (Standard License)
+Images sourced from [Shutterstock](https://www.shutterstock.com/) (Standard License)
+
+- [Beans Background Image](https://www.shutterstock.com/image-photo/coffee-beans-isolated-on-white-background-385820884?src=library)
+- [AeroPress at Lake Bled](https://www.shutterstock.com/image-photo/mug-mockup-aeropress-next-sitting-traveler-1587478897?src=library)
+- [Four Hands](https://www.shutterstock.com/image-photo/empty-clear-aeropress-filter-cap-two-496228861?src=library)
+- [Barista](https://www.shutterstock.com/image-photo/professional-barista-preparing-coffee-alternative-method-515650723?src=library)
+
+Icons sourced from: [FlatIcon](https://www.flaticon.com/)
+
+- Brand Icon by [Skyclick](https://www.flaticon.com/authors/skyclick)
+- Coffee Beans Icon by [smalllikeart](https://www.flaticon.com/authors/smalllikeart)
+- Grinder Icon by [catkuro](https://www.flaticon.com/authors/catkuro)
+- Thermometer Icon by [Freepik](https://www.flaticon.com/authors/freepik)
+- AeroPress Icon by [dDara](https://www.flaticon.com/authors/ddara)
 
 ### Acknowledgements
 
-Pagination: https://www.youtube.com/watch?v=Lnt6JqtzM7I
+Helpful video for pagination: [Pagination Tutorial (YouTube)](https://www.youtube.com/watch?v=Lnt6JqtzM7I)
+
+Thank you to friends and family for help with testing and feedback.
