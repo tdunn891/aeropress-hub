@@ -1,154 +1,152 @@
 {% extends 'base.html' %}
 {% block content %}
-
-<div class="container">
-   <div class="row">
-      <div class="col s12 l3">
-         <h3>Edit Brew
-            <i class="material-icons pencil">edit</i>
-         </h3>
-         <p>Share yours with the community</p>
-         <img src="{{url_for('static',filename='images/barista-woman.jpg')}}"
-            class="responsive-img hide-on-med-and-down">
-      </div>
-      <div class="col s12 l9">
-         <div class="card">
-            <!-- <img src="{{url_for('static',filename='images/aeropress_four_hands_slim.png')}}" alt="AeroPress Four Hands"> -->
-            <div class="card-content">
-               <span class="card-title">
-                  Brew</span>
-               <br>
-               <form class="" action="{{ url_for('update_brew', brew_id=brew._id) }}" method="POST">
-                  <div class="row">
-                     <div class="input-field col s12 m12 l12">
-                        <i class="material-icons prefix">local_cafe</i>
-                        <input id="brew_name" name="brew_name" type="text" class="validate" value="{{ brew.brew_name }}"
-                           required />
-                        <label for="brew_name">Brew Name</label>
-                        <span class="helper-text" data-error="Required" data-success=""></span>
+<main>
+   <div class="container">
+      <div class="row">
+         <div class="col s12 l3">
+            <h3>Edit Brew
+               <i class="material-icons pencil">edit</i>
+            </h3>
+            <p>Finesse the 'Press</p>
+            <!-- Barista image -->
+            <img src="{{url_for('static',filename='images/barista-woman.jpg')}}"
+               class="responsive-img hide-on-med-and-down">
+         </div>
+         <div class="col s12 l9">
+            <div class="card">
+               <div class="card-content">
+                  <span class="card-title">Brew</span>
+                  <br>
+                  <form class="" action="{{ url_for('update_brew', brew_id=brew._id) }}" method="POST">
+                     <div class="row">
+                        <div class="input-field col s12 m12 l12">
+                           <i class="material-icons prefix">local_cafe</i>
+                           <input id="brew_name" name="brew_name" type="text" class="validate"
+                              value="{{ brew.brew_name }}" required />
+                           <label for="brew_name">Brew Name</label>
+                           <span class="helper-text" data-error="Required" data-success=""></span>
+                        </div>
                      </div>
-                  </div>
-                  <div class="row">
-                     <div class="input-field col s12 m12 l6">
-                        <i class="material-icons prefix">account_circle</i>
-                        <input id="barista_name" name="barista_name" type="text" class="validate"
-                           value="{{ brew.barista }}" required />
-                        <label for="barista_name">Barista Name</label>
-                        <span class="helper-text" data-error="Required" data-success=""></span>
+                     <div class="row">
+                        <div class="input-field col s12 m12 l6">
+                           <i class="material-icons prefix">account_circle</i>
+                           <input id="barista_name" name="barista_name" type="text" class="validate"
+                              value="{{ brew.barista }}" required />
+                           <label for="barista_name">Barista Name</label>
+                           <span class="helper-text" data-error="Required" data-success=""></span>
+                        </div>
+                        <div class="input-field col s12 m12 l6">
+                           <i class="material-icons prefix">map</i>
+                           <input id="country" type="text" name="country" class="validate autocomplete"
+                              value="{{ brew.country }}" />
+                           <label for="country">Country</label>
+                        </div>
                      </div>
-                     <div class="input-field col s12 m12 l6">
-                        <i class="material-icons prefix">map</i>
-                        <input id="country" type="text" name="country" class="validate autocomplete"
-                           value="{{ brew.country }}" />
-                        <label for="country">Country</label>
+                     <div class="row">
+                        <h5>Brew Details</h5>
+                        <br>
+                        <div class="input-field col s12 m8 l4">
+                           <select id="brewer" name="brewer" class="icons">
+                              {% for brewer in brewers %}
+                              {% if brewer == brew.details.brewer %}
+                              <option value="{{ brewer }}" class="left" selected='selected'>{{ brewer }}</option>
+                              {% else %}
+                              <option value="{{ brewer }}" class="left">{{ brewer }}</option>
+                              {% endif %}
+                              {% endfor %}
+                           </select>
+                           <label for="brewer">Brewing Method</label>
+                        </div>
                      </div>
-                  </div>
-                  <div class="row">
-                     <h5>Brew Details</h5>
-                     <br>
-                     <div class="input-field col s12 m8 l4">
-                        <select id="brewer" name="brewer" class="icons">
-                           {% for brewer in brewers %}
-                           {% if brewer == brew.details.brewer %}
-                           <option value="{{ brewer }}" class="left" selected='selected'>{{ brewer }}</option>
-                           {% else %}
-                           <option value="{{ brewer }}" class="left">{{ brewer }}</option>
-                           {% endif %}
-                           {% endfor %}
-                        </select>
-                        <label for="brewer">Brewing Method</label>
+                     <div class="row valign-wrapper">
+                        <div class="range-field col s10 m8">
+                           <img src="{{url_for('static', filename='images/bean.svg')}}" alt="Coffee Beans"
+                              class="beans-form">
+                           <label for="coffee_weight_slider">Coffee Dose (g)</label>
+                           <input type="range" id="coffee_weight_slider" name="coffee_weight" min="10" max="40"
+                              value="{{ brew.details.coffee_dose_g }}" class="input-slider" />
+                        </div>
+                        <div class="col s2 m4">
+                           <div class="slider-value"><span id="coffee_weight_span"></span>g</div>
+                        </div>
                      </div>
-                  </div>
-                  <div class="row valign-wrapper">
-                     <div class="range-field col s10 m8">
-                        <img src="{{url_for('static', filename='images/bean.svg')}}" alt="Coffee Beans"
-                           class="beans-form">
-                        <label for="coffee_weight_slider">Coffee Dose (g)</label>
-                        <input type="range" id="coffee_weight_slider" name="coffee_weight" min="10" max="40"
-                           value="{{ brew.details.coffee_dose_g }}" class="input-slider" />
+                     <div class="row valign-wrapper">
+                        <div class="range-field col s10 m8">
+                           <img src="{{url_for('static', filename='images/grinder.svg')}}" alt="Coffee Grinder"
+                              class="grinder-form">
+                           <label for="grind_size_slider">Grind Size (1: Fine, 10: Coarse)</label>
+                           <input type="range" id="grind_size_slider" name="grind_size" min="1" max="10"
+                              value="{{ brew.details.grind }}" class="input-slider" />
+                        </div>
+                        <div class="col s2 m4">
+                           <div class="slider-value"><span id="grind_size_span"></span>/10</div>
+                        </div>
                      </div>
-                     <div class="col s2 m4">
-                        <div class="slider-value"><span id="coffee_weight_span"></span>g</div>
+                     <div class="row valign-wrapper">
+                        <div class="range-field col s10 m8">
+                           <img src="{{url_for('static', filename='images/thermometer.svg')}}" alt="Thermomenter"
+                              class="thermometer-form">
+                           <label for="water_temp_slider">Water Temp (°C)</label>
+                           <input type="range" id="water_temp_slider" name="water_temp" min="70" max="100"
+                              value="{{ brew.details.water_temp_c }}" class="input-slider" />
+                        </div>
+                        <div class="col s2 m4">
+                           <div class="slider-value"><span id="water_temp_span"></span>°C</div>
+                        </div>
                      </div>
-                  </div>
-                  <div class="row valign-wrapper">
-                     <div class="range-field col s10 m8">
-                        <img src="{{url_for('static', filename='images/grinder.svg')}}" alt="Coffee Grinder"
-                           class="grinder-form">
-                        <label for="grind_size_slider">Grind Size (1: Fine, 10: Coarse)</label>
-                        <input type="range" id="grind_size_slider" name="grind_size" min="1" max="10"
-                           value="{{ brew.details.grind }}" class="input-slider" />
+                     <div class="row valign-wrapper">
+                        <div class="range-field col s10 m8">
+                           <i class="material-icons">timer</i>
+                           <label for="brew_time">Total Brew Time (s)</label>
+                           <input type="range" id="brew_time" name="brew_time" min="30" max="220" step="5"
+                              class="input-slider" value="{{ brew.total_brew_time }}" />
+                        </div>
+                        <div class="col s2 m4">
+                           <div class="slider-value"><span id="brew_time_span"></span>s</div>
+                        </div>
                      </div>
-                     <div class="col s2 m4">
-                        <div class="slider-value"><span id="grind_size_span"></span>/10</div>
+                     <div class="row">
+                        <div class="input-field col s12 m8 l4">
+                           <select id="filter" name="filter">
+                              {% for filter_type in filters %}
+                              {% if filter_type == brew.details.filter %}
+                              <option value='{{ filter_type }}' selected='selected'>{{ filter_type }}</option>
+                              {% else %}
+                              <option value='{{ filter_type }}'>{{filter_type}}</option>
+                              {% endif %}
+                              {% endfor %}
+                           </select>
+                           <label for="filter">Filter Type</label>
+                        </div>
                      </div>
-                  </div>
-                  <div class="row valign-wrapper">
-                     <div class="range-field col s10 m8">
-                        <img src="{{url_for('static', filename='images/thermometer.svg')}}" alt="Thermomenter"
-                           class="thermometer-form">
-                        <label for="water_temp_slider">Water Temp (°C)</label>
-                        <input type="range" id="water_temp_slider" name="water_temp" min="70" max="100"
-                           value="{{ brew.details.water_temp_c }}" class="input-slider" />
-                     </div>
-                     <div class="col s2 m4">
-                        <div class="slider-value"><span id="water_temp_span"></span>°C</div>
-                     </div>
-                  </div>
-                  <div class="row valign-wrapper">
-                     <div class="range-field col s10 m8">
-                        <i class="material-icons">timer</i>
-                        <label for="brew_time">Total Brew Time (s)</label>
-                        <input type="range" id="brew_time" name="brew_time" min="30" max="220" step="5"
-                           class="input-slider" value="{{ brew.total_brew_time }}" />
-                     </div>
-                     <div class="col s2 m4">
-                        <div class="slider-value"><span id="brew_time_span"></span>s</div>
-                     </div>
-                  </div>
-                  <div class="row">
-                     <div class="input-field col s12 m8 l4">
-                        <select id="filter" name="filter">
-                           {% for filter_type in filters %}
-                           {% if filter_type == brew.details.filter %}
-                           <option value='{{ filter_type }}' selected='selected'>{{ filter_type }}</option>
-                           {% else %}
-                           <option value='{{ filter_type }}'>{{filter_type}}</option>
-                           {% endif %}
-                           {% endfor %}
-                        </select>
-                        <label for="filter">Filter Type</label>
-                     </div>
-                  </div>
-                  <div class="row">
-                     <h5>
-                        <i class="material-icons">format_list_numbered</i>
-                        Process
-                     </h5>
-                     <br>
-                     <div class="col s12 m12 l12">
-                        <div class="row">
-                           <div class="input-field col s12">
-                              <textarea id="steps-text-area" name="steps-text-area"
-                                 class="materialize-textarea">{{brew.steps|join('\n')}}</textarea>
-                              <label for="steps-text-area">Enter each step on a new line</label>
+                     <div class="row">
+                        <h5>
+                           <i class="material-icons">format_list_numbered</i>Process
+                        </h5>
+                        <br>
+                        <div class="col s12 m12 l12">
+                           <div class="row">
+                              <div class="input-field col s12">
+                                 <textarea id="steps-text-area" name="steps-text-area"
+                                    class="materialize-textarea">{{brew.steps|join('\n')}}</textarea>
+                                 <label for="steps-text-area">Enter each step on a new line</label>
+                              </div>
                            </div>
                         </div>
                      </div>
-                  </div>
-                  <div class="card-action">
-                     <button class="btn btn-medium waves-effect waves-light green" id="update-brew-btn" type="submit">
-                        <i class="material-icons right">edit</i>
-                        Update Brew
-                     </button>
-                     <a href="{{url_for('index')}}" class="btn btn-medium waves-effect waves-light grey">
-                        Cancel
-                     </a>
-                  </div>
-               </form>
+                     <div class="card-action">
+                        <button class="btn btn-medium waves-effect waves-light green" id="update-brew-btn"
+                           type="submit">
+                           <i class="material-icons right">edit</i>
+                           Update Brew
+                        </button>
+                        <a href="{{url_for('index')}}" class="btn btn-medium waves-effect waves-light grey">Cancel</a>
+                     </div>
+                  </form>
+               </div>
             </div>
          </div>
       </div>
    </div>
-</div>
+</main>
 {% endblock %}

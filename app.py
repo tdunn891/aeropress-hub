@@ -9,15 +9,15 @@ from bson.objectid import ObjectId
 
 app = Flask(__name__)
 
-# IP = "127.0.0.1"
-# PORT = "5500"
+IP = "127.0.0.1"
+PORT = "5500"
 
-# MONGO_URI = "mongodb+srv://root:ypb3Sgz1@myfirstcluster-bgxgx.mongodb.net/aeropress-hub?retryWrites=true&w=majority"
+MONGO_URI = "mongodb+srv://root:ypb3Sgz1@myfirstcluster-bgxgx.mongodb.net/aeropress?retryWrites=true&w=majority"
 
 app.config["MONGO_DBNAME"] = 'aeropress'
-app.config["MONGO_URI"] = os.environ.get('MONGO_URI')
+# app.config["MONGO_URI"] = os.environ.get('MONGO_URI')
 # app.config["MONGO_URI"] = os.getenv('MONGO_URI', 'mongodb://localhost')
-# app.config["MONGO_URI"] = MONGO_URI
+app.config["MONGO_URI"] = MONGO_URI
 
 mongo = PyMongo(app)
 
@@ -45,10 +45,7 @@ def get_brews():
         filter_args = request.args.getlist('filter')
     else:
         # no matching records
-        return jsonify({'data': '<h6>No Matching Records</h6>'})
-
-    # Pagination limit: 8 results per page
-    limit = 8
+        return jsonify({'data': 'No Matching Records'})
 
     if 'offset' in request.args:
         # get offset from query string
@@ -56,7 +53,7 @@ def get_brews():
         # remove first 2 parameters from serial_filters (limit and offset)
         serial_filters = serial_filters.split('&', 2)[2]
     else:
-        # if offset not provided, offset: 0
+        # if offset not provided, set offset = 0
         offset = 0
 
     # if sort-by in query string
@@ -79,37 +76,45 @@ def get_brews():
     # all brews
     brew = mongo.db.brews
 
+    # Pagination
     # filtered and sorted records
-    starting_id = brew.find({
+    brews_filtered_and_sorted = brew.find({
         "brew_source": {"$in": brew_source_args},
         "details.brewer": {"$in": brewer_args},
         "details.filter": {"$in": filter_args}
     }).collation({"locale": "en"}).sort([(sort_field, sort_direction), ('_id', sort_direction)])
 
+    # Set pagination limit: 8 results per page
+    limit = 8
+
     # select only records to be displayed on current page
-    brews = starting_id[offset:offset+limit]
+    brews = brews_filtered_and_sorted[offset:offset+limit]
+
     # count of filtered records
-    filtered_records_count = str(starting_id.count())
+    filtered_records_count = str(brews_filtered_and_sorted.count())
+
+    # count of brews displayed on page
     brews_displayed = brews.count(with_limit_and_skip=True)
 
     # next url for right chevron anchor
     next_url = '/get_brews?limit=' + \
         str(limit) + '&offset=' + str(offset + limit) + '&' + serial_filters
+
     # prev url for left chevron anchor
     prev_url = '/get_brews?limit=' + \
         str(limit) + '&offset=' + str(offset - limit) + '&' + serial_filters
 
-    # number of pages required, and extra records
+    # number of pages required, and any extra records
     num_pages, extra_records = divmod(int(filtered_records_count), limit)
 
     # if extra_records exist, an additional page is required
     if extra_records > 0:
         num_pages += 1
 
-    # current page, used as input to calculate which records are displayed
+    # current page number, used as input to calculate which records are displayed
     current_page = ((int(offset)+1) // limit) + 1
 
-    # prepare  pagination urls for each page number
+    # prepare pagination urls for each page number
     urls = {}
     for page_number in range(1, num_pages+1):
         offset_2 = limit * (page_number - 2)
@@ -131,9 +136,6 @@ def get_brews():
                                             offset=offset,
                                             brews_displayed=brews_displayed,
                                             current_page=current_page)})
-# winner filters
-#     rgx = re.compile('Winner.', re.IGNORECASE)
-#     winners_only = mongo.db.brews.find({"brew_name": rgx})
 
 
 @app.route('/add_brew')
@@ -176,7 +178,7 @@ def insert_brew():
 @app.route('/edit_brew/<brew_id>')
 def edit_brew(brew_id):
     # renders Edit Brew page, presenting user with form input
-    # find user-selected brew, so that it is ready for editing
+    # find user-selected brew
     brew = mongo.db.brews.find_one({'_id': ObjectId(brew_id)})
 
     return render_template('edit_brew.html',
@@ -228,13 +230,6 @@ def delete_brew(brew_id):
     mongo.db.brews.remove({'_id': ObjectId(brew_id)})
     return redirect(url_for('index'))
 
-# testing purposes only (EMPTY)
-# TODO: remove empty db option
-@app.route('/empty_db')
-def empty_db():
-    mongo.db.brews.remove({})
-    return redirect(url_for('index'))
-
 
 @app.route('/about')
 def about():
@@ -252,9 +247,9 @@ def error404(notfound):
 
 
 if __name__ == '__main__':
-    app.run(host=os.environ.get('IP'),
-            port=int(os.environ.get('PORT')),
+    # app.run(host=os.environ.get('IP'),
+            # port=int(os.environ.get('PORT')),
+            # debug=False)
+    app.run(host=IP,
+            port=int(PORT),
             debug=True)
-    # app.run(host=IP,
-            # port=int(PORT),
-            # debug=True)

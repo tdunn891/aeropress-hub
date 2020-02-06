@@ -1,204 +1,169 @@
-<div class="row">
-   <h5>Take your brewing to the next level</h5>
-   <!-- <p>Explore Champion and community-sourced brews.</p> -->
-   <div class="col s12 m6">
-      <div class="card horizontal">
-         <div class="card-image valign-wrapper">
-            <img src="{{url_for('static', filename='images/WAC.png')}}" class="hide-on-med-and-down" alt="WAC Logo" />
+<div class="col s12">
+   <p id="pagination-display">Matching: {{ filtered_records_count }} (showing
+      {{ offset+1 }}-{{offset+brews_displayed}}) |
+      Total: {{ total_records }}
+   </p>
+   <ul class="collection" id="headers-list">
+      <li>
+         <div class="collapsible-header" id="headers">
+            <div class="col s2 m2">Brew</div>
+            <div class="col s3 m3">Barista</div>
+            <div class="col s2 m2">Country</div>
+            <div class="col s2 m2">Filter</div>
+            <div class="col s1 m1">Dose (g)</div>
+            <div class="col s1 m1 tooltipped" data-tooltip="1: Fine, 10: Coarse" data-position="top">Grind</div>
+            <div class="col s1 m1">Likes</div>
          </div>
-         <div class="card-content brown-text">
-            <span class="card-title">Championship</span>
-            <p>A fan-driven phenomenon, with challengers from over 60
-               countries competing for the title.</p>
-         </div>
-         <!-- <div class="card-action">
-            <a href="https://aeropress.com/championships/overview/" target="_blank">Learn More</a>
-         </div> -->
-      </div>
-   </div>
-   <div class="col s12 m6">
-      <div class="card horizontal">
-         <div class="card-image valign-wrapper">
-            <!-- <img src="{{url_for('static', filename='images/lake-bled.jpg')}}" class="hide-on-med-and-down" -->
-            <img src="{{url_for('static', filename='images/four-hands-1.jpg')}}" class="hide-on-med-and-down"
-               alt="AeroPress at Lake Bled, Slovenia" />
-         </div>
-         <div class="card-content brown-text">
-            <span class="card-title">Average Joe</span>
-            <p>AeroPress recipes contributed by the community. Share yours.</p>
-         </div>
-         <!-- <div class="card-action">
-            <a href="{{url_for('add_brew')}}">Add your brew</a>
-         </div> -->
-      </div>
-   </div>
-</div>
-<div class="row">
-   <div class="col s12">
-      <p><b>Matching: {{ filtered_records_count }} (showing {{ offset+1 }}-{{offset+brews_displayed}}) |
-            Total: {{ total_records }}</b></p>
-      <ul class="collection" id="headers-list">
-         <li>
-            <div class="collapsible-header" id="headers">
-               <div class="col s2 m2">Brew</div>
-               <div class="col s3 m3">Barista</div>
-               <div class="col s2 m2">Country</div>
-               <div class="col s2 m2">Filter</div>
-               <div class="col s1 m1">Dose (g)</div>
-               <div class="col s1 m1 tooltipped" data-tooltip="1: Fine, 10: Coarse" data-position="top">Grind</div>
-               <div class="col s1 m1">Likes</div>
+      </li>
+   </ul>
+   <ul class="collection collapsible">
+      {% for brew in brews %}
+      <li id="{{brew._id}}">
+         <div class="collapsible-header valign-wrapper">
+            <div class="col s2 m2">
+               {% if brew.brew_name.startswith('Winner') -%}
+               <img src="static/images/first_place_medal.svg" class="tooltipped medal" data-tooltip="1st Place"
+                  alt="First Place">
+               {{brew.brew_name[7:]}}
+               {% elif brew.brew_name.startswith('2nd')  -%}
+               <img src="static/images/second_place_medal.svg" class="tooltipped medal" data-tooltip="2nd Place"
+                  alt="Second Place">
+               {{brew.brew_name[10:]}}
+               {% elif brew.brew_name.startswith('3rd')  -%}
+               <img src="static/images/third_place_medal.svg" class="tooltipped medal" data-tooltip="3rd Place"
+                  alt="Third Place">
+               {{brew.brew_name[10:]}}
+               {% else %}
+               {{brew.brew_name}}
+               {%- endif %}
             </div>
-         </li>
-      </ul>
-      <ul class="collection collapsible">
-         {% for brew in brews %}
-         <li id="{{brew._id}}">
-            <div class="collapsible-header valign-wrapper">
-               <div class="col s2 m2">
-                  {% if brew.brew_name.startswith('Winner') -%}
-                  <img src="static/images/first_place_medal.svg" class="tooltipped medal" data-tooltip="1st Place"
-                     alt="First Place">
-                  {{brew.brew_name[7:]}}
-                  {% elif brew.brew_name.startswith('2nd')  -%}
-                  <img src="static/images/second_place_medal.svg" class="tooltipped medal" data-tooltip="2nd Place"
-                     alt="Second Place">
-                  {{brew.brew_name[10:]}}
-                  {% elif brew.brew_name.startswith('3rd')  -%}
-                  <img src="static/images/third_place_medal.svg" class="tooltipped medal" data-tooltip="3rd Place"
-                     alt="Third Place">
-                  {{brew.brew_name[10:]}}
+            <div class="col s3 m3">
+               {{brew.barista}}
+            </div>
+            <div class="col s2 m2">
+               {{brew.country}}
+            </div>
+            <div class="col s2 m2">
+               {{brew.details.filter}}
+            </div>
+            <div class="col s1 m1 valign-wrapper">
+               <img src="{{url_for('static', filename='images/bean.svg')}}" alt="Coffee Beans" class="icon beans">
+               {{brew.details.coffee_dose_g}}
+            </div>
+            <div class="col s1 m1 valign-wrapper">
+               <img src="static/images/grinder.svg" alt="Coffee Grinder" class="icon grinder">
+               {{brew.details.grind}}
+            </div>
+            <div class="col s1 m1 valign-wrapper likes-col">
+               <a href="{{url_for('increase_likes', brew_id=brew._id)}}" class="thumb-anchor waves-effect waves-light">
+                  <i class="material-icons thumb">thumb_up</i>
+                  {{brew.likes}}
+               </a>
+            </div>
+         </div>
+         <div class="collapsible-body">
+            <div class="row valign-wrapper">
+               <div class="col s12 m2 center">
+                  {% if brew.brew_source == 'Home Barista' %}
+                  <i class="material-icons tooltipped" data-tooltip="Average Joe Brew">account_circle</i>
                   {% else %}
-                  {{brew.brew_name}}
-                  {%- endif %}
+                  <img src="static/images/WAC.png" class="tooltipped champ-brew-logo" data-tooltip="Championship Brew"
+                     alt="Championship Brew">
+                  {% endif %}
+                  <br><br>
+                  {% if brew.details.brewer == 'Inverted' %}
+                  <img src="static/images/aeropress_inverted.svg" class="tooltipped icon inverted-icon"
+                     data-tooltip="Brew Method" alt="Brew Method: Inverted"><br>Inverted
+                  {% else %}
+                  <img src=" static/images/aeropress.svg" class="tooltipped icon upright-icon"
+                     data-tooltip="Brew Method" alt="Brew Method: Upright"><br>Upright
+                  {% endif %}
+                  <br><br>
+                  <i class="material-icons timer icon tooltipped" data-tooltip="Brew Time">timer</i><br>
+                  <!-- Display brew time in minutes and seconds -->
+                  {{brew.total_brew_time // 60}}:{{ '%02d' % (brew.total_brew_time % 60) }}
+                  <br><br>
+                  {% if brew.details.water_temp_c  %}
+                  <img src="static/images/thermometer.svg" class="tooltipped thermometer"
+                     data-tooltip="Water Temp (&#8451;)" alt="Thermomenter">
+                  <br>
+                  {{brew.details.water_temp_c}}&#8451;
+                  {% endif %}
                </div>
-               <div class="col s3 m3">
-                  {{brew.barista}}
-               </div>
-               <div class="col s2 m2">
-                  {{brew.country}}
-               </div>
-               <div class="col s2 m2">
-                  {{brew.details.filter}}
-               </div>
-               <div class="col s1 m1 valign-wrapper">
-                  <img src="{{url_for('static', filename='images/bean.svg')}}" alt="Coffee Beans" class="icon beans">
-                  {{brew.details.coffee_dose_g}}
-               </div>
-               <div class="col s1 m1 valign-wrapper">
-                  <img src="static/images/grinder.svg" alt="Coffee Grinder" class="icon grinder">
-                  {{brew.details.grind}}
-               </div>
-               <div class="col s1 m1 valign-wrapper likes-col">
-                  <a href="{{url_for('increase_likes', brew_id=brew._id)}}"
-                     class="thumb-anchor waves-effect waves-light">
-                     <i class="material-icons thumb">thumb_up</i>
-                     {{brew.likes}}
+               <div class="col s12 m10">
+                  <h6>Steps:</h6>
+                  <ol class="steps collection">
+                     {% for step in brew.steps %}
+                     <li class="collection-item step">{{ step }}</li>
+                     {% endfor %}
+                  </ol>
+                  <!-- Delete Button -->
+                  <a href="#delete-modal" data-id="{{brew._id}}" class="btn btn-small delete-btn red
+                  waves-effect modal-trigger right">
+                     <i class="material-icons bin">delete</i>
+                     Delete
+                  </a>
+                  <!-- Edit Button -->
+                  <a href="{{ url_for('edit_brew', brew_id=brew._id) }}"
+                     class="btn btn-small edit-btn right waves-effect">
+                     <i class="material-icons pencil">edit</i>
+                     Edit
                   </a>
                </div>
             </div>
-            <div class="collapsible-body">
-               <div class="row valign-wrapper">
-                  <div class="col s12 m2 center">
-                     {% if brew.brew_source == 'Average Joe' %}
-                     <i class="material-icons tooltipped" data-tooltip="Average Joe Brew">account_circle</i>
-                     {% else %}
-                     <img src="static/images/WAC.png" class="tooltipped champ-brew-logo"
-                        data-tooltip="Championship Brew" alt="Championship Brew">
-                     {% endif %}
-                     <br><br>
-                     {% if brew.details.brewer == 'Inverted' %}
-                     <img src="static/images/aeropress_inverted.svg" class="tooltipped icon inverted-icon"
-                        data-tooltip="Brew Method" alt="Brew Method: Inverted"><br>Inverted
-                     {% else %}
-                     <img src=" static/images/aeropress.svg" class="tooltipped icon upright-icon"
-                        data-tooltip="Brew Method" alt="Brew Method: Upright"><br>Upright
-                     {% endif %}
-                     <br><br>
-                     <i class="material-icons timer icon tooltipped" data-tooltip="Brew Time">timer</i><br>
-                     <!-- Display brew time in minutes and seconds -->
-                     {{brew.total_brew_time // 60}}:{{ '%02d' % (brew.total_brew_time % 60) }}
-                     <br><br>
-                     {% if brew.details.water_temp_c  %}
-                     <img src="static/images/thermometer.svg" class="tooltipped thermometer"
-                        data-tooltip="Water Temp (&#8451;)" alt="Thermomenter">
-                     <br>
-                     {{brew.details.water_temp_c}}&#8451;
-                     {% endif %}
-                  </div>
-                  <div class="col s12 m10">
-                     <h6>Steps:</h6>
-                     <ol class="steps collection">
-                        {% for step in brew.steps %}
-                        <li class="collection-item step">{{ step }}</li>
-                        {% endfor %}
-                     </ol>
-                     <!-- Delete Button -->
-                     <a href="#delete-modal" data-id="{{brew._id}}" class="btn btn-small delete-btn red
-                  waves-effect modal-trigger right">
-                        <i class="material-icons bin">delete</i>
-                        Delete
-                     </a>
-                     <!-- Edit Button -->
-                     <a href="{{ url_for('edit_brew', brew_id=brew._id) }}" class="btn btn-small edit-btn right">
-                        <i class="material-icons pencil">edit</i>
-                        Edit
-                     </a>
-                  </div>
-               </div>
-            </div>
-         </li>
-         {% endfor %}
-      </ul>
-      <ul class="pagination center-align">
-         <!-- If current page is 1, disable the left chevron -->
-         {% if current_page == 1 %}
-         <li class="disabled">
-            <a><i class="material-icons">chevron_left</i></a>
-         </li>
-         {% else %}
-         <!-- remove disabled class from left chevron -->
-         <li class="waves-effect" id="prev-page">
-            <a data-page-url="{{ prev_url }}" class="page-number">
-               <i class="material-icons">chevron_left</i>
-            </a>
-         </li>
-         {% endif %}
-         {% for page in range(1, num_pages+1) %}
-         <!-- If current page, apply active class -->
-         {% if page == current_page %}
-         <li class="active">
-            <a data-page-url="{{ urls[page] }}" class="page-number">{{ page }}</a>
-         </li>
-         {% else %}
-         <li class="waves-effect">
-            <a data-page-url="{{ urls[page] }}" class="page-number">{{ page }}</a>
-         </li>
-         {% endif %}
-         {% endfor %}
-         <!-- If current page is last page, disable right chevron -->
-         {% if current_page == num_pages %}
-         <li class="disabled">
-            <a><i class="material-icons">chevron_right</i></a>
-         </li>
-         {% else %}
-         <!-- remove disabled class from chevron -->
-         <li class="waves-effect">
-            <a data-page-url="{{ next_url }}" class="page-number">
-               <i class="material-icons">chevron_right</i>
-            </a>
-         </li>
-         {% endif %}
-      </ul>
-   </div>
+         </div>
+      </li>
+      {% endfor %}
+   </ul>
+   <ul class="pagination center-align z-depth-2">
+      <!-- If current page is 1, disable the left chevron -->
+      {% if current_page == 1 %}
+      <li class="disabled">
+         <a><i class="material-icons">chevron_left</i></a>
+      </li>
+      {% else %}
+      <!-- remove disabled class from left chevron -->
+      <li id="prev-page">
+         <a data-page-url="{{ prev_url }}" class="chevron page-link waves-effect">
+            <i class="material-icons">chevron_left</i>
+         </a>
+      </li>
+      {% endif %}
+      {% for page in range(1, num_pages+1) %}
+      <!-- If current page, apply active class -->
+      {% if page == current_page %}
+      <li class="active">
+         <a data-page-url="{{ urls[page] }}" class="page-number page-link waves-effect">{{ page }}</a>
+      </li>
+      {% else %}
+      <li>
+         <a data-page-url="{{ urls[page] }}" class="page-number page-link waves-effect">{{ page }}</a>
+      </li>
+      {% endif %}
+      {% endfor %}
+      <!-- If current page is last page, disable right chevron -->
+      {% if current_page == num_pages %}
+      <li class="disabled">
+         <a><i class="material-icons">chevron_right</i></a>
+      </li>
+      {% else %}
+      <!-- remove disabled class from chevron -->
+      <li>
+         <a data-page-url="{{ next_url }}" class="chevron page-link waves-effect">
+            <i class="material-icons">chevron_right</i>
+         </a>
+      </li>
+      {% endif %}
+   </ul>
+</div>
 
-   <!-- Modal Structure -->
-   <div id="delete-modal" class="modal">
-      <div class="modal-content">
-         <h4>Delete Brew?</h4>
-      </div>
-      <div class="modal-footer">
-         <a href="" class="btn btn-small modal-close waves-effect waves-red red confirm-delete-btn">Delete</a>
-         <a class="btn btn-small modal-close waves-effect grey cancel-delete-btn">Cancel</a>
-      </div>
+<!-- Modal Structure -->
+<div id="delete-modal" class="modal">
+   <div class="modal-content">
+      <h4>Delete Brew?</h4>
+   </div>
+   <div class="modal-footer">
+      <a href="" class="btn btn-small modal-close waves-effect waves-red red confirm-delete-btn">Delete</a>
+      <a class="btn btn-small modal-close waves-effect grey cancel-delete-btn">Cancel</a>
    </div>
 </div>

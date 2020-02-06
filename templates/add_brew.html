@@ -1,142 +1,144 @@
 {% extends 'base.html' %}
 {% block content %}
-
-<div class="container">
-   <div class="row">
-      <div class="col s12 l3">
-         <h3>Add Brew
-            <i class="material-icons">
-               add_circle
-            </i>
-         </h3>
-         <p>Share yours with the community</p>
-         <img src="{{url_for('static',filename='images/barista-woman.jpg')}}"
-            class="responsive-img hide-on-med-and-down">
-      </div>
-      <div class="col s12 l9">
-         <div class="card" id="add-brew-container">
-            <!-- <img src="{{url_for('static',filename='images/aeropress_four_hands_slim.png')}}" class="responsive-img"
-               alt="AeroPress Four Hands" /> -->
-            <div class="card-content">
-               <span class="card-title">Brew</span>
-               <form class="" action="{{ url_for('insert_brew') }}" method="POST">
-                  <div class="row">
-                     <div class="input-field col s12">
-                        <i class="material-icons prefix">local_cafe</i>
-                        <input id="brew_name" name="brew_name" type="text" class="validate" required />
-                        <label for="brew_name">Brew Name</label>
-                        <span class="helper-text" data-error="Required" data-success=""></span>
+<main>
+   <div class="container">
+      <div class="row">
+         <div class="col s12 l3">
+            <h3>Add Brew
+               <i class="material-icons">add_circle</i>
+            </h3>
+            <p>Share yours with the community</p>
+            <!-- Barista image -->
+            <img src="{{url_for('static',filename='images/barista-woman.jpg')}}"
+               class="responsive-img hide-on-med-and-down z-depth-2">
+         </div>
+         <div class="col s12 l9">
+            <!-- Form container -->
+            <div class="card z-depth-2" id="add-brew-container">
+               <div class="card-content">
+                  <span class="card-title">Brew</span>
+                  <form class="" action="{{ url_for('insert_brew') }}" method="POST">
+                     <div class="row">
+                        <div class="input-field col s12">
+                           <i class="material-icons prefix">local_cafe</i>
+                           <input id="brew_name" name="brew_name" type="text" class="validate" required />
+                           <label for="brew_name">Brew Name</label>
+                           <span class="helper-text" data-error="Required" data-success=""></span>
+                        </div>
                      </div>
-                  </div>
-                  <div class="row">
-                     <div class="input-field col s12 m12 l6">
-                        <i class="material-icons prefix">account_circle</i>
-                        <input id="barista_name" name="barista_name" type="text" class="validate" required />
-                        <label for="barista_name">Barista Name</label>
-                        <span class="helper-text" data-error="Required" data-success=""></span>
+                     <div class="row">
+                        <div class="input-field col s12 m12 l6">
+                           <i class="material-icons prefix">account_circle</i>
+                           <input id="barista_name" name="barista_name" type="text" class="validate" required />
+                           <label for="barista_name">Barista Name</label>
+                           <span class="helper-text" data-error="Required" data-success=""></span>
+                        </div>
+                        <div class="input-field col s12 m12 l6">
+                           <i class="material-icons prefix">map</i>
+                           <input id="country" type="text" name="country" class="validate autocomplete" />
+                           <label for="country">Country</label>
+                        </div>
                      </div>
-                     <div class="input-field col s12 m12 l6">
-                        <i class="material-icons prefix">map</i>
-                        <input id="country" type="text" name="country" class="validate autocomplete" />
-                        <label for="country">Country</label>
+                     <div class="row">
+                        <h5>Details</h5>
+                        <br>
+                        <div class="input-field col s12 m8 l4">
+                           <select id="brewer" name="brewer" class="icons">
+                              <option value="Inverted" data-icon="static/images/aeropress_inverted.svg">Inverted
+                              </option>
+                              <option value="Upright" data-icon="static/images/aeropress.svg">Upright
+                              </option>
+                           </select>
+                           <label for="brewer">Brewing Method</label>
+                        </div>
                      </div>
-                  </div>
-                  <div class="row">
-                     <h5>Details</h5>
-                     <br>
-                     <div class="input-field col s12 m8 l4">
-                        <select id="brewer" name="brewer" class="icons">
-                           <option value="Inverted" data-icon="static/images/aeropress_inverted.svg">Inverted</option>
-                           <option value="Upright" data-icon="static/images/aeropress.svg">Upright
-                           </option>
-                        </select>
-                        <label for="brewer">Brewing Method</label>
+                     <div class="row valign-wrapper">
+                        <div class="range-field col s10 m8">
+                           <img src="static/images/bean.svg" alt="Coffee Beans" class="beans-form">
+                           <label for="coffee_weight_slider">Coffee Dose (g)</label>
+                           <input type="range" id="coffee_weight_slider" name="coffee_weight" min="10" max="40"
+                              value="16" class="input-slider" />
+                        </div>
+                        <div class="col s2 m4">
+                           <div class="slider-value"><span id="coffee_weight_span"></span>g</div>
+                        </div>
                      </div>
-                  </div>
-                  <div class="row valign-wrapper">
-                     <div class="range-field col s10 m8">
-                        <img src="static/images/bean.svg" alt="Coffee Beans" class="beans-form">
-                        <label for="coffee_weight_slider">Coffee Dose (g)</label>
-                        <input type="range" id="coffee_weight_slider" name="coffee_weight" min="10" max="40" value="16"
-                           class="input-slider" />
+                     <div class="row valign-wrapper">
+                        <div class="range-field col s10 m8">
+                           <img src="static/images/grinder.svg" alt="Coffee Grinder" class="grinder-form">
+                           <label for="grind_size_slider">Grind Size (1: Fine, 10: Coarse)</label>
+                           <input type="range" id="grind_size_slider" name="grind_size" min="1" max="10" value="5"
+                              class="input-slider" />
+                        </div>
+                        <div class="col s2 m4">
+                           <div class="slider-value"><span id="grind_size_span"></span>/10</div>
+                        </div>
                      </div>
-                     <div class="col s2 m4">
-                        <div class="slider-value"><span id="coffee_weight_span"></span>g</div>
+                     <div class="row valign-wrapper">
+                        <div class="range-field col s10 m8">
+                           <img src="static/images/thermometer.svg" alt="Thermomenter" class="thermometer-form">
+                           <label for="water_temp_slider">Water Temp (°C)</label>
+                           <input type="range" id="water_temp_slider" name="water_temp" min="70" max="100" value="90"
+                              class="input-slider" />
+                        </div>
+                        <div class="col s2 m4">
+                           <div class="slider-value"><span id="water_temp_span"></span>°C</div>
+                        </div>
                      </div>
-                  </div>
-                  <div class="row valign-wrapper">
-                     <div class="range-field col s10 m8">
-                        <img src="static/images/grinder.svg" alt="Coffee Grinder" class="grinder-form">
-                        <label for="grind_size_slider">Grind Size (1: Fine, 10: Coarse)</label>
-                        <input type="range" id="grind_size_slider" name="grind_size" min="1" max="10" value="5"
-                           class="input-slider" />
+                     <div class="row valign-wrapper">
+                        <div class="range-field col s10 m8">
+                           <i class="material-icons">timer</i>
+                           <label for="brew_time">Total Brew Time (s)</label>
+                           <input type="range" id="brew_time" name="brew_time" min="30" max="220" value="120" step="5"
+                              class="input-slider" />
+                        </div>
+                        <div class="col s2 m4">
+                           <div class="slider-value"><span id="brew_time_span"></span>s</div>
+                        </div>
                      </div>
-                     <div class="col s2 m4">
-                        <div class="slider-value"><span id="grind_size_span"></span>/10</div>
+                     <div class="row">
+                        <div class="input-field col s12 m8 l4">
+                           <select id="filter" name="filter">
+                              <option value="Paper">Paper</option>
+                              <option value="Paper x2">Paper x2</option>
+                              <option value="Metal">Metal</option>
+                              <option value="Metal &#43; Paper">Metal &#43; Paper</option>
+                           </select>
+                           <label for="filter">Filter Type</label>
+                        </div>
                      </div>
-                  </div>
-                  <div class="row valign-wrapper">
-                     <div class="range-field col s10 m8">
-                        <img src="static/images/thermometer.svg" alt="Thermomenter" class="thermometer-form">
-                        <label for="water_temp_slider">Water Temp (°C)</label>
-                        <input type="range" id="water_temp_slider" name="water_temp" min="70" max="100" value="90"
-                           class="input-slider" />
-                     </div>
-                     <div class="col s2 m4">
-                        <div class="slider-value"><span id="water_temp_span"></span>°C</div>
-                     </div>
-                  </div>
-                  <div class="row valign-wrapper">
-                     <div class="range-field col s10 m8">
-                        <i class="material-icons">timer</i>
-                        <label for="brew_time">Total Brew Time (s)</label>
-                        <input type="range" id="brew_time" name="brew_time" min="30" max="220" value="120" step="5"
-                           class="input-slider" />
-                     </div>
-                     <div class="col s2 m4">
-                        <div class="slider-value"><span id="brew_time_span"></span>s</div>
-                     </div>
-                  </div>
-                  <div class="row">
-                     <div class="input-field col s12 m8 l4">
-                        <select id="filter" name="filter">
-                           <option value="Paper">Paper</option>
-                           <option value="Paper x2">Paper x2</option>
-                           <option value="Metal">Metal</option>
-                           <option value="Metal &#43; Paper">Metal &#43; Paper</option>
-                        </select>
-                        <label for="filter">Filter Type</label>
-                     </div>
-                  </div>
-                  <div class="row">
-                     <h5>
-                        <i class="material-icons">format_list_numbered</i>
-                        Process
-                     </h5>
-                     <br>
-                     <div class="col s12 m12 l12">
-                        <div class="row">
-                           <div class="input-field col s12">
-                              <textarea id="steps-text-area" name="steps-text-area"
-                                 class="materialize-textarea"></textarea>
-                              <label for="steps-text-area">Enter each step on a new line</label>
+                     <div class="row">
+                        <h5>
+                           <i class="material-icons">format_list_numbered</i>
+                           Process
+                        </h5>
+                        <br>
+                        <div class="col s12 m12 l12">
+                           <div class="row">
+                              <div class="input-field col s12">
+                                 <textarea id="steps-text-area" name="steps-text-area"
+                                    class="materialize-textarea"></textarea>
+                                 <label for="steps-text-area">Enter each step on a new line</label>
+                              </div>
                            </div>
                         </div>
                      </div>
-                  </div>
-                  <div class="card-action">
-                     <button class="btn btn-medium waves-effect waves-light green" id="add-brew-btn" type="submit">
-                        Submit
-                        <i class="material-icons right">send</i>
-                     </button>
-                     <a href="{{url_for('index')}}" class="btn btn-medium waves-effect waves-light grey">
-                        Cancel
-                     </a>
-                  </div>
-               </form>
+                     <div class="card-action">
+                        <!-- Submit button -->
+                        <button class="btn btn-medium waves-effect waves-light green" id="add-brew-btn" type="submit">
+                           Submit
+                           <i class="material-icons right">send</i>
+                        </button>
+                        <!-- Cancel button -->
+                        <a href="{{url_for('index')}}" class="btn btn-medium waves-effect waves-light grey">
+                           Cancel
+                        </a>
+                     </div>
+                  </form>
+               </div>
             </div>
          </div>
       </div>
    </div>
-</div>
+</main>
 {% endblock %}

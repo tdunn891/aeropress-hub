@@ -1,5 +1,6 @@
 // After response from database is recieved
 $(document).ajaxComplete(() => {
+	// Initialise MaterializeCSS components
 	$('.tooltipped').tooltip();
 	$('.collapsible').collapsible({
 		induration: 250,
@@ -15,7 +16,7 @@ $(document).ajaxComplete(() => {
 	});
 
 	// Pagination: Go to page
-	$('.page-number').on('click', function() {
+	$('.page-link').on('click', function() {
 		let url = $(this).attr('data-page-url');
 		goToPage(url);
 	});
@@ -37,10 +38,8 @@ $(document).ajaxComplete(() => {
 });
 
 $(document).ready(() => {
-	// TODO: window location href not ideal (doesn't load initially)
-	if (window.location.href.includes('/index')) {
-		getFirstPage();
-	}
+	// Get First page of results
+	getFirstPage();
 
 	// Toast: 'Updated'
 	$('#update-brew-btn').on('click', () => {
@@ -65,7 +64,6 @@ $(document).ready(() => {
 		'water_temp',
 		'brew_time'
 	];
-
 	sliderValues.forEach(sliderValue => {
 		displaySliderValue(sliderValue);
 	});

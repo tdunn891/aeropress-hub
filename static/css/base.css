@@ -13,7 +13,7 @@ body {
 	background-repeat: no-repeat;
 	background-attachment: fixed;
 	display: flex;
-	min-height: 100vh;
+	min-height: 114vh;
 	flex-direction: column;
 }
 
@@ -24,6 +24,17 @@ main {
 /* Navigation bar */
 nav {
 	background-color: #4a2c2a !important;
+}
+
+/* Title logo */
+#hub-logo {
+	margin-top: 4px;
+	margin-left: 4px;
+}
+
+/* Lake bled image in side navigation bar */
+#lake-bled {
+	width: 100%;
 }
 
 /* Mobile navigation  */
@@ -40,11 +51,7 @@ nav {
 .form-container {
 	background-color: white !important;
 	opacity: 0.97;
-	padding: 5px !important;
-	/* TODO: decide on box shadow */
-	-webkit-box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.14);
-	-moz-box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.14);
-	box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.14);
+	padding: 11px 5px !important;
 }
 
 /* Add Brew form container */
@@ -55,6 +62,20 @@ nav {
 /* Input field selectors */
 .input-field {
 	margin: 0 auto;
+}
+
+/* Barista Cards on Brew Browser page */
+.barista-type-title {
+	font-size: 16px !important;
+}
+
+.card-stacked div {
+	padding: 10px !important;
+}
+
+/* World AeroPress Champ logo */
+#wac-logo {
+	padding: 20px !important;
 }
 
 /* Coffee beans icon in Brew Browser*/
@@ -191,17 +212,31 @@ nav {
 
 /* Pagination bar */
 .pagination {
-	max-width: 320px;
+	max-width: 340px;
 	margin: 0px auto !important;
 	padding: 4px 0 !important;
 	background-color: white;
 	opacity: 0.97;
 }
 
-.waves-effect a:hover {
-	background-color: pink;
+/* Pagination numbers and chevrons */
+.page-number:hover,
+.chevron i:hover {
 	background-color: wheat;
-	transition: all 0.2s ease-in-out;
+	transition: all 0.22s ease-in-out;
+}
+
+/* Pagination display  */
+#pagination-display {
+	background-color: white;
+	width: fit-content;
+	padding: 1px 4px;
+	opacity: 0.97;
+}
+
+/* Card opacity */
+.card {
+	opacity: 0.98;
 }
 
 /* Filters */
@@ -250,17 +285,22 @@ label {
 	width: auto;
 }
 
+#about-text {
+	background-color: white;
+}
+
 /* AeroPress video */
-#embedded-video {
-	/* TODO: fix video proportions */
-	min-height: 300px;
+#youtube-video {
 	max-width: 100%;
 }
 
 /* Footer */
 footer {
-	/* TODO: sticky footer */
 	background-color: #4a2c2a !important;
+}
+
+#github-logo {
+	height: 16px;
 }
 
 /* Media Queries */
@@ -285,27 +325,21 @@ footer {
 	body {
 		font-size: 10px;
 	}
-	.brand-logo {
-		font-size: 20px !important;
-	}
 	h3 {
-		font-size: 28px;
+		font-size: 26px;
 	}
 	.card-title {
 		font-size: 18px !important;
+	}
+	.brand-logo {
+		font-size: 16px !important;
 	}
 }
 
 /* Desktop devices */
 @media (min-width: 992px) {
 	.container {
-		width: 90%;
-		max-width: 90%;
+		width: 95%;
+		max-width: 95%;
 	}
-}
-
-/* TODO: remove outline css before deploy */
-* {
-	/* outline: 1px solid pink; */
-	outline-offset: -1px;
 }

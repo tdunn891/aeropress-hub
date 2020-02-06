@@ -4,28 +4,23 @@
    <div class="container">
       <div class="row">
          <div class="col s12 l2">
-            <h4>Brew Browser</h4>
-            <div class="form-container">
-               <!-- TODO: remove empty db -->
-               <!-- EMPTY DB -->
-               <!-- <a href="{{url_for('empty_db')}}" class="btn btn-small red" method="POST">Empty Database</a> -->
+            <h3>Brew Browser</h3>
+            <div class="form-container z-depth-2">
                <form id="filters">
                   <div class="col s12">
-                     <p>
-                        <label for="sort-by">Sort by:</label>
-                        <select class="input-field hoverable browser-default" id="sort-by" name="sort-by">
-                           <option value="" disabled>Sort by:</option>
-                           <option value="barista" selected>Barista Name: A-Z</option>
-                           <option value="brew_name">Brew Name: A-Z</option>
-                           <option value="total_brew_time">Brew Time: Short-Long</option>
-                           <option value="details.coffee_dose_g">Dose: High-Low</option>
-                           <option value="country">Country: A-Z</option>
-                           <option value="details.grind">Grind: Fine-Coarse</option>
-                           <option value="likes">Most Popular</option>
-                           <option value="place">Place: Winners First</option>
-                           <option value="year">Year: Most Recent</option>
-                        </select>
-                     </p>
+                     <label for="sort-by">Sort by:</label>
+                     <select class="input-field hoverable browser-default" id="sort-by" name="sort-by">
+                        <option value="" disabled>Sort by:</option>
+                        <option value="barista" selected>Barista Name: A-Z</option>
+                        <option value="brew_name">Brew Name: A-Z</option>
+                        <option value="total_brew_time">Brew Time: Short-Long</option>
+                        <option value="country">Country: A-Z</option>
+                        <option value="details.coffee_dose_g">Dose: High-Low</option>
+                        <option value="details.grind">Grind: Fine-Coarse</option>
+                        <option value="likes">Most Popular</option>
+                        <option value="place">Place: Winners First</option>
+                        <option value="year">Year: Most Recent</option>
+                     </select>
                   </div>
                   <div class="col s6 l12">
                      <p>
@@ -38,11 +33,11 @@
                         <label class="checkbox-label">
                            <input type="checkbox" id="non-wac" class="filled-in" checked="checked" name="brew_source"
                               value="Average Joe" />
-                           <span>Average Joe</span>
+                           <span>Home Barista</span>
                         </label>
                      </p>
                      <p>
-                        <b>Brewer:</b>
+                        <b>Brew Method:</b>
                         <label class="checkbox-label">
                            <input type="checkbox" id="upright" class="filled-in" checked="checked" name="brewer"
                               value="Upright" />
@@ -56,29 +51,27 @@
                      </p>
                   </div>
                   <div class="col s6 l12">
-                     <p>
-                        <b>Filter Type:</b>
-                        <label class="checkbox-label">
-                           <input type="checkbox" id="single-paper" class="filled-in" checked="checked" name="filter"
-                              value="Paper" />
-                           <span>Paper</span>
-                        </label>
-                        <label class="checkbox-label">
-                           <input type="checkbox" id="double-paper" class="filled-in" checked="checked" name="filter"
-                              value="Paper x2" />
-                           <span>Paper x2</span>
-                        </label>
-                        <label class="checkbox-label">
-                           <input type="checkbox" id="metal" class="filled-in" checked="checked" name="filter"
-                              value="Metal" />
-                           <span>Metal</span>
-                        </label>
-                        <label class="checkbox-label">
-                           <input type="checkbox" id="metal-and-paper" class="filled-in" checked="checked" name="filter"
-                              value="Metal &#43; Paper" />
-                           <span>Metal + Paper</span>
-                        </label>
-                     </p>
+                     <b>Filter:</b>
+                     <label class="checkbox-label">
+                        <input type="checkbox" id="single-paper" class="filled-in" checked="checked" name="filter"
+                           value="Paper" />
+                        <span>Paper</span>
+                     </label>
+                     <label class="checkbox-label">
+                        <input type="checkbox" id="double-paper" class="filled-in" checked="checked" name="filter"
+                           value="Paper x2" />
+                        <span>Paper x2</span>
+                     </label>
+                     <label class="checkbox-label">
+                        <input type="checkbox" id="metal" class="filled-in" checked="checked" name="filter"
+                           value="Metal" />
+                        <span>Metal</span>
+                     </label>
+                     <label class="checkbox-label">
+                        <input type="checkbox" id="metal-and-paper" class="filled-in" checked="checked" name="filter"
+                           value="Metal &#43; Paper" />
+                        <span>Metal + Paper</span>
+                     </label>
                   </div>
                   <div class="col s12">
                      <a class="waves-effect reset-btn" href="{{ url_for('index') }}" id="reset-filters">
@@ -88,8 +81,49 @@
                </form>
             </div>
          </div>
+         <div class="col s12 l10">
+            <h5>Take your brewing to the next level</h5>
+            <p>Featuring recipes from:</p>
+            <div class="col s6 m6 l6">
+               <div class="card horizontal">
+                  <div class="card-image valign-wrapper">
+                     <img src="{{url_for('static', filename='images/four-hands-1.jpg')}}" class="hide-on-med-and-down"
+                        alt="AeroPress at Lake Bled, Slovenia" />
+                  </div>
+                  <div class="card-stacked">
+                     <div class="card-content brown-text">
+                        <span class="card-title barista-type-title">Home Baristas</span>
+                        <p>Contributed by the community. Share yours.</p>
+                     </div>
+                     <div class="card-action">
+                        <a href="{{url_for('add_brew')}}" class="btn btn-small blue waves-effect waves-blue">ADD BREW<i
+                              class="material-icons right">add_circle</i></a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col s6 m6 l6">
+               <div class="card horizontal">
+                  <div class="card-image valign-wrapper">
+                     <a href="https://aero.press/" target="_blank">
+                        <img src="{{url_for('static', filename='images/WAC.png')}}" id="wac-logo"
+                           class="hide-on-med-and-down" alt="WAC Logo" />
+                     </a>
+                  </div>
+                  <div class="card-stacked">
+                     <div class="card-content brown-text">
+                        <span class="card-title barista-type-title">Champion Baristas</span>
+                        <p>Top brews from the global coffee-making competition with a cult-like following.</p>
+                     </div>
+                     <div class="card-action">
+                        <a href="{{url_for('about')}}" class="btn btn-small blue waves-effect waves-blue">Learn More<i
+                              class="material-icons right">info</i></a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
          <div class="col s12 l10" id='response'>
-            <!-- TODO: move 2 cards out of response, into index -->
          </div>
       </div>
    </div>

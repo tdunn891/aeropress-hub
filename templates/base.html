@@ -15,7 +15,7 @@
    <link rel="stylesheet" href="{{url_for('static', filename='css/base.css')}}" type="text/css" />
    <!-- Favicon -->
    <link rel="shortcut icon" href="{{url_for('static', filename='images/aeropress_colour.png')}}" type="image/x-icon">
-   <title>AeroPress Brews | {{ title }}</title>
+   <title>AeroPress Hub | {{ title }}</title>
 </head>
 
 <body>
@@ -24,8 +24,8 @@
       <nav>
          <div class="nav-wrapper">
             <a href="{{url_for('index')}}" class="brand-logo center">
-               <img src="https://image.flaticon.com/icons/svg/901/901721.svg" height="50px" id="hub-logo" class="right"
-                  alt="AeroPress Hub Logo">
+               <img src="https://image.flaticon.com/icons/svg/901/901721.svg" height="50px" id="hub-logo"
+                  class="right hide-on-small-only" alt="AeroPress Hub Logo">
                AeroPress Hub
             </a>
             <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
@@ -42,7 +42,6 @@
             </ul>
          </div>
       </nav>
-
       <!-- Side Navigation Bar -->
       <ul class="sidenav" id="mobile-nav">
          <li class={{get_brews_active}}>
@@ -79,6 +78,7 @@
    <!-- some of the below is only relevant for certain pages -->
    <script src="{{url_for('static', filename='js/main.js')}}"></script>
 
+   <!-- Footer -->
    <footer class="page-footer">
       <div class="container">
          <div class="row">
@@ -87,24 +87,33 @@
                   <a href="https://www.aeropress.com/" target="_blank">AeroPress.com</a>
                </p>
                <p>
-                  <a class="grey-text" href="https://www.aero.press/" target="_blank">
-                     World AeroPress Champs
-                  </a>
+                  <a class="grey-text" href="https://www.aero.press/" target="_blank">World AeroPress Champs</a>
                </p>
             </div>
             <div class="col l4 offset-l2 s12">
+               <!-- (placeholder) Affiliate Links -->
                <h6 class="white-text">Affiliate Links</h6>
                <ul>
                   <li>
-                     <a class="grey-text" href="https://amzn.to/36Z0ywG" target="_blank">AeroPress on Amazon</a>
+                     <a class="grey-text"
+                        href="https://www.amazon.com/AeroPress-Coffee-Espresso-Maker-Bitterness/dp/B0047BIWSK/ref=sr_1_4?keywords=aeropress&qid=1580995904&sr=8-4&tag=fake_tag"
+                        target="_blank">
+                        AeroPress on Amazon
+                     </a>
                   </li>
                   <li>
-                     <a class="grey-text" href="https://amzn.to/399vbAK" target="_blank">Paper Filters on
-                        Amazon</a>
+                     <a class="grey-text"
+                        href="https://www.amazon.com/AeroPress-Replacement-Filters-Pack-Microfilters/dp/B005UPSLX8/ref=sr_1_1?keywords=aeropress+paper&qid=1580995966&sr=8-1&tag=fake_tag"
+                        target="_blank">
+                        Paper Filters on Amazon
+                     </a>
                   </li>
                   <li>
-                     <a class="grey-text" href="https://amzn.to/2UobLnK" target="_blank">KOFFI Metal Filters on
-                        Amazon</a>
+                     <a class="grey-text"
+                        href="https://www.amazon.com/Barista-Quality-Reusable-Filters-Slimm-Filter/dp/B075G1G4D2/ref=sr_1_1?keywords=metal+filter+koffi&qid=1580996020&sr=8-1&tag=fake_tag"
+                        target="_blank">
+                        KOFFI Metal Filters on Amazon
+                     </a>
                   </li>
                </ul>
             </div>
@@ -112,8 +121,10 @@
       </div>
       <div class="footer-copyright">
          <div class="container center">
-            Developed by Thomas Dunn <a href="https://github.com/tdunn891/milestone-3" target="_blank"><img
-                  src="{{url_for('static', filename='images/github-32.png')}}" id="github-logo" alt="GitHub Logo" /></a>
+            Developed by Thomas Dunn
+            <a href="https://github.com/tdunn891/milestone-3" target="_blank">
+               <img src="{{url_for('static', filename='images/github-32.png')}}" id="github-logo" alt="GitHub Logo" />
+            </a>
          </div>
       </div>
    </footer>
