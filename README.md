@@ -293,6 +293,7 @@ The following tests failed:
 | CSS ([W3C](https://jigsaw.w3.org/css-validator/))               | PASS   |
 | HTML ([W3C](https://validator.w3.org/))                         | PASS^  |
 | Javascript with no major errors ([jshint](https://jshint.com/)) | PASS   |
+| Python ([jshint](https://pep8online.com/))                      | PASS^^ |
 
 ^ The following classes of errors were deemed not applicable, as the validator did not take into account Flask and Jinja templating:
 
@@ -300,6 +301,8 @@ The following tests failed:
 - 'Error: Start tag seen without seeing a doctype first. Expected \<!DOCTYPE html>.'
 - 'Text not allowed in element ul in this context' - {% for brew in brews %}
 - 'Element head is missing a required instance of child element title.'
+
+^^ 1 line flagged E501 'line too long' by several characters
 
 ## Deployment
 

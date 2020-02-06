@@ -27,7 +27,8 @@ def index():
 
 @app.route('/get_brews')
 def get_brews():
-    # Retreives filtered, sorted brews from MongoDB, and returns jsonified rendered template: response.html
+    # Retreives filtered, sorted brews from MongoDB,
+    #  returns jsonified rendered template: response.html
 
     # serialised filters for current page
     serial_filters = str(request.query_string)[2:-1]
@@ -76,7 +77,8 @@ def get_brews():
         "brew_source": {"$in": brew_source_args},
         "details.brewer": {"$in": brewer_args},
         "details.filter": {"$in": filter_args}
-    }).collation({"locale": "en"}).sort([(sort_field, sort_direction), ('_id', sort_direction)])
+    }).collation({"locale": "en"}).sort([(sort_field, sort_direction),
+                                         ('_id', sort_direction)])
 
     # Set pagination limit: 8 results per page
     limit = 8
@@ -105,7 +107,7 @@ def get_brews():
     if extra_records > 0:
         num_pages += 1
 
-    # current page number, used as input to calculate which records are displayed
+    # current page number, used as input to calc which records are displayed
     current_page = ((int(offset)+1) // limit) + 1
 
     # prepare pagination urls for each page number
