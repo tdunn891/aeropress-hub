@@ -24,6 +24,9 @@
 
 6. [**Testing**](#testing)
 
+   - [**Heroku**](#heroku)
+   - [**Local Deployment**](#local-deployment)
+
 7. [**Deployment**](#deployment)
 
 8. [**Credits**](#credits)
@@ -281,6 +284,7 @@ The following tests failed:
 | :-------- | :---------------------------------------------- | :--------------------------------------------------------------------------- | :-------- | :----------------------------------------------------------------------- |
 | 1         | Content is not squeezed or overlapping (Mobile) | Brew Browser table has overlapping horizontal content, even with small text. | Yes       | Added materialise class 'hide-on-med-and-down' to bean and grinder icons |
 | 2         | Text is appropriately sized (Mobile)            | Title text in navigation bar is too large, causing text to overflow          | Yes       | Title text added to mobile media query                                   |
+| 3         | Form entry is effective and intuitive (Mobile)  | Range slider displays do not update their values on change (Mobile)          | Yes       | Range slider event listener changed from 'onclick' to 'onchange'         |
 
 ### Code Validation
 
@@ -368,6 +372,6 @@ Icons sourced from: [FlatIcon](https://www.flaticon.com/)
 
 ### Acknowledgements
 
-Helpful video for pagination: [Pagination Tutorial (YouTube)](https://www.youtube.com/watch?v=Lnt6JqtzM7I)
+[Pagination Tutorial (YouTube)](https://www.youtube.com/watch?v=Lnt6JqtzM7I)
 
-Thank you to friends and family for help with testing and feedback.
+Big thanks to friends and family for help with testing and feedback.

@@ -296,30 +296,34 @@ function displaySliderValue(slider_name) {
 }
 
 // on click of input slider, call displaySliderValue
-$('.input-slider').on('click', function() {
+$('.input-slider').on('change', function() {
 	let slider_name = $(this).attr('name');
 	displaySliderValue(slider_name);
 });
 
-// get first page
+// Request first page of brews from database
 function getFirstPage() {
 	// Get filters from form
 	let serialFilters = $('#filters').serialize();
+	// Ajax Get Request
 	$.ajax({
 		url: `/get_brews?${serialFilters}`,
 		type: 'GET',
 		success: resp => {
+			// Insert response into response id
 			$('#response').html(resp.data);
 		}
 	});
 }
 
-// Pagination: go to page and return response
+// Pagination: request brews for page
 function goToPage(urlPage) {
+	// Ajax get request
 	$.ajax({
 		url: urlPage,
 		type: 'GET',
 		success: resp => {
+			// Insert response insto response id
 			$('#response').html(resp.data);
 		}
 	});

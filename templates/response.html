@@ -62,33 +62,41 @@
             </div>
          </div>
          <div class="collapsible-body">
-            <div class="row valign-wrapper">
+            <div class="row">
                <div class="col s12 m2 center">
-                  {% if brew.brew_source == 'Home Barista' %}
-                  <i class="material-icons tooltipped" data-tooltip="Average Joe Brew">account_circle</i>
-                  {% else %}
-                  <img src="static/images/WAC.png" class="tooltipped champ-brew-logo" data-tooltip="Championship Brew"
-                     alt="Championship Brew">
-                  {% endif %}
-                  <br><br>
-                  {% if brew.details.brewer == 'Inverted' %}
-                  <img src="static/images/aeropress_inverted.svg" class="tooltipped icon inverted-icon"
-                     data-tooltip="Brew Method" alt="Brew Method: Inverted"><br>Inverted
-                  {% else %}
-                  <img src=" static/images/aeropress.svg" class="tooltipped icon upright-icon"
-                     data-tooltip="Brew Method" alt="Brew Method: Upright"><br>Upright
-                  {% endif %}
-                  <br><br>
-                  <i class="material-icons timer icon tooltipped" data-tooltip="Brew Time">timer</i><br>
-                  <!-- Display brew time in minutes and seconds -->
-                  {{brew.total_brew_time // 60}}:{{ '%02d' % (brew.total_brew_time % 60) }}
-                  <br><br>
-                  {% if brew.details.water_temp_c  %}
-                  <img src="static/images/thermometer.svg" class="tooltipped thermometer"
-                     data-tooltip="Water Temp (&#8451;)" alt="Thermomenter">
-                  <br>
-                  {{brew.details.water_temp_c}}&#8451;
-                  {% endif %}
+                  <ul class="collapsible-icon-list center">
+                     <li>
+                        {% if brew.brew_source == 'Home Barista' %}
+                        <i class="material-icons tooltipped" data-tooltip="Average Joe Brew">account_circle</i>
+                        {% else %}
+                        <img src="static/images/WAC.png" class="tooltipped champ-brew-logo"
+                           data-tooltip="Championship Brew" alt="Championship Brew">
+                        {% endif %}
+                     </li>
+                     <li>
+                        {% if brew.details.brewer == 'Inverted' %}
+                        <img src="static/images/aeropress_inverted.svg" class="tooltipped inverted-icon"
+                           data-tooltip="Brew Method" alt="Brew Method: Inverted"><br>Inverted
+                        {% else %}
+                        <img src=" static/images/aeropress.svg" class="tooltipped upright-icon"
+                           data-tooltip="Brew Method" alt="Brew Method: Upright"><br>Upright
+                        {% endif %}
+                     </li>
+                     <li>
+                        <i class="material-icons timer tooltipped" data-tooltip="Brew Time">timer</i><br>
+                        <!-- Display brew time in minutes and seconds -->
+                        {{brew.total_brew_time // 60}}:{{ '%02d' % (brew.total_brew_time % 60) }}
+                     </li>
+
+                     {% if brew.details.water_temp_c  %}
+                     <li>
+                        <img src="static/images/thermometer.svg" class="tooltipped thermometer"
+                           data-tooltip="Water Temp (&#8451;)" alt="Thermomenter">
+                        <br>
+                        {{brew.details.water_temp_c}}&#8451;
+                     </li>
+                     {% endif %}
+                  </ul>
                </div>
                <div class="col s12 m10">
                   <h6>Steps:</h6>

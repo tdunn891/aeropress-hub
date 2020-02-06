@@ -9,13 +9,13 @@
             </h3>
             <p>Finesse the 'Press</p>
             <!-- Barista image -->
-            <img src="{{url_for('static',filename='images/barista-woman.jpg')}}"
+            <img src="{{url_for('static',filename='images/barista-woman.jpg')}}" alt="Barista with AeroPress"
                class="responsive-img hide-on-med-and-down">
          </div>
          <div class="col s12 l9">
             <div class="card">
                <div class="card-content">
-                  <span class="card-title">Brew</span>
+                  <h5 class="card-title">Brew</h5>
                   <br>
                   <form class="" action="{{ url_for('update_brew', brew_id=brew._id) }}" method="POST">
                      <div class="row">

@@ -9,6 +9,7 @@ from bson.objectid import ObjectId
 
 app = Flask(__name__)
 
+
 app.config["MONGO_DBNAME"] = 'aeropress'
 app.config["MONGO_URI"] = os.environ.get('MONGO_URI')
 

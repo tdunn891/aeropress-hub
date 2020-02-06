@@ -24,7 +24,7 @@
                   </div>
                   <div class="col s6 l12">
                      <p>
-                        <b>Brew Source:</b>
+                        Brew Source:
                         <label class="checkbox-label">
                            <input type="checkbox" id="wac" class="filled-in" checked="checked" name="brew_source"
                               value="World AeroPress Championships Finalist" />
@@ -37,7 +37,7 @@
                         </label>
                      </p>
                      <p>
-                        <b>Brew Method:</b>
+                        Brew Method:
                         <label class="checkbox-label">
                            <input type="checkbox" id="upright" class="filled-in" checked="checked" name="brewer"
                               value="Upright" />
@@ -51,27 +51,29 @@
                      </p>
                   </div>
                   <div class="col s6 l12">
-                     <b>Filter:</b>
-                     <label class="checkbox-label">
-                        <input type="checkbox" id="single-paper" class="filled-in" checked="checked" name="filter"
-                           value="Paper" />
-                        <span>Paper</span>
-                     </label>
-                     <label class="checkbox-label">
-                        <input type="checkbox" id="double-paper" class="filled-in" checked="checked" name="filter"
-                           value="Paper x2" />
-                        <span>Paper x2</span>
-                     </label>
-                     <label class="checkbox-label">
-                        <input type="checkbox" id="metal" class="filled-in" checked="checked" name="filter"
-                           value="Metal" />
-                        <span>Metal</span>
-                     </label>
-                     <label class="checkbox-label">
-                        <input type="checkbox" id="metal-and-paper" class="filled-in" checked="checked" name="filter"
-                           value="Metal &#43; Paper" />
-                        <span>Metal + Paper</span>
-                     </label>
+                     <p>
+                        Filter:
+                        <label class="checkbox-label">
+                           <input type="checkbox" id="single-paper" class="filled-in" checked="checked" name="filter"
+                              value="Paper" />
+                           <span>Paper</span>
+                        </label>
+                        <label class="checkbox-label">
+                           <input type="checkbox" id="double-paper" class="filled-in" checked="checked" name="filter"
+                              value="Paper x2" />
+                           <span>Paper x2</span>
+                        </label>
+                        <label class="checkbox-label">
+                           <input type="checkbox" id="metal" class="filled-in" checked="checked" name="filter"
+                              value="Metal" />
+                           <span>Metal</span>
+                        </label>
+                        <label class="checkbox-label">
+                           <input type="checkbox" id="metal-and-paper" class="filled-in" checked="checked" name="filter"
+                              value="Metal &#43; Paper" />
+                           <span>Metal + Paper</span>
+                        </label>
+                     </p>
                   </div>
                   <div class="col s12">
                      <a class="waves-effect reset-btn" href="{{ url_for('index') }}" id="reset-filters">
@@ -83,8 +85,8 @@
          </div>
          <div class="col s12 l10">
             <h5>Take your brewing to the next level</h5>
-            <p>Featuring recipes from:</p>
-            <div class="col s6 m6 l6">
+            <p>Explore AeroPress recipes from:</p>
+            <div class="col s12 m6">
                <div class="card horizontal">
                   <div class="card-image valign-wrapper">
                      <img src="{{url_for('static', filename='images/four-hands-1.jpg')}}" class="hide-on-med-and-down"
@@ -102,7 +104,7 @@
                   </div>
                </div>
             </div>
-            <div class="col s6 m6 l6">
+            <div class="col s12 m6">
                <div class="card horizontal">
                   <div class="card-image valign-wrapper">
                      <a href="https://aero.press/" target="_blank">
