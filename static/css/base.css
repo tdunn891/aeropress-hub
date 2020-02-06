@@ -1,3 +1,5 @@
+/* prefixed by https://autoprefixer.github.io (PostCSS: v7.0.26, autoprefixer: v9.7.3) */
+
 html {
 	height: 100%;
 	scroll-behavior: smooth;
@@ -12,12 +14,20 @@ body {
 	background-size: 100% auto;
 	background-repeat: no-repeat;
 	background-attachment: fixed;
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
 	min-height: 114vh;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: column;
 	flex-direction: column;
 }
 
+/* Required for sticky footer */
 main {
+	-webkit-box-flex: 1;
+	-ms-flex: 1 0 auto;
 	flex: 1 0 auto;
 }
 
@@ -30,6 +40,7 @@ nav {
 #hub-logo {
 	margin-top: 4px;
 	margin-left: 4px;
+	height: 50px;
 }
 
 /* Lake bled image in side navigation bar */
@@ -66,7 +77,7 @@ nav {
 
 /* Barista Cards on Brew Browser page */
 .barista-type-title {
-	font-size: 16px !important;
+	font-size: 18px !important;
 }
 
 .card-stacked div {
@@ -174,6 +185,8 @@ nav {
 
 /* Collapsible header */
 .collapsible-header {
+	-webkit-transition: all 0.1s ease-in-out;
+	-o-transition: all 0.1s ease-in-out;
 	transition: all 0.1s ease-in-out;
 	padding: 8px 1px;
 	opacity: 0.97;
@@ -182,6 +195,8 @@ nav {
 /* Collapsible header */
 .collapsible-header:hover {
 	background-color: wheat;
+	-webkit-transition: all 0.1s ease-in;
+	-o-transition: all 0.1s ease-in;
 	transition: all 0.1s ease-in;
 }
 
@@ -200,6 +215,8 @@ nav {
 /* Delete and Edit buttons */
 .edit-btn,
 .delete-btn {
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
 	margin-right: 12px;
 }
@@ -223,12 +240,16 @@ nav {
 .page-number:hover,
 .chevron i:hover {
 	background-color: wheat;
+	-webkit-transition: all 0.22s ease-in-out;
+	-o-transition: all 0.22s ease-in-out;
 	transition: all 0.22s ease-in-out;
 }
 
 /* Pagination display  */
 #pagination-display {
 	background-color: white;
+	width: -webkit-fit-content;
+	width: -moz-fit-content;
 	width: fit-content;
 	padding: 1px 4px;
 	opacity: 0.97;
@@ -268,6 +289,7 @@ label {
 .hoverable {
 	-webkit-transition: -webkit-box-shadow 0.15s;
 	transition: -webkit-box-shadow 0.15s;
+	-o-transition: box-shadow 0.15s;
 	transition: box-shadow 0.15s;
 	transition: box-shadow 0.15s, -webkit-box-shadow 0.15s;
 }
@@ -292,6 +314,7 @@ label {
 /* AeroPress video */
 #youtube-video {
 	max-width: 100%;
+	border: none;
 }
 
 /* Footer */
@@ -299,8 +322,9 @@ footer {
 	background-color: #4a2c2a !important;
 }
 
+/* GitHub Logo */
 #github-logo {
-	height: 16px;
+	height: 20px;
 }
 
 /* Media Queries */
@@ -313,8 +337,19 @@ footer {
 	.icon {
 		display: none !important;
 	}
-	.collapsible-header .col {
+	.collapsible-header .col,
+	.step {
 		padding: 0;
+		font-size: 10px;
+	}
+	.collection-item {
+		line-height: 1.1rem !important;
+	}
+	.steps {
+		padding-left: 12px !important;
+	}
+	.step {
+		font-size: 12px;
 	}
 	#filters .col span {
 		font-size: 13px;
@@ -322,21 +357,21 @@ footer {
 	#response {
 		padding: 2px 0px;
 	}
-	body {
-		font-size: 10px;
-	}
 	h3 {
 		font-size: 26px;
+	}
+	.collapsible-icon-list li {
+		display: inline-block;
 	}
 	.card-title {
 		font-size: 18px !important;
 	}
 	.brand-logo {
-		font-size: 16px !important;
+		font-size: 20px !important;
 	}
 }
 
-/* Desktop devices */
+/* Desktop devices and above*/
 @media (min-width: 992px) {
 	.container {
 		width: 95%;
