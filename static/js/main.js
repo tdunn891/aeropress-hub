@@ -301,6 +301,12 @@ $('.input-slider').on('change', function() {
 	displaySliderValue(slider_name);
 });
 
+// on touchend of input slider (touch screens), call displaySliderValue
+$('.input-slider').on('touchend', function() {
+	let slider_name = $(this).attr('name');
+	displaySliderValue(slider_name);
+});
+
 // Request first page of brews from database
 function getFirstPage() {
 	// Get filters from form
