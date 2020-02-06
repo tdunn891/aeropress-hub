@@ -1,4 +1,4 @@
-# AeroPress Brews - Milestone 3: Data-Centric Development
+# Milestone Project 3 - [AeroPress Hub](https://aeropress-hub.herokuapp.com/)
 
 ## Contents
 
@@ -40,7 +40,7 @@ AeroPress Hub was developed to centralise and showcase AeroPress coffee brews, f
 
 ### Strategy
 
-Site Objective: Provide platform for Aeropress enthusiasts to find and share AeroPress recipes
+Site Objective: Provide platform for AeroPress enthusiasts to find and share AeroPress recipes
 
 User Needs: Contribute, view, edit, and delete brews
 
@@ -93,7 +93,7 @@ All interactive elements provide feedback to the user to encourage interaction a
 - Sort by dropdown has border transition on hover.
 - Each record in the table changes background colour and cursor on hover.
 - 'Like' button changes colour on hover.
-- Icons: medal, timer, water temp provide tooltip additional infomation on hover.
+- Icons: medal, timer, water temp provide tooltip additional information on hover.
 - Navigation links change colour on hover.
 - Pagination links (including chevrons) have background colour change on hover.
 - All buttons have border transition on hover.
@@ -105,7 +105,7 @@ All interactive elements provide feedback to the user to encourage interaction a
 
 The filtering and sorting panel is located on the left of the brew table (on desktop devices), a logical and intuitive position expected by users.
 
-Pagination was implemented in the Brew Browser, showing only 8 brews at a time in order prevent cognitative overload. Pagination ensures that the sorting and filtering panel is easily reachable, particularly on mobile devices. The relatively small amount of records (~40) lends itself to pagination, as only a handful of pages are needed to hold all records. As the number of records grows, the records per page could be increased.
+Pagination was implemented in the Brew Browser, showing only 8 brews at a time in order prevent cognitive overload. Pagination ensures that the sorting and filtering panel is easily reachable, particularly on mobile devices. The relatively small amount of records (~40) lends itself to pagination, as only a handful of pages are needed to hold all records. As the number of records grows, the records per page could be increased.
 
 The Add Brew and Edit Brew pages are on their own pages for two main reasons: 1. The form features a significant amount of fields (10), which requires a sufficient amount of the viewport. 2. There is no benefit derived from viewing the Brew Browser at the same time while Adding a Brew. In the case of Edit Brew, the form fields are all prefilled (including range sliders) with the brew's current values.
 
@@ -113,7 +113,7 @@ The Add Brew and Edit Brew pages are on their own pages for two main reasons: 1.
 
 #### Wireframes
 
-Two sets of wireframes were created in the early development stage to inform the strucutre and layout for different device sizes.
+Two sets of wireframes were created in the early development stage to inform the structure and layout for different device sizes.
 
 [Desktop & Mobile Wireframes](https://github.com/tdunn891/milestone-3/tree/master/static/images/wireframes)
 
@@ -163,7 +163,6 @@ How their needs are met:
 - Potential Feature 2: Ability to sort table by clicking column header - clicking on current sort field changes toggles direction
 - Potential Feature 3: Ability to share brew with a friend via a link
 - Potential Feature 4: User login functionality so that users can 'star' brews to keep a list of favourites. Also, users would only be able to edit/delete their own brews.
-- Potential Feature 4:
 
 ## Database
 
@@ -186,7 +185,7 @@ The database has a single collection named 'brews', with the following fields:
 | steps         | Array    | Process - each element in array is a step  |
 | place         | String   | Podium place if Champ brew                 |
 | water_temp_c  | Int32    | Water temperature (Celsius)                |
-| year          | String   | Year - set to current year when bre added  |
+| year          | String   | Year - set to current year when brew added |
 
 ## Technologies Used
 
@@ -202,7 +201,7 @@ The database has a single collection named 'brews', with the following fields:
 - [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) :
 - [jQuery](https://jquery.com/) : used to select and manipulate HTML elements.
 - [Material Icons](https://material.io/) : used for icons and fonts.
-- [Materialize CSS](https://www.materializecss.com/) : used as reponsive front-end framework.
+- [Materialize CSS](https://www.materializecss.com/) : used as responsive front-end framework.
 - [mongoDB](https://www.mongodb.com/) : used as database.
 - [VSCode](https://code.visualstudio.com) : preferred code editor.
 - [W3C Validator](https://jigsaw.w3.org) : used to validate HTML & CSS.
@@ -215,7 +214,7 @@ Extensive manual testing was conducted to ensure the site functions and looks we
 
 Brew Browser Page
 
-- Filters: each checkbox selection/unselection causes expected filtering in table
+- Filters: each checkbox selection/deselection causes expected filtering in table
 - Sorting: each sort field sorts correctly, with expected sort direction
 - Reset filters button refreshes page with all checkboxes filled.
 - Likes: clicking the like button increases like count by 1
@@ -228,7 +227,7 @@ Brew Browser Page
 - Tooltips: appear on hover of medal icons
 - 'Collapsible' materialize component: on click of a record, additional information is revealed and is correct.
 - Edit button: takes user to Edit Page of selected record
-- Delete button: triggers modal, asking for delete confirmation. Confim delete button deletes record from database.
+- Delete button: triggers modal, asking for delete confirmation. Confirm delete button deletes record from database.
 - Confirm delete button: on click a confirmation 'Toast' message is displayed: 'Deleted'
 - Colours: all text is readable with good colour contrast
 - Background Image: sticks to bottom of body during scroll
@@ -263,7 +262,7 @@ About page
 
 404 Error Page
 
-- When an incorrect url is entered, 404 Page is displayed with image
+- When an incorrect URL is entered, 404 Page is displayed with image
 - Return home button takes user back to Brew Browser page
 - Navigation buttons function
 
@@ -305,7 +304,7 @@ The following tests failed:
 The application was deployed to Heroku, via the following steps:
 
 1. Heroku.com > Create new app > App name: aeropress-hub, Region: Europe
-2. Deploy > Deployment method > Link Github account
+2. Deploy > Deployment method > Link GitHub account
 3. Select repository 'milestone-3'
 4. Select branch: 'master'
 5. Set Config Vars: Heroku Settings > Config Vars:
@@ -346,7 +345,7 @@ The application was deployed to Heroku, via the following steps:
 ### Content
 
 - World AeroPress Champs logo and About page text source: [World AeroPress Championships](https://aero.press/)
-- Championship Recipes webscraped from [AeroPress.com](https://aeropress.com/championships/wac-recipes/)
+- Championship Recipes web-scraped from [AeroPress.com](https://aeropress.com/championships/wac-recipes/)
 
 ### Media
 
@@ -356,6 +355,8 @@ Images sourced from [Shutterstock](https://www.shutterstock.com/) (Standard Lice
 - [AeroPress at Lake Bled](https://www.shutterstock.com/image-photo/mug-mockup-aeropress-next-sitting-traveler-1587478897?src=library)
 - [Four Hands](https://www.shutterstock.com/image-photo/empty-clear-aeropress-filter-cap-two-496228861?src=library)
 - [Barista](https://www.shutterstock.com/image-photo/professional-barista-preparing-coffee-alternative-method-515650723?src=library)
+
+Embedded [video](https://www.youtube.com/embed/u928bWvxrZ8) from World AeroPress Championships YouTube Channel
 
 Icons sourced from: [FlatIcon](https://www.flaticon.com/)
 
