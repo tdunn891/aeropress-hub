@@ -1,4 +1,4 @@
-# Milestone Project 3 - [AeroPress Hub](https://aeropress-hub.herokuapp.com/)
+# [AeroPress Hub](https://aeropress-hub.herokuapp.com/)
 
 ## Contents
 
