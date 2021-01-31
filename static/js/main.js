@@ -1,39 +1,28 @@
-// After response from database is recieved
+// After response from database is received
 $(document).ajaxComplete(() => {
 	// Initialise MaterializeCSS components
 	$('.tooltipped').tooltip();
 	$('.collapsible').collapsible({
 		induration: 250,
-		outduration: 250
+		outduration: 250,
 	});
 
-	// Toast confirming delete
-	$('.confirm-delete-btn').on('click', () => {
-		M.toast({
-			html: `Deleted &nbsp; <i class="material-icons bin">delete</i>`,
-			classes: 'rounded'
-		});
-	});
+	// Toast: confirm delete
+	$('.confirm-delete-btn').on('click', () => showToast('deleted'));
 
 	// Pagination: Go to page
-	$('.page-link').on('click', function() {
-		let url = $(this).attr('data-page-url');
-		goToPage(url);
-	});
+	$('.page-link').on('click', (e) => goToPage(e.target.dataset.pageUrl));
 
-	// Toast confirming 'Like'
-	$('.thumb-anchor').on('click', () => {
-		M.toast({
-			html: `Liked &nbsp; <i class="material-icons thumb">thumb_up</i>`,
-			classes: 'rounded'
-		});
-	});
+	// Toast: 'Like'
+	$('.thumb-anchor').on('click', () => showToast('liked'));
 
 	// 'Delete' modal
 	$('.modal').modal({ opacity: 0.2 });
-	$('.delete-btn').on('click', function() {
-		let id = $(this).data('id');
-		$('.confirm-delete-btn').attr('href', '/delete_brew/' + id);
+	$('.delete-btn').on('click', (e) => {
+		$('.confirm-delete-btn').attr(
+			'href',
+			'/delete_brew/' + e.target.dataset.id
+		);
 	});
 });
 
@@ -42,42 +31,31 @@ $(document).ready(() => {
 	getFirstPage();
 
 	// Toast: 'Updated'
-	$('#update-brew-btn').on('click', () => {
-		M.toast({
-			html: `Brew Updated &nbsp; <i class="material-icons pencil">edit</i>`,
-			classes: 'rounded'
-		});
-	});
+	$('#update-brew-btn').on('click', () => showToast('updated'));
 
 	// Toast: 'Added'
-	$('#add-brew-btn').on('click', () => {
-		M.toast({
-			html: `Brew Added &nbsp; <i class="material-icons">add_circle</i>`,
-			classes: 'rounded'
-		});
-	});
+	$('#add-brew-btn').on('click', () => showToast('added'));
 
-	// Display slider values (only relates to Add and Edit)
-	const sliderValues = [
+	// Display slider values for Add and Edit pages
+	const SLIDER_VALUES = [
 		'coffee_weight',
 		'grind_size',
 		'water_temp',
-		'brew_time'
+		'brew_time',
 	];
-	sliderValues.forEach(sliderValue => {
+
+	SLIDER_VALUES.forEach((sliderValue) => {
 		displaySliderValue(sliderValue);
 	});
 
 	// On change of form, submit the form and reload the table
-	$('#filters').on('change', () => {
-		getFirstPage();
-	});
+	$('#filters').on('change', () => getFirstPage());
 
 	// Initialise Material components
 	$('select').formSelect();
 	$('.sidenav').sidenav();
 
-	// Autocomplete for country input
+	// Country input Autocomplete
 	$('input.autocomplete').autocomplete({
 		data: {
 			Afghanistan: null,
@@ -284,53 +262,73 @@ $(document).ready(() => {
 			'Virgin Islands (US)': null,
 			Yemen: null,
 			Zambia: null,
-			Zimbabwe: null
-		}
+			Zimbabwe: null,
+		},
 	});
 });
 
 // Displays value of slider in Add Brew & Edit Brew pages
-function displaySliderValue(slider_name) {
-	let sliderNameValue = $(`input[name="${slider_name}"]`).val();
+const displaySliderValue = (slider_name) => {
+	const sliderNameValue = $(`input[name="${slider_name}"]`).val();
 	$(`#${slider_name}_span`).text(`${sliderNameValue}`);
-}
+};
 
-// on click of input slider, call displaySliderValue
-$('.input-slider').on('change', function() {
-	let slider_name = $(this).attr('name');
-	displaySliderValue(slider_name);
-});
-
-// on touchend of input slider (touch screens), call displaySliderValue
-$('.input-slider').on('touchend', function() {
-	let slider_name = $(this).attr('name');
-	displaySliderValue(slider_name);
-});
+// on click or touchend (touch screens) of input slider, call displaySliderValue
+$('.input-slider').on('change' || 'touchend', (e) =>
+	displaySliderValue(e.target.name)
+);
 
 // Request first page of brews from database
-function getFirstPage() {
+const getFirstPage = () => {
 	// Get filters from form
 	let serialFilters = $('#filters').serialize();
 	// Ajax Get Request
+	const firstPageUrl = '/get_brews?' + serialFilters;
+
 	$.ajax({
-		url: `/get_brews?${serialFilters}`,
+		url: firstPageUrl,
 		type: 'GET',
-		success: resp => {
+		success: (resp) => {
 			// Insert response into response id
 			$('#response').html(resp.data);
-		}
+		},
 	});
-}
+};
 
 // Pagination: request brews for page
-function goToPage(urlPage) {
+const goToPage = (urlPage) => {
 	// Ajax get request
 	$.ajax({
 		url: urlPage,
 		type: 'GET',
-		success: resp => {
+		success: (resp) => {
 			// Insert response insto response id
 			$('#response').html(resp.data);
-		}
+		},
 	});
-}
+};
+
+// Show toast notification
+const showToast = (toastEvent) => {
+	let toastHtml = '';
+	switch (toastEvent) {
+		case 'deleted':
+			toastHtml = `Deleted &nbsp; <i class="material-icons bin">delete</i>`;
+			break;
+		case 'added':
+			toastHtml = `Brew Added &nbsp; <i class="material-icons">add_circle</i>`;
+			break;
+		case 'updated':
+			toastHtml = `Brew Updated &nbsp; <i class="material-icons pencil">edit</i>`;
+			break;
+		case 'liked':
+			toastHtml = `Liked &nbsp; <i class="material-icons thumb">thumb_up</i>`;
+			break;
+		default:
+			break;
+	}
+	M.toast({
+		html: toastHtml,
+		classes: 'rounded',
+	});
+};
