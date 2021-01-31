@@ -1,0 +1,40 @@
+<ul class="pagination center-align z-depth-2">
+   <!-- If current page is 1, disable the left chevron -->
+   {% if current_page == 1 %}
+   <li class="disabled">
+      <a><i class="material-icons">chevron_left</i></a>
+   </li>
+   {% else %}
+   <!-- remove disabled class from left chevron -->
+   <li id="prev-page">
+      <a data-page-url="{{ prev_url }}" class="chevron page-link waves-effect">
+         <i class="material-icons">chevron_left</i>
+      </a>
+   </li>
+   {% endif %}
+   {% for page in range(1, num_pages+1) %}
+   <!-- If current page, apply active class -->
+   {% if page == current_page %}
+   <li class="active">
+      <a data-page-url="{{ urls[page] }}" class="page-number page-link waves-effect">{{ page }}</a>
+   </li>
+   {% else %}
+   <li>
+      <a data-page-url="{{ urls[page] }}" class="page-number page-link waves-effect">{{ page }}</a>
+   </li>
+   {% endif %}
+   {% endfor %}
+   <!-- If current page is last page, disable right chevron -->
+   {% if current_page == num_pages %}
+   <li class="disabled">
+      <a><i class="material-icons">chevron_right</i></a>
+   </li>
+   {% else %}
+   <!-- remove disabled class from chevron -->
+   <li>
+      <a data-page-url="{{ next_url }}" class="chevron page-link waves-effect">
+         <i class="material-icons">chevron_right</i>
+      </a>
+   </li>
+   {% endif %}
+</ul>

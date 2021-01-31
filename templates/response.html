@@ -1,6 +1,6 @@
 <div class="col s12">
-   <p id="pagination-display">Matching: {{ filtered_records_count }} (showing
-      {{ offset+1 }}-{{offset+brews_displayed}}) |
+   <p id="pagination-display">Matching: {{ filtered_records_count }}
+      (showing {{ offset+1 }}-{{offset+brews_displayed}}) |
       Total: {{ total_records }}
    </p>
    <ul class="collection" id="headers-list">
@@ -18,151 +18,10 @@
    </ul>
    <ul class="collection collapsible">
       {% for brew in brews %}
-      <li id="{{brew._id}}">
-         <div class="collapsible-header valign-wrapper">
-            <div class="col s2 m2">
-               {% if brew.brew_name.startswith('Winner') -%}
-               <img src="static/images/first_place_medal.svg" class="tooltipped medal" data-tooltip="1st Place"
-                  alt="First Place">
-               {{brew.brew_name[7:]}}
-               {% elif brew.brew_name.startswith('2nd')  -%}
-               <img src="static/images/second_place_medal.svg" class="tooltipped medal" data-tooltip="2nd Place"
-                  alt="Second Place">
-               {{brew.brew_name[10:]}}
-               {% elif brew.brew_name.startswith('3rd')  -%}
-               <img src="static/images/third_place_medal.svg" class="tooltipped medal" data-tooltip="3rd Place"
-                  alt="Third Place">
-               {{brew.brew_name[10:]}}
-               {% else %}
-               {{brew.brew_name}}
-               {%- endif %}
-            </div>
-            <div class="col s3 m3">
-               {{brew.barista}}
-            </div>
-            <div class="col s2 m2">
-               {{brew.country}}
-            </div>
-            <div class="col s2 m2">
-               {{brew.details.filter}}
-            </div>
-            <div class="col s1 m1 valign-wrapper">
-               <img src="{{url_for('static', filename='images/bean.svg')}}" alt="Coffee Beans" class="icon beans">
-               {{brew.details.coffee_dose_g}}
-            </div>
-            <div class="col s1 m1 valign-wrapper">
-               <img src="static/images/grinder.svg" alt="Coffee Grinder" class="icon grinder">
-               {{brew.details.grind}}
-            </div>
-            <div class="col s1 m1 valign-wrapper likes-col">
-               <a href="{{url_for('increase_likes', brew_id=brew._id)}}" class="thumb-anchor waves-effect waves-light">
-                  <i class="material-icons thumb">thumb_up</i>
-                  {{brew.likes}}
-               </a>
-            </div>
-         </div>
-         <div class="collapsible-body">
-            <div class="row">
-               <div class="col s12 m2 center">
-                  <ul class="collapsible-icon-list center">
-                     <li>
-                        {% if brew.brew_source == 'Home Barista' %}
-                        <i class="material-icons tooltipped" data-tooltip="Average Joe Brew">account_circle</i>
-                        {% else %}
-                        <img src="static/images/WAC.png" class="tooltipped champ-brew-logo"
-                           data-tooltip="Championship Brew" alt="Championship Brew">
-                        {% endif %}
-                     </li>
-                     <li>
-                        {% if brew.details.brewer == 'Inverted' %}
-                        <img src="static/images/aeropress_inverted.svg" class="tooltipped inverted-icon"
-                           data-tooltip="Brew Method" alt="Brew Method: Inverted"><br>Inverted
-                        {% else %}
-                        <img src=" static/images/aeropress.svg" class="tooltipped upright-icon"
-                           data-tooltip="Brew Method" alt="Brew Method: Upright"><br>Upright
-                        {% endif %}
-                     </li>
-                     <li>
-                        <i class="material-icons timer tooltipped" data-tooltip="Brew Time">timer</i><br>
-                        <!-- Display brew time in minutes and seconds -->
-                        {{brew.total_brew_time // 60}}:{{ '%02d' % (brew.total_brew_time % 60) }}
-                     </li>
-
-                     {% if brew.details.water_temp_c  %}
-                     <li>
-                        <img src="static/images/thermometer.svg" class="tooltipped thermometer"
-                           data-tooltip="Water Temp (&#8451;)" alt="Thermomenter">
-                        <br>
-                        {{brew.details.water_temp_c}}&#8451;
-                     </li>
-                     {% endif %}
-                  </ul>
-               </div>
-               <div class="col s12 m10">
-                  <h6>Steps:</h6>
-                  <ol class="steps collection">
-                     {% for step in brew.steps %}
-                     <li class="collection-item step">{{ step }}</li>
-                     {% endfor %}
-                  </ol>
-                  <!-- Delete Button -->
-                  <a href="#delete-modal" data-id="{{brew._id}}" class="btn btn-small delete-btn red
-                  waves-effect modal-trigger right">
-                     <i class="material-icons bin">delete</i>
-                     Delete
-                  </a>
-                  <!-- Edit Button -->
-                  <a href="{{ url_for('edit_brew', brew_id=brew._id) }}"
-                     class="btn btn-small edit-btn right waves-effect">
-                     <i class="material-icons pencil">edit</i>
-                     Edit
-                  </a>
-               </div>
-            </div>
-         </div>
-      </li>
+      {% include 'brew_table_record.html' %}
       {% endfor %}
    </ul>
-   <ul class="pagination center-align z-depth-2">
-      <!-- If current page is 1, disable the left chevron -->
-      {% if current_page == 1 %}
-      <li class="disabled">
-         <a><i class="material-icons">chevron_left</i></a>
-      </li>
-      {% else %}
-      <!-- remove disabled class from left chevron -->
-      <li id="prev-page">
-         <a data-page-url="{{ prev_url }}" class="chevron page-link waves-effect">
-            <i class="material-icons">chevron_left</i>
-         </a>
-      </li>
-      {% endif %}
-      {% for page in range(1, num_pages+1) %}
-      <!-- If current page, apply active class -->
-      {% if page == current_page %}
-      <li class="active">
-         <a data-page-url="{{ urls[page] }}" class="page-number page-link waves-effect">{{ page }}</a>
-      </li>
-      {% else %}
-      <li>
-         <a data-page-url="{{ urls[page] }}" class="page-number page-link waves-effect">{{ page }}</a>
-      </li>
-      {% endif %}
-      {% endfor %}
-      <!-- If current page is last page, disable right chevron -->
-      {% if current_page == num_pages %}
-      <li class="disabled">
-         <a><i class="material-icons">chevron_right</i></a>
-      </li>
-      {% else %}
-      <!-- remove disabled class from chevron -->
-      <li>
-         <a data-page-url="{{ next_url }}" class="chevron page-link waves-effect">
-            <i class="material-icons">chevron_right</i>
-         </a>
-      </li>
-      {% endif %}
-   </ul>
+   {% include 'pagination_bar.html' %}
 </div>
 
 <!-- Modal Structure -->
