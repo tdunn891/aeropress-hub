@@ -1,4 +1,6 @@
-# Milestone Project 3 - [AeroPress Hub](https://aeropress-hub.herokuapp.com/)
+<img src="https://image.flaticon.com/icons/svg/901/901721.svg?sanitize=true" width=120>
+ 
+# [AeroPress Hub](https://aeropress-hub.herokuapp.com/)
 
 ## Contents
 
