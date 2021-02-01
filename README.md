@@ -1,6 +1,8 @@
-<img src="https://image.flaticon.com/icons/svg/901/901721.svg?sanitize=true" width=120>
- 
 # [AeroPress Hub](https://aeropress-hub.herokuapp.com/)
+
+[1]: https://tdunn891.github.io/aeropress-hub
+[2]: https://github.com/tdunn891/aeropress-hub/blob/master/static/images/aeropress.gif
+[![Aeropress GIF][2]][1]
 
 ## Contents
 
