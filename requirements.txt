@@ -1,6 +1,6 @@
 bson==0.5.8
 dnspython==1.16.0
-Flask==1.1.1
+Flask==2.3.2
 Flask-PyMongo==2.3.0
 idna==2.8
 itsdangerous==1.1.0
